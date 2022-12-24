@@ -1,0 +1,17 @@
+# IDE settings
+.idea/
+
+# additional files
+additional/
+
+# media files
+reshuffle/media/*
+
+# virtual environment
+venv/
+
+# database
+reshuffle/db.sqlite3
+
+# config
+reshuffle/.env
