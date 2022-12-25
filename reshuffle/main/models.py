@@ -6,9 +6,6 @@ from ckeditor.fields import RichTextField
 class SingleActiveAbstract(models.Model):
     active = models.BooleanField(default=True, verbose_name="Актуальный")
 
-    class Meta:
-        abstract = True
-
     def save(self, *args, **kwargs):
         if self.active:
             type(self).objects.all().update(active=False)
@@ -20,6 +17,9 @@ class SingleActiveAbstract(models.Model):
         if qs:
             qs.filter(pk=qs[0].pk).update(active=True)
         super().delete(*args, **kwargs)
+
+    class Meta:
+        abstract = True
 
 
 class DocsHeader(SingleActiveAbstract):

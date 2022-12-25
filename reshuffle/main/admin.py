@@ -6,6 +6,7 @@ from main.models import *
 
 @admin.register(DocsHeader)
 class DocsHeaderAdmin(admin.ModelAdmin):
+    fields = ("content", "active")
     list_display = ("id", "pretty_content", "created", "updated", "active")
     list_display_links = ("id",)
     ordering = ("-updated",)
