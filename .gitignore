@@ -4,7 +4,8 @@
 # additional files
 additional/
 
-# media files
+# global static & media files
+reshuffle/static/*
 reshuffle/media/*
 
 # virtual environment
