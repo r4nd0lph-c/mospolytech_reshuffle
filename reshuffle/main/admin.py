@@ -12,7 +12,7 @@ class DocsHeaderAdmin(admin.ModelAdmin):
     list_filter = ("active",)
 
     def pretty_content(self, obj):
-        return mark_safe(obj.content)
+        return mark_safe(f"<div style='border: 1px solid var(--hairline-color);'> {obj.content} </div>")
 
     pretty_content.short_description = DocsHeader._meta.get_field("content").verbose_name
 
