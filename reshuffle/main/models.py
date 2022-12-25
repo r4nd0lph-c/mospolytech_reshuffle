@@ -1,20 +1,25 @@
-from ckeditor.fields import RichTextField
 from django.db import models
+
+from ckeditor.fields import RichTextField
 
 
 class SingleActiveAbstract(models.Model):
-    active = models.BooleanField(default=True, editable=False, verbose_name="Актуальный")
+    active = models.BooleanField(default=True, verbose_name="Актуальный")
 
     class Meta:
         abstract = True
 
     def save(self, *args, **kwargs):
         if self.active:
-            qs = type(self).objects.filter(active=True)
-            if self.pk:
-                qs = qs.exclude(pk=self.pk)
-            qs.update(active=False)
-        super(SingleActiveAbstract, self).save(*args, **kwargs)
+            type(self).objects.all().update(active=False)
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        qs = type(self).objects.order_by("-updated")
+        qs = qs.exclude(pk=self.pk)
+        if qs:
+            qs.filter(pk=qs[0].pk).update(active=True)
+        super().delete(*args, **kwargs)
 
 
 class DocsHeader(SingleActiveAbstract):
@@ -23,8 +28,23 @@ class DocsHeader(SingleActiveAbstract):
     updated = models.DateTimeField(auto_now=True, verbose_name="Обновлён")
 
     def __str__(self):
-        return str(self.id)
+        state = "Актуальный" if self.active else "Неактуальный"
+        return f"ID: {self.id} ({state})"
 
     class Meta:
         verbose_name = "Заголовок документа"
         verbose_name_plural = "Заголовки документа"
+
+#
+# class Subject(models.Model):
+#     title = models.CharField(max_length=128, verbose_name="Название")
+#     instr_title = models.CharField(max_length=128, default="Инструкция по выполнению работы",
+#                                    verbose_name="Название инструкции")
+#     instr_content = models.TextField(verbose_name="Содержимое инструкции")
+#
+#     def __str__(self):
+#         return f"{self.title}"
+#
+#     class Meta:
+#         verbose_name = "Предмет"
+#         verbose_name_plural = "Предметы"

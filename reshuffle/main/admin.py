@@ -5,16 +5,25 @@ from main.models import *
 
 
 @admin.register(DocsHeader)
-class ArticleAdmin(admin.ModelAdmin):
+class DocsHeaderAdmin(admin.ModelAdmin):
     list_display = ("id", "pretty_content", "created", "updated", "active")
     list_display_links = ("id",)
-    ordering = ("-created",)
+    ordering = ("-updated",)
     list_filter = ("active",)
 
     def pretty_content(self, obj):
         return mark_safe(obj.content)
 
     pretty_content.short_description = DocsHeader._meta.get_field("content").verbose_name
+
+    def delete_queryset(self, request, qs):
+        if qs.filter(active=True):
+            qs_remaining = DocsHeader.objects.order_by("-updated").exclude(pk__in=qs.values("pk"))
+            if qs_remaining:
+                active_new = qs_remaining[0]
+                active_new.active = True
+                active_new.save()
+        qs.delete()
 
 
 admin.site.site_title = "RESHUFFLE"
