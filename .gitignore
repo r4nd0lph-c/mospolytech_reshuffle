@@ -11,6 +11,10 @@ reshuffle/media/*
 # virtual environment
 venv/
 
+# migrations
+reshuffle/main/migrations/*
+!reshuffle/main/migrations/__init__.py
+
 # database
 reshuffle/db.sqlite3
 

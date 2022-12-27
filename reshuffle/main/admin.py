@@ -27,14 +27,25 @@ class DocHeaderAdmin(admin.ModelAdmin):
         qs.delete()
 
 
-# @admin.register(Subject)
-# class SubjectAdmin(admin.ModelAdmin):
-#     list_display = ("id", "title", "created", "updated", "active")
-#     list_display_links = ("id",)
-#     ordering = ("-updated",)
-#     list_filter = ("active",)
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ("id", "title")
+    list_display_links = ("id",)
+    ordering = ("-created",)
 
-# TODO: abstract class for created updated fix qs = type(self).objects.order_by("-updated") (models.py [15])
+
+@admin.register(AccessRight)
+class AccessRightAdmin(admin.ModelAdmin):
+    list_display = ("id", "group", "pretty_subjects")
+    list_display_links = ("id",)
+    ordering = ("-created",)
+    filter_horizontal = ("subjects",)
+
+    def pretty_subjects(self, obj):
+        return ", ".join(sbj.title for sbj in obj.subjects.all())
+
+    pretty_subjects.short_description = AccessRight._meta.get_field("subjects").verbose_name
+
 
 admin.site.site_title = "RESHUFFLE"
 admin.site.site_header = "RESHUFFLE"

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.db import models
 
 from ckeditor.fields import RichTextField
@@ -31,7 +32,7 @@ class AbstractSingleFlag(AbstractDatestamp):
 
 
 class DocHeader(AbstractSingleFlag):
-    content = RichTextField(config_name="Config_DocsHeader", verbose_name="Содержание")
+    content = RichTextField(config_name="Config_DocHeader", verbose_name="Содержание")
 
     def __str__(self):
         state = "Актуальный" if self.flag else "Неактуальный"
@@ -46,19 +47,30 @@ DocHeader._meta.get_field("created").verbose_name = "Создан"
 DocHeader._meta.get_field("updated").verbose_name = "Обновлён"
 DocHeader._meta.get_field("flag").verbose_name = "Актуальный"
 
-# class Subject(models.Model):
-#     title = models.CharField(max_length=128, verbose_name="Название")
-#     instr_title = models.CharField(max_length=128, default="Инструкция по выполнению работы",
-#                                    verbose_name="Название инструкции")
-#     instr_content = models.TextField(verbose_name="Содержимое инструкции")
-#
-#     def clean(self):
-#         print("cleaned!")
-#         cleaned_data = super().clean()
-#
-#     def __str__(self):
-#         return f"{self.title}"
-#
-#     class Meta:
-#         verbose_name = "Предмет"
-#         verbose_name_plural = "Предметы"
+
+class Subject(AbstractDatestamp):
+    title = models.CharField(max_length=128, verbose_name="Название")
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Предмет"
+        verbose_name_plural = "Предметы"
+
+
+Subject._meta.get_field("created").verbose_name = "Создан"
+Subject._meta.get_field("updated").verbose_name = "Обновлён"
+
+
+class AccessRight(AbstractDatestamp):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="Группа")
+    subjects = models.ManyToManyField(Subject, blank=True, verbose_name="Доступные предметы")
+
+    class Meta:
+        verbose_name = "Право доступа"
+        verbose_name_plural = "Права доступа"
+
+
+AccessRight._meta.get_field("created").verbose_name = "Создано"
+AccessRight._meta.get_field("updated").verbose_name = "Обновлено"
