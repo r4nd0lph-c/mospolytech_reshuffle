@@ -6,11 +6,11 @@ from main.models import *
 
 @admin.register(DocHeader)
 class DocHeaderAdmin(admin.ModelAdmin):
-    fields = ("content", "flag")
-    list_display = ("id", "pretty_content", "created", "updated", "flag")
+    fields = ("content", "is_active")
+    list_display = ("id", "pretty_content", "created", "updated", "is_active")
     list_display_links = ("id",)
     ordering = ("-updated",)
-    list_filter = ("flag",)
+    list_filter = ("is_active",)
 
     def pretty_content(self, obj):
         return mark_safe(f"<div style='border: 1px solid var(--hairline-color);'> {obj.content} </div>")
@@ -18,12 +18,12 @@ class DocHeaderAdmin(admin.ModelAdmin):
     pretty_content.short_description = DocHeader._meta.get_field("content").verbose_name
 
     def delete_queryset(self, request, qs):
-        if qs.filter(flag=True):
+        if qs.filter(is_active=True):
             qs_remaining = DocHeader.objects.order_by("-updated").exclude(pk__in=qs.values("pk"))
             if qs_remaining:
-                flag_new = qs_remaining[0]
-                flag_new.flag = True
-                flag_new.save()
+                is_active_new = qs_remaining[0]
+                is_active_new.is_active = True
+                is_active_new.save()
         qs.delete()
 
 
@@ -31,14 +31,19 @@ class DocHeaderAdmin(admin.ModelAdmin):
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ("id", "title")
     list_display_links = ("id",)
-    ordering = ("-created",)
+
+
+@admin.register(PartTitle)
+class PartTitleAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "is_global")
+    list_display_links = ("id",)
+    # ordering = ("-created",)
 
 
 @admin.register(AccessRight)
 class AccessRightAdmin(admin.ModelAdmin):
     list_display = ("id", "group", "pretty_subjects")
     list_display_links = ("id",)
-    ordering = ("-created",)
     filter_horizontal = ("subjects",)
 
     def pretty_subjects(self, obj):
