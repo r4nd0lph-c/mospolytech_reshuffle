@@ -38,12 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "ckeditor",
     "ckeditor_uploader",
-    "main.apps.MainConfig"
+    "main.apps.MainConfig",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    # "django.middleware.locale.LocaleMiddleware",  # to automatically set the language as in the browser
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -102,7 +103,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "ru-RU"
+LANGUAGE_CODE = "en-US"  # en-US, ru-RU
+
+LANGUAGES = (
+    ("en", "English"),
+    ("ru", "Russia"),
+)
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
 TIME_ZONE = "Europe/Moscow"
 

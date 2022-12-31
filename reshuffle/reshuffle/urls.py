@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path("blog/", include("blog.urls"))
 """
+from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
@@ -24,8 +25,13 @@ from main.views import page_not_found
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("ckeditor/", include("ckeditor_uploader.urls")),
-    path("", include("main.urls"))
+    path("", include("main.urls")),
+    path("i18n/", include("django.conf.urls.i18n")),
 ]
+
+urlpatterns += i18n_patterns(
+    path("", include("main.urls")),
+)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
