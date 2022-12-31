@@ -1,7 +1,9 @@
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import Group
 
+from main.fields import TotalDifficultyField
 from ckeditor.fields import RichTextField
 
 
@@ -14,11 +16,39 @@ class AbstractDatestamp(models.Model):
 
 
 class Subject(AbstractDatestamp):
-    pass
+    case_nominative = models.CharField(max_length=128, verbose_name=_("Title"))
+    case_genitive = models.CharField(max_length=128, blank=True, verbose_name=_("Genitive case"))
+    case_dative = models.CharField(max_length=128, blank=True, verbose_name=_("Dative case"))
+    case_accusative = models.CharField(max_length=128, blank=True, verbose_name=_("Accusative case"))
+    case_instrumental = models.CharField(max_length=128, blank=True, verbose_name=_("Instrumental case"))
+    case_prepositional = models.CharField(max_length=128, blank=True, verbose_name=_("Prepositional case"))
+    task_count = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(999)],
+                                                  default=1,
+                                                  help_text=_("Available range: 1…999."),
+                                                  verbose_name=_("Task Count"))
+    total_difficulty = TotalDifficultyField(validators=[MinValueValidator(1), MaxValueValidator(31968)],
+                                            verbose_name=_("Total Difficulty"))
+
+    def __str__(self):
+        return self.case_nominative
+
+    class Meta:
+        verbose_name = _("Subject")
+        verbose_name_plural = _("Subjects")
 
 
 class Difficulty(AbstractDatestamp):
-    pass
+    level = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(32)],
+                                             unique=True,
+                                             db_index=True,
+                                             default=1,
+                                             help_text=_("Available range: 1…32."),
+                                             verbose_name=_("Level"))
+    description = models.CharField(max_length=128, blank=True)
+
+    class Meta:
+        verbose_name = _("Difficulty")
+        verbose_name_plural = _("Difficulties")
 
 
 class Task(AbstractDatestamp):
@@ -31,7 +61,9 @@ class Option(AbstractDatestamp):
 
 class DocHeader(AbstractDatestamp):
     content = RichTextField(config_name="Config_DocHeader", verbose_name=_("Content"))
-    is_relevant = models.BooleanField(default=True, verbose_name=_("Relevant"))
+    is_relevant = models.BooleanField(default=True,
+                                      help_text=_("Only one relevant Document header can exist at a time."),
+                                      verbose_name=_("Relevant"))
 
     def save(self, *args, **kwargs):
         if self.is_relevant:
