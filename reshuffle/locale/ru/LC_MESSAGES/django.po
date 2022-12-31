@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-31 16:10+0300\n"
+"POT-Creation-Date: 2022-12-31 21:24+0300\n"
 "PO-Revision-Date: 2022-12-31 16:10+0300\n"
 "Last-Translator: r4nd0lph-c\n"
 "Language: Russian\n"
@@ -19,10 +19,38 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\main\admin.py:8
+#: .\main\admin.py:33
 msgid "Administration"
 msgstr "Администрирование"
 
 #: .\main\apps.py:8
 msgid "Document management"
 msgstr "Документооборот"
+
+#: .\main\models.py:9
+msgid "Date created"
+msgstr "Дата создания"
+
+#: .\main\models.py:10
+msgid "Date updated"
+msgstr "Дата обновления"
+
+#: .\main\models.py:17
+msgid "Content"
+msgstr "Содержание"
+
+#: .\main\models.py:18 .\main\models.py:33
+msgid "Relevant"
+msgstr "Актуально"
+
+#: .\main\models.py:33
+msgid "Irrelevant"
+msgstr "Неактуально"
+
+#: .\main\models.py:37
+msgid "Document header"
+msgstr "Заголовок документа"
+
+#: .\main\models.py:38
+msgid "Document headers"
+msgstr "Заголовки документа"
