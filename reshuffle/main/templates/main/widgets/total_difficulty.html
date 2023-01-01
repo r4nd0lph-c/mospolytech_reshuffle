@@ -1,8 +1,0 @@
-<div>
-    <input class="vIntegerField me-2" type="{{ widget.type }}" name="{{ widget.name }}"
-           min="0" max="31968"
-            {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}" {% endif %}
-            {% include "main/widgets/attrs.html" %}>
-
-    <!-- TODO: custom auto-fill logic-->
-</div>

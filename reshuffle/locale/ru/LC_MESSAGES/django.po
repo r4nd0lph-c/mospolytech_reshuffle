@@ -1,15 +1,15 @@
 # Translation into Russian language.
-# Copyright (C) 2022
+# Copyright (C) 2023
 # This file is distributed under the same license as the Reshuffle Project.
-# r4nd0lph-c https://github.com/r4nd0lph-c, https://t.me/rand0lphc, 2022.
+# r4nd0lph-c https://github.com/r4nd0lph-c, https://t.me/rand0lphc, 2023.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-31 21:24+0300\n"
-"PO-Revision-Date: 2022-12-31 16:10+0300\n"
+"POT-Creation-Date: 2023-01-01 17:24+0300\n"
+"PO-Revision-Date: 2023-01-01 17:24+0300\n"
 "Last-Translator: r4nd0lph-c\n"
 "Language: Russian\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\main\admin.py:33
+#: .\main\admin.py:79
 msgid "Administration"
 msgstr "Администрирование"
 
@@ -27,30 +27,66 @@ msgstr "Администрирование"
 msgid "Document management"
 msgstr "Документооборот"
 
-#: .\main\models.py:9
+#: .\main\models.py:11
 msgid "Date created"
 msgstr "Дата создания"
 
-#: .\main\models.py:10
+#: .\main\models.py:12
 msgid "Date updated"
 msgstr "Дата обновления"
 
-#: .\main\models.py:17
+#: .\main\models.py:27
+msgid "Available range"
+msgstr "Допустимый диапазон"
+
+#: .\main\models.py:28
+msgid "Level"
+msgstr "Уровень"
+
+#: .\main\models.py:33
+msgid "A brief description of the difficulty level for colleagues to understand."
+msgstr "Краткое описание уровня сложности для понимания коллегами."
+
+#: .\main\models.py:34
+msgid "Description"
+msgstr "Описание"
+
+#: .\main\models.py:38
+msgid "No description"
+msgstr "Описание отсутствует"
+
+#: .\main\models.py:42
+msgid "Difficulty"
+msgstr "Уровень сложности"
+
+#: .\main\models.py:43
+msgid "Difficulties"
+msgstr "Уровни сложности"
+
+#: .\main\models.py:61
+msgid "Information about the institution organizing the testing."
+msgstr "Информация об учреждении, организующем тестирование."
+
+#: .\main\models.py:62
 msgid "Content"
 msgstr "Содержание"
 
-#: .\main\models.py:18 .\main\models.py:33
+#: .\main\models.py:65
+msgid "Only one relevant Document header can exist at a time."
+msgstr "Одновременно может существовать только один актуальный Заголовок документа."
+
+#: .\main\models.py:66 .\main\models.py:82
 msgid "Relevant"
 msgstr "Актуально"
 
-#: .\main\models.py:33
+#: .\main\models.py:82
 msgid "Irrelevant"
 msgstr "Неактуально"
 
-#: .\main\models.py:37
+#: .\main\models.py:86
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:38
+#: .\main\models.py:87
 msgid "Document headers"
 msgstr "Заголовки документа"

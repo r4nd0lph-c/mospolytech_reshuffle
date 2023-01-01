@@ -3,7 +3,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import Group
 
-from main.fields import TotalDifficultyField
 from ckeditor.fields import RichTextField
 
 
@@ -15,40 +14,36 @@ class AbstractDatestamp(models.Model):
         abstract = True
 
 
-class Subject(AbstractDatestamp):
-    case_nominative = models.CharField(max_length=128, verbose_name=_("Title"))
-    case_genitive = models.CharField(max_length=128, blank=True, verbose_name=_("Genitive case"))
-    case_dative = models.CharField(max_length=128, blank=True, verbose_name=_("Dative case"))
-    case_accusative = models.CharField(max_length=128, blank=True, verbose_name=_("Accusative case"))
-    case_instrumental = models.CharField(max_length=128, blank=True, verbose_name=_("Instrumental case"))
-    case_prepositional = models.CharField(max_length=128, blank=True, verbose_name=_("Prepositional case"))
-    task_count = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(999)],
-                                                  default=1,
-                                                  help_text=_("Available range: 1…999."),
-                                                  verbose_name=_("Task Count"))
-    total_difficulty = TotalDifficultyField(validators=[MinValueValidator(1), MaxValueValidator(31968)],
-                                            verbose_name=_("Total Difficulty"))
+class Difficulty(AbstractDatestamp):
+    MIN_LVL = 1
+    MAX_LVL = 32
+
+    level = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(MIN_LVL), MaxValueValidator(MAX_LVL)],
+        unique=True,
+        db_index=True,
+        default=1,
+        help_text=_("Available range") + f": {MIN_LVL}…{MAX_LVL}.",
+        verbose_name=_("Level")
+    )
+    description = models.CharField(
+        max_length=128,
+        blank=True,
+        help_text=_("A brief description of the difficulty level for colleagues to understand."),
+        verbose_name=_("Description")
+    )
 
     def __str__(self):
-        return self.case_nominative
-
-    class Meta:
-        verbose_name = _("Subject")
-        verbose_name_plural = _("Subjects")
-
-
-class Difficulty(AbstractDatestamp):
-    level = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(32)],
-                                             unique=True,
-                                             db_index=True,
-                                             default=1,
-                                             help_text=_("Available range: 1…32."),
-                                             verbose_name=_("Level"))
-    description = models.CharField(max_length=128, blank=True)
+        desc = self.description if self.description else _("No description")
+        return f"{self.level} ({desc})"
 
     class Meta:
         verbose_name = _("Difficulty")
         verbose_name_plural = _("Difficulties")
+
+
+class Subject(AbstractDatestamp):
+    pass
 
 
 class Task(AbstractDatestamp):
@@ -60,10 +55,15 @@ class Option(AbstractDatestamp):
 
 
 class DocHeader(AbstractDatestamp):
-    content = RichTextField(config_name="Config_DocHeader", verbose_name=_("Content"))
-    is_relevant = models.BooleanField(default=True,
-                                      help_text=_("Only one relevant Document header can exist at a time."),
-                                      verbose_name=_("Relevant"))
+    content = RichTextField(
+        config_name="Config_DocHeader",
+        help_text=_("Information about the institution organizing the testing."),
+        verbose_name=_("Content"))
+    is_relevant = models.BooleanField(
+        default=True,
+        help_text=_("Only one relevant Document header can exist at a time."),
+        verbose_name=_("Relevant")
+    )
 
     def save(self, *args, **kwargs):
         if self.is_relevant:
@@ -87,7 +87,7 @@ class DocHeader(AbstractDatestamp):
 
 
 class Instruction(AbstractDatestamp):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    pass
 
 
 class PartTitle(AbstractDatestamp):

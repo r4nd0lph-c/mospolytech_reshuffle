@@ -3,27 +3,6 @@ from django.utils.safestring import mark_safe
 from django.contrib import admin
 
 from main.models import *
-from main.widgets import TotalDifficultyInput
-
-
-@admin.register(Subject)
-class SubjectAdmin(admin.ModelAdmin):
-    fieldsets = (
-        (None, {
-            "fields": ("case_nominative", "task_count", "total_difficulty",)
-        }),
-        (_("Additional options"), {
-            "classes": ("collapse",),
-            "fields": ("case_genitive", "case_dative", "case_accusative", "case_instrumental", "case_prepositional"),
-        }),
-    )
-    list_display = ("id", "case_nominative", "task_count", "total_difficulty", "date_created", "date_updated")
-    list_display_links = ("id",)
-    ordering = ("-date_updated",)
-
-    formfield_overrides = {
-        TotalDifficultyField: {"widget": TotalDifficultyInput}
-    }
 
 
 @admin.register(Difficulty)
@@ -31,6 +10,11 @@ class DifficultyAdmin(admin.ModelAdmin):
     list_display = ("id", "level", "description", "date_created", "date_updated")
     list_display_links = ("id",)
     ordering = ("level",)
+
+
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(Task)
