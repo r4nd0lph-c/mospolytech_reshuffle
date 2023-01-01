@@ -20,7 +20,7 @@ class SubjectAdmin(admin.ModelAdmin):
         }),
         (_("Additional options"), {
             "classes": ("collapse",),
-            "fields": ("case_genitive", "case_dative", "case_accusative", "case_instrumental", "case_prepositional"),
+            "fields": ("case_genitive", "case_dative", "case_accusative", "case_instrumental", "case_prepositional")
         }),
     )
     list_display = ("id", "case_nominative", "task_count", "total_difficulty", "date_created", "date_updated")
@@ -77,7 +77,10 @@ class PartAdmin(admin.ModelAdmin):
 
 @admin.register(AccessRight)
 class AccessRightAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("id", "group", "subject", "date_created", "date_updated")
+    list_display_links = ("id",)
+    ordering = ("group", "subject")
+    list_filter = ("group",)
 
 
 @admin.register(HistoryLog)

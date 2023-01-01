@@ -34,7 +34,7 @@ class Difficulty(AbstractDatestamp):
     )
 
     def __str__(self):
-        return f"ID: {self.id} " + _("Level") + f": {self.level}"
+        return _("Level") + f": {self.level}"
 
     class Meta:
         verbose_name = _("Difficulty")
@@ -49,7 +49,6 @@ class Subject(AbstractDatestamp):
 
     case_nominative = models.CharField(
         max_length=128,
-        default="",
         help_text=_("Nominative case."),
         verbose_name=_("Title")
     )
@@ -72,7 +71,7 @@ class Subject(AbstractDatestamp):
     )
 
     def __str__(self):
-        return f"ID: {self.id} ({self.case_nominative})"
+        return self.case_nominative
 
     class Meta:
         verbose_name = _("Subject")
@@ -132,7 +131,25 @@ class Part(AbstractDatestamp):
 
 
 class AccessRight(AbstractDatestamp):
-    pass
+    group = models.ForeignKey(
+        Group,
+        on_delete=models.CASCADE,
+        help_text=_("The group to which the new right is assigned."),
+        verbose_name=_("Group")
+    )
+    subject = models.ForeignKey(
+        Subject,
+        on_delete=models.CASCADE,
+        help_text=_("The subject that is used for the new right."),
+        verbose_name=_("Subject")
+    )
+
+    def __str__(self):
+        return f"{self.group}-{self.subject}"
+
+    class Meta:
+        verbose_name = _("Access Right")
+        verbose_name_plural = _("Access Rights")
 
 
 class HistoryLog(AbstractDatestamp):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-01 18:13+0300\n"
+"POT-Creation-Date: 2023-01-01 18:28+0300\n"
 "PO-Revision-Date: 2023-01-01 18:13+0300\n"
 "Last-Translator: r4nd0lph-c\n"
 "Language: Russian\n"
@@ -108,7 +108,7 @@ msgstr "Рекомендуемая общая сложность теста."
 msgid "Total Difficulty"
 msgstr "Уровень сложности"
 
-#: .\main\models.py:78
+#: .\main\models.py:78 .\main\models.py:145
 msgid "Subject"
 msgstr "Предмет"
 
@@ -144,3 +144,23 @@ msgstr "Заголовок документа"
 #: .\main\models.py:119
 msgid "Document headers"
 msgstr "Заголовки документа"
+
+#: .\main\models.py:138
+msgid "The group to which the new right is assigned."
+msgstr "Группа, которой присваивается новое право."
+
+#: .\main\models.py:139
+msgid "Group"
+msgstr "Группа"
+
+#: .\main\models.py:144
+msgid "The subject that is used for the new right."
+msgstr "Предмет, который используется для нового права."
+
+#: .\main\models.py:152
+msgid "Access Right"
+msgstr "Право доступа"
+
+#: .\main\models.py:153
+msgid "Access Rights"
+msgstr "Права доступа"
