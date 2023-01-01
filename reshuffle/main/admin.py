@@ -63,7 +63,15 @@ class DocHeaderAdmin(admin.ModelAdmin):
 
 @admin.register(Instruction)
 class InstructionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("id", "subject", "title", "pretty_content", "date_created", "date_updated")
+    list_display_links = ("id",)
+    ordering = ("-date_updated",)
+    list_filter = ("subject",)
+
+    def pretty_content(self, obj):
+        return mark_safe(f"<div style='border: 1px solid var(--hairline-color);'> {obj.content} </div>")
+
+    pretty_content.short_description = Instruction._meta.get_field("content").verbose_name
 
 
 @admin.register(PartTitle)

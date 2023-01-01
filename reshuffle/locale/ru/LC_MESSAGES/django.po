@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-01 19:25+0300\n"
-"PO-Revision-Date: 2023-01-01 18:13+0300\n"
+"POT-Creation-Date: 2023-01-01 19:43+0300\n"
+"PO-Revision-Date: 2023-01-01 19:43+0300\n"
 "Last-Translator: r4nd0lph-c\n"
 "Language: Russian\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 msgid "Additional options"
 msgstr "Дополнительные поля"
 
-#: .\main\admin.py:111
+#: .\main\admin.py:119
 msgid "Administration"
 msgstr "Администрирование"
 
@@ -68,7 +68,7 @@ msgstr "Уровни сложности"
 msgid "Nominative case."
 msgstr "Именительный падеж."
 
-#: .\main\models.py:54
+#: .\main\models.py:54 .\main\models.py:134
 msgid "Title"
 msgstr "Название"
 
@@ -108,7 +108,7 @@ msgstr "Рекомендуемая общая сложность теста."
 msgid "Total Difficulty"
 msgstr "Уровень сложности"
 
-#: .\main\models.py:78 .\main\models.py:145
+#: .\main\models.py:78 .\main\models.py:129 .\main\models.py:169
 msgid "Subject"
 msgstr "Предмет"
 
@@ -120,79 +120,99 @@ msgstr "Предметы"
 msgid "Information about the institution organizing the testing."
 msgstr "Информация об учреждении, организующем тестирование."
 
-#: .\main\models.py:94
+#: .\main\models.py:94 .\main\models.py:139
 msgid "Content"
 msgstr "Содержание"
 
-#: .\main\models.py:97
+#: .\main\models.py:98
 msgid "Only one relevant Document header can exist at a time."
 msgstr ""
 "Одновременно может существовать только один актуальный Заголовок документа."
 
-#: .\main\models.py:98 .\main\models.py:114
+#: .\main\models.py:99 .\main\models.py:115
 msgid "Relevant"
 msgstr "Актуально"
 
-#: .\main\models.py:114
+#: .\main\models.py:115
 msgid "Irrelevant"
 msgstr "Неактуально"
 
-#: .\main\models.py:118
+#: .\main\models.py:119
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:119
+#: .\main\models.py:120
 msgid "Document headers"
 msgstr "Заголовки документа"
 
+#: .\main\models.py:128
+msgid "The subject for which the instruction is used."
+msgstr "Предмет, для которого используется инструкция."
+
+#: .\main\models.py:133
+msgid "The title of the instruction."
+msgstr "Название инструкции."
+
 #: .\main\models.py:138
+msgid "General rules for the performance of work."
+msgstr "Общие правила выполнения работы."
+
+#: .\main\models.py:146
+msgid "Instruction"
+msgstr "Инструкция"
+
+#: .\main\models.py:147
+msgid "Instructions"
+msgstr "Инструкции"
+
+#: .\main\models.py:162
 msgid "The group to which the new right is assigned."
 msgstr "Группа, которой присваивается новое право."
 
-#: .\main\models.py:139
+#: .\main\models.py:163
 msgid "Group"
 msgstr "Группа"
 
-#: .\main\models.py:144
+#: .\main\models.py:168
 msgid "The subject that is used for the new right."
 msgstr "Предмет, который используется для нового права."
 
-#: .\main\models.py:152
+#: .\main\models.py:176
 msgid "Access Right"
 msgstr "Право доступа"
 
-#: .\main\models.py:153
+#: .\main\models.py:177
 msgid "Access Rights"
 msgstr "Права доступа"
 
-#: .\main\models.py:160
+#: .\main\models.py:184
 msgid "The user who performed the action."
 msgstr "Пользователь, выполнивший действие."
 
-#: .\main\models.py:161
+#: .\main\models.py:185
 msgid "User"
 msgstr "Пользователь"
 
-#: .\main\models.py:165
+#: .\main\models.py:189
 msgid "Action in the system."
 msgstr "Действие в системе."
 
-#: .\main\models.py:166
+#: .\main\models.py:190
 msgid "Action"
 msgstr "Действие"
 
-#: .\main\models.py:171
+#: .\main\models.py:195
 msgid "action"
 msgstr "действие"
 
-#: .\main\models.py:174
+#: .\main\models.py:198
 msgid "History Log"
 msgstr "История действий"
 
-#: .\main\models.py:175
+#: .\main\models.py:199
 msgid "History Logs"
 msgstr "История действий"
 
-#: .\main\models.py:178
+#: .\main\models.py:202
 msgid "Date"
 msgstr "Дата"

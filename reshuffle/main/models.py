@@ -91,7 +91,8 @@ class DocHeader(AbstractDatestamp):
     content = RichTextField(
         config_name="Config_PoorEditor",
         help_text=_("Information about the institution organizing the testing."),
-        verbose_name=_("Content"))
+        verbose_name=_("Content")
+    )
     is_relevant = models.BooleanField(
         default=True,
         help_text=_("Only one relevant Document header can exist at a time."),
@@ -120,7 +121,30 @@ class DocHeader(AbstractDatestamp):
 
 
 class Instruction(AbstractDatestamp):
-    pass
+    subject = models.OneToOneField(
+        Subject,
+        on_delete=models.CASCADE,
+        unique=True,
+        help_text=_("The subject for which the instruction is used."),
+        verbose_name=_("Subject")
+    )
+    title = models.CharField(
+        max_length=128,
+        help_text=_("The title of the instruction."),
+        verbose_name=_("Title")
+    )
+    content = RichTextField(
+        config_name="Config_PoorEditor",
+        help_text=_("General rules for the performance of work."),
+        verbose_name=_("Content")
+    )
+
+    def __str__(self):
+        return f"ID: {self.id} ({self.title})"
+
+    class Meta:
+        verbose_name = _("Instruction")
+        verbose_name_plural = _("Instructions")
 
 
 class PartTitle(AbstractDatestamp):
