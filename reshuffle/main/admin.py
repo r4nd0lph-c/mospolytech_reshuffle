@@ -14,7 +14,18 @@ class DifficultyAdmin(admin.ModelAdmin):
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    pass
+    fieldsets = (
+        (None, {
+            "fields": ("case_nominative", "task_count", "total_difficulty")
+        }),
+        (_("Additional options"), {
+            "classes": ("collapse",),
+            "fields": ("case_genitive", "case_dative", "case_accusative", "case_instrumental", "case_prepositional"),
+        }),
+    )
+    list_display = ("id", "case_nominative", "task_count", "total_difficulty", "date_created", "date_updated")
+    list_display_links = ("id",)
+    ordering = ("-date_updated",)
 
 
 @admin.register(Task)

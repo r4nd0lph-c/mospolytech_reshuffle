@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-01 17:24+0300\n"
-"PO-Revision-Date: 2023-01-01 17:24+0300\n"
+"POT-Creation-Date: 2023-01-01 18:13+0300\n"
+"PO-Revision-Date: 2023-01-01 18:13+0300\n"
 "Last-Translator: r4nd0lph-c\n"
 "Language: Russian\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,11 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\main\admin.py:79
+#: .\main\admin.py:21
+msgid "Additional options"
+msgstr "Дополнительные поля"
+
+#: .\main\admin.py:90
 msgid "Administration"
 msgstr "Администрирование"
 
@@ -27,66 +31,116 @@ msgstr "Администрирование"
 msgid "Document management"
 msgstr "Документооборот"
 
-#: .\main\models.py:11
+#: .\main\models.py:10
 msgid "Date created"
 msgstr "Дата создания"
 
-#: .\main\models.py:12
+#: .\main\models.py:11
 msgid "Date updated"
 msgstr "Дата обновления"
 
-#: .\main\models.py:27
+#: .\main\models.py:26 .\main\models.py:64 .\main\models.py:70
 msgid "Available range"
 msgstr "Допустимый диапазон"
 
-#: .\main\models.py:28
+#: .\main\models.py:27 .\main\models.py:37
 msgid "Level"
 msgstr "Уровень"
 
-#: .\main\models.py:33
-msgid "A brief description of the difficulty level for colleagues to understand."
+#: .\main\models.py:32
+msgid ""
+"A brief description of the difficulty level for colleagues to understand."
 msgstr "Краткое описание уровня сложности для понимания коллегами."
 
-#: .\main\models.py:34
+#: .\main\models.py:33
 msgid "Description"
 msgstr "Описание"
 
-#: .\main\models.py:38
-msgid "No description"
-msgstr "Описание отсутствует"
-
-#: .\main\models.py:42
+#: .\main\models.py:40
 msgid "Difficulty"
 msgstr "Уровень сложности"
 
-#: .\main\models.py:43
+#: .\main\models.py:41
 msgid "Difficulties"
 msgstr "Уровни сложности"
 
-#: .\main\models.py:61
+#: .\main\models.py:53
+msgid "Nominative case."
+msgstr "Именительный падеж."
+
+#: .\main\models.py:54
+msgid "Title"
+msgstr "Название"
+
+#: .\main\models.py:56
+msgid "Genitive case"
+msgstr "Родительный падеж"
+
+#: .\main\models.py:57
+msgid "Dative case"
+msgstr "Дательный падеж"
+
+#: .\main\models.py:58
+msgid "Accusative case"
+msgstr "Винительный падеж"
+
+#: .\main\models.py:59
+msgid "Instrumental case"
+msgstr "Творительный падеж"
+
+#: .\main\models.py:60
+msgid "Prepositional case"
+msgstr "Предложный падеж"
+
+#: .\main\models.py:64
+msgid "The total count of tasks in the test."
+msgstr "Общее количество заданий в тесте."
+
+#: .\main\models.py:65
+msgid "Task Count"
+msgstr "Количество заданий"
+
+#: .\main\models.py:70
+msgid "Recommended overall test difficulty."
+msgstr "Рекомендуемая общая сложность теста."
+
+#: .\main\models.py:71
+msgid "Total Difficulty"
+msgstr "Уровень сложности"
+
+#: .\main\models.py:78
+msgid "Subject"
+msgstr "Предмет"
+
+#: .\main\models.py:79
+msgid "Subjects"
+msgstr "Предметы"
+
+#: .\main\models.py:93
 msgid "Information about the institution organizing the testing."
 msgstr "Информация об учреждении, организующем тестирование."
 
-#: .\main\models.py:62
+#: .\main\models.py:94
 msgid "Content"
 msgstr "Содержание"
 
-#: .\main\models.py:65
+#: .\main\models.py:97
 msgid "Only one relevant Document header can exist at a time."
-msgstr "Одновременно может существовать только один актуальный Заголовок документа."
+msgstr ""
+"Одновременно может существовать только один актуальный Заголовок документа."
 
-#: .\main\models.py:66 .\main\models.py:82
+#: .\main\models.py:98 .\main\models.py:114
 msgid "Relevant"
 msgstr "Актуально"
 
-#: .\main\models.py:82
+#: .\main\models.py:114
 msgid "Irrelevant"
 msgstr "Неактуально"
 
-#: .\main\models.py:86
+#: .\main\models.py:118
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:87
+#: .\main\models.py:119
 msgid "Document headers"
 msgstr "Заголовки документа"

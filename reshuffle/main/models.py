@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MinValueValidator, MaxValueValidator
-from django.db import models
 from django.contrib.auth.models import Group
+from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from ckeditor.fields import RichTextField
 
@@ -34,8 +34,7 @@ class Difficulty(AbstractDatestamp):
     )
 
     def __str__(self):
-        desc = self.description if self.description else _("No description")
-        return f"{self.level} ({desc})"
+        return f"ID: {self.id} " + _("Level") + f": {self.level}"
 
     class Meta:
         verbose_name = _("Difficulty")
@@ -43,7 +42,41 @@ class Difficulty(AbstractDatestamp):
 
 
 class Subject(AbstractDatestamp):
-    pass
+    MIN_TC = 1
+    MAX_TC = 999
+    MIN_TD = Difficulty.MIN_LVL * MIN_TC
+    MAX_TD = Difficulty.MAX_LVL * MAX_TC
+
+    case_nominative = models.CharField(
+        max_length=128,
+        default="",
+        help_text=_("Nominative case."),
+        verbose_name=_("Title")
+    )
+    case_genitive = models.CharField(max_length=128, blank=True, verbose_name=_("Genitive case"))
+    case_dative = models.CharField(max_length=128, blank=True, verbose_name=_("Dative case"))
+    case_accusative = models.CharField(max_length=128, blank=True, verbose_name=_("Accusative case"))
+    case_instrumental = models.CharField(max_length=128, blank=True, verbose_name=_("Instrumental case"))
+    case_prepositional = models.CharField(max_length=128, blank=True, verbose_name=_("Prepositional case"))
+    task_count = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(MIN_TC), MaxValueValidator(MAX_TC)],
+        default=1,
+        help_text=_("The total count of tasks in the test.") + " " + _("Available range") + f": {MIN_TC}…{MAX_TC}.",
+        verbose_name=_("Task Count")
+    )
+    total_difficulty = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(MIN_TD), MaxValueValidator(MAX_TD)],
+        default=1,
+        help_text=_("Recommended overall test difficulty.") + " " + _("Available range") + f": {MIN_TD}…{MAX_TD}.",
+        verbose_name=_("Total Difficulty")
+    )
+
+    def __str__(self):
+        return f"ID: {self.id} ({self.case_nominative})"
+
+    class Meta:
+        verbose_name = _("Subject")
+        verbose_name_plural = _("Subjects")
 
 
 class Task(AbstractDatestamp):
