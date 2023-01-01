@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.contrib import admin
+from django.contrib.admin import DateFieldListFilter
 
 from main.models import *
 
@@ -85,7 +86,24 @@ class AccessRightAdmin(admin.ModelAdmin):
 
 @admin.register(HistoryLog)
 class HistoryLogAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("id", "user", "action", "date_created")
+    ordering = ("-date_created",)
+    list_filter = ("user", ("date_created", DateFieldListFilter))
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if "delete_selected" in actions:
+            del actions["delete_selected"]
+        return actions
 
 
 admin.site.site_title = "RESHUFFLE"

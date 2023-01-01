@@ -1,5 +1,6 @@
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import Group
+from django.utils import timezone
+from django.contrib.auth.models import User, Group
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -88,7 +89,7 @@ class Option(AbstractDatestamp):
 
 class DocHeader(AbstractDatestamp):
     content = RichTextField(
-        config_name="Config_DocHeader",
+        config_name="Config_PoorEditor",
         help_text=_("Information about the institution organizing the testing."),
         verbose_name=_("Content"))
     is_relevant = models.BooleanField(
@@ -153,4 +154,25 @@ class AccessRight(AbstractDatestamp):
 
 
 class HistoryLog(AbstractDatestamp):
-    pass
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        help_text=_("The user who performed the action."),
+        verbose_name=_("User")
+    )
+    action = models.CharField(
+        max_length=128,
+        help_text=_("Action in the system."),
+        verbose_name=_("Action")
+    )
+
+    def __str__(self):
+        local_date = timezone.localtime(self.date_created)
+        return f"{self.user}" + " " + _("action") + f" ({local_date.strftime('%d.%m.%Y %H:%M')})"
+
+    class Meta:
+        verbose_name = _("History Log")
+        verbose_name_plural = _("History Logs")
+
+
+HistoryLog._meta.get_field("date_created").verbose_name = _("Date")

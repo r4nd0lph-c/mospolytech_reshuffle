@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-01 18:28+0300\n"
+"POT-Creation-Date: 2023-01-01 19:25+0300\n"
 "PO-Revision-Date: 2023-01-01 18:13+0300\n"
 "Last-Translator: r4nd0lph-c\n"
 "Language: Russian\n"
@@ -19,11 +19,11 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\main\admin.py:21
+#: .\main\admin.py:22
 msgid "Additional options"
 msgstr "Дополнительные поля"
 
-#: .\main\admin.py:90
+#: .\main\admin.py:111
 msgid "Administration"
 msgstr "Администрирование"
 
@@ -31,36 +31,36 @@ msgstr "Администрирование"
 msgid "Document management"
 msgstr "Документооборот"
 
-#: .\main\models.py:10
+#: .\main\models.py:11
 msgid "Date created"
 msgstr "Дата создания"
 
-#: .\main\models.py:11
+#: .\main\models.py:12
 msgid "Date updated"
 msgstr "Дата обновления"
 
-#: .\main\models.py:26 .\main\models.py:64 .\main\models.py:70
+#: .\main\models.py:27 .\main\models.py:64 .\main\models.py:70
 msgid "Available range"
 msgstr "Допустимый диапазон"
 
-#: .\main\models.py:27 .\main\models.py:37
+#: .\main\models.py:28 .\main\models.py:38
 msgid "Level"
 msgstr "Уровень"
 
-#: .\main\models.py:32
+#: .\main\models.py:33
 msgid ""
 "A brief description of the difficulty level for colleagues to understand."
 msgstr "Краткое описание уровня сложности для понимания коллегами."
 
-#: .\main\models.py:33
+#: .\main\models.py:34
 msgid "Description"
 msgstr "Описание"
 
-#: .\main\models.py:40
+#: .\main\models.py:41
 msgid "Difficulty"
 msgstr "Уровень сложности"
 
-#: .\main\models.py:41
+#: .\main\models.py:42
 msgid "Difficulties"
 msgstr "Уровни сложности"
 
@@ -164,3 +164,35 @@ msgstr "Право доступа"
 #: .\main\models.py:153
 msgid "Access Rights"
 msgstr "Права доступа"
+
+#: .\main\models.py:160
+msgid "The user who performed the action."
+msgstr "Пользователь, выполнивший действие."
+
+#: .\main\models.py:161
+msgid "User"
+msgstr "Пользователь"
+
+#: .\main\models.py:165
+msgid "Action in the system."
+msgstr "Действие в системе."
+
+#: .\main\models.py:166
+msgid "Action"
+msgstr "Действие"
+
+#: .\main\models.py:171
+msgid "action"
+msgstr "действие"
+
+#: .\main\models.py:174
+msgid "History Log"
+msgstr "История действий"
+
+#: .\main\models.py:175
+msgid "History Logs"
+msgstr "История действий"
+
+#: .\main\models.py:178
+msgid "Date"
+msgstr "Дата"
