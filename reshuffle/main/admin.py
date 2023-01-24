@@ -76,7 +76,9 @@ class InstructionAdmin(admin.ModelAdmin):
 
 @admin.register(PartTitle)
 class PartTitleAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("id", "title", "date_created", "date_updated")
+    list_display_links = ("id",)
+    ordering = ("title",)
 
 
 @admin.register(Part)

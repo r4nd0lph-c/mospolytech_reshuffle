@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-01 19:43+0300\n"
-"PO-Revision-Date: 2023-01-01 19:43+0300\n"
+"POT-Creation-Date: 2023-01-07 16:33+0300\n"
+"PO-Revision-Date: 2023-01-07 16:33+0300\n"
 "Last-Translator: r4nd0lph-c\n"
 "Language: Russian\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 msgid "Additional options"
 msgstr "Дополнительные поля"
 
-#: .\main\admin.py:119
+#: .\main\admin.py:121
 msgid "Administration"
 msgstr "Администрирование"
 
@@ -68,7 +68,7 @@ msgstr "Уровни сложности"
 msgid "Nominative case."
 msgstr "Именительный падеж."
 
-#: .\main\models.py:54 .\main\models.py:134
+#: .\main\models.py:54 .\main\models.py:134 .\main\models.py:156
 msgid "Title"
 msgstr "Название"
 
@@ -108,7 +108,7 @@ msgstr "Рекомендуемая общая сложность теста."
 msgid "Total Difficulty"
 msgstr "Уровень сложности"
 
-#: .\main\models.py:78 .\main\models.py:129 .\main\models.py:169
+#: .\main\models.py:78 .\main\models.py:129 .\main\models.py:182
 msgid "Subject"
 msgstr "Предмет"
 
@@ -165,54 +165,66 @@ msgstr "Инструкция"
 msgid "Instructions"
 msgstr "Инструкции"
 
-#: .\main\models.py:162
+#: .\main\models.py:155
+msgid "The title of the part (only UPPERCASE)."
+msgstr "Краткое название части (только ЗАГЛАВНЫЕ буквы)."
+
+#: .\main\models.py:163
+msgid "Part Title"
+msgstr "Название Части"
+
+#: .\main\models.py:164
+msgid "Part Titles"
+msgstr "Названия Частей"
+
+#: .\main\models.py:175
 msgid "The group to which the new right is assigned."
 msgstr "Группа, которой присваивается новое право."
 
-#: .\main\models.py:163
+#: .\main\models.py:176
 msgid "Group"
 msgstr "Группа"
 
-#: .\main\models.py:168
+#: .\main\models.py:181
 msgid "The subject that is used for the new right."
 msgstr "Предмет, который используется для нового права."
 
-#: .\main\models.py:176
+#: .\main\models.py:189
 msgid "Access Right"
 msgstr "Право доступа"
 
-#: .\main\models.py:177
+#: .\main\models.py:190
 msgid "Access Rights"
 msgstr "Права доступа"
 
-#: .\main\models.py:184
+#: .\main\models.py:197
 msgid "The user who performed the action."
 msgstr "Пользователь, выполнивший действие."
 
-#: .\main\models.py:185
+#: .\main\models.py:198
 msgid "User"
 msgstr "Пользователь"
 
-#: .\main\models.py:189
+#: .\main\models.py:202
 msgid "Action in the system."
 msgstr "Действие в системе."
 
-#: .\main\models.py:190
+#: .\main\models.py:203
 msgid "Action"
 msgstr "Действие"
 
-#: .\main\models.py:195
+#: .\main\models.py:208
 msgid "action"
 msgstr "действие"
 
-#: .\main\models.py:198
+#: .\main\models.py:211
 msgid "History Log"
 msgstr "История действий"
 
-#: .\main\models.py:199
+#: .\main\models.py:212
 msgid "History Logs"
 msgstr "История действий"
 
-#: .\main\models.py:202
+#: .\main\models.py:215
 msgid "Date"
 msgstr "Дата"

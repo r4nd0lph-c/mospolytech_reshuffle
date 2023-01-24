@@ -148,7 +148,25 @@ class Instruction(AbstractDatestamp):
 
 
 class PartTitle(AbstractDatestamp):
-    pass
+    title = models.CharField(
+        max_length=64,
+        unique=True,
+        db_index=True,
+        help_text=_("The title of the part (only UPPERCASE)."),
+        verbose_name=_("Title")
+    )
+
+    # TODO: fix Uppercase save (check bookmarks - create new field)
+    def save(self, *args, **kwargs):
+        self.title = self.title.upper()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"ID: {self.id} ({self.title})"
+
+    class Meta:
+        verbose_name = _("Part Title")
+        verbose_name_plural = _("Part Titles")
 
 
 class Part(AbstractDatestamp):
