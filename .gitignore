@@ -1,0 +1,19 @@
+# IDE settings
+.idea/
+
+# virtual environment
+venv/
+
+# global static & media files
+reshuffle/static/*
+reshuffle/media/*
+
+# migrations
+reshuffle/main/migrations/*
+!reshuffle/main/migrations/__init__.py
+
+# database
+reshuffle/db.sqlite3
+
+# config
+reshuffle/.env
