@@ -23,6 +23,7 @@ from main.views import page_not_found
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("ckeditor/", include("ckeditor_uploader.urls")),
     path("", include("main.urls")),
 ]
 

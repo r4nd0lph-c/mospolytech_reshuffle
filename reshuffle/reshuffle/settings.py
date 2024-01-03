@@ -14,20 +14,18 @@ from pathlib import Path
 from decouple import config, Csv
 
 # Project name
+
 PROJECT_NAME = "Reshuffle"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", cast=bool)
-
+SECRET_KEY = config("SECRET_KEY")  # SECURITY WARNING: keep the secret key used in production secret!
+DEBUG = config("DEBUG", cast=bool)  # SECURITY WARNING: don't run with debug turned on in production!
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
 # Application definition
@@ -39,6 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "ckeditor",
+    "ckeditor_uploader",
     "main.apps.MainConfig",
 ]
 
@@ -130,3 +130,20 @@ MEDIA_ROOT = Path(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# CKEditor settings
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS = {
+    "Config_EditorMinimalistic": {
+        "toolbar": "Custom",
+        "toolbar_Custom": [
+            ["Source", ],
+            ["Bold", "Italic", "Underline", ],
+            ["Outdent", "Indent", ],
+            ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock", ],
+            ["RemoveFormat", ]
+        ],
+        "height": 200,
+    }
+}

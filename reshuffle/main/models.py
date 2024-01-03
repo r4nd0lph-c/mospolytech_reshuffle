@@ -1,5 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+from ckeditor.fields import RichTextField
 
 
 # UTILS -------------------------------------------------------------------------------------------------------------- #
@@ -48,9 +49,39 @@ class Subject(AbstractDatestamp):
         verbose_name = _("Subject")
         verbose_name_plural = _("Subjects")
 
-# DOCS INFO ---------------------------------------------------------------------------------------------------------- #
-# ...
 
+# DOCS INFO ---------------------------------------------------------------------------------------------------------- #
+class DocHeader(AbstractDatestamp):
+    content = RichTextField(
+        config_name="Config_EditorMinimalistic",
+        help_text=help_f(_("Information about the institution organizing the testing")),
+        verbose_name=_("Content")
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text=help_f(_("Only one active document header can exist at a time")),
+        verbose_name=_("Activity")
+    )
+
+    def save(self, *args, **kwargs):
+        if self.is_active:
+            type(self).objects.all().update(is_active=False)
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        qs = type(self).objects.order_by("-updated")
+        qs = qs.exclude(pk=self.pk)
+        if qs:
+            qs.filter(pk=qs[0].pk).update(is_active=True)
+        super().delete(*args, **kwargs)
+
+    def __str__(self):
+        state = _("Active") if self.is_active else _("Inactive")
+        return f"ID: {self.id} ({state})"
+
+    class Meta:
+        verbose_name = _("Document header")
+        verbose_name_plural = _("Document headers")
 
 # MODERATION --------------------------------------------------------------------------------------------------------- #
 # ...
