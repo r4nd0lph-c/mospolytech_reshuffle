@@ -53,7 +53,7 @@ class Subject(AbstractDatestamp):
 # DOCS INFO ---------------------------------------------------------------------------------------------------------- #
 class DocHeader(AbstractDatestamp):
     content = RichTextField(
-        config_name="Config_EditorMinimalistic",
+        config_name="config_1",
         help_text=help_f(_("Information about the institution organizing the testing")),
         verbose_name=_("Content")
     )

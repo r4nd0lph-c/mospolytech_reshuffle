@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config, Csv
+from reshuffle.ckeditor_config import *
 
 # Project name
 
@@ -130,20 +131,3 @@ MEDIA_ROOT = Path(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# CKEditor settings
-
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_CONFIGS = {
-    "Config_EditorMinimalistic": {
-        "toolbar": "Custom",
-        "toolbar_Custom": [
-            ["Source", ],
-            ["Bold", "Italic", "Underline", ],
-            ["Outdent", "Indent", ],
-            ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock", ],
-            ["RemoveFormat", ]
-        ],
-        "height": 200,
-    }
-}
