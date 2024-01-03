@@ -105,11 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-US"  # en-US, ru-RU
 
-LANGUAGES = (
-    ("en", "English",),
-    ("ru", "Russia",),
-)
-
 LOCALE_PATHS = [
     Path(BASE_DIR, "locale"),
 ]
