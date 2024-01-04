@@ -36,7 +36,7 @@ class DocHeaderAdmin(admin.ModelAdmin):
     ordering = ("-is_active", "-updated",)
 
     def pretty_content(self, obj: "DocHeader"):
-        return mark_safe(f"<div style='border: 1px solid var(--hairline-color);'> {obj.content} </div>")
+        return mark_safe(f"<div class='td_content'> {obj.content} </div>")
 
     pretty_content.short_description = DocHeader._meta.get_field("content").verbose_name
 
@@ -51,9 +51,9 @@ class DocHeaderAdmin(admin.ModelAdmin):
 
     class Media:
         css = {
-            "all": ("admin/css/ckeditor_full_width.css",)
+            "all": ("admin/css/ckeditor_modification.css",)
         }
-        js = ("admin/js/ckeditor_full_width.js",)
+        js = ("admin/js/ckeditor_modification.js",)
 
 # MODERATION --------------------------------------------------------------------------------------------------------- #
 # ...

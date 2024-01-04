@@ -135,6 +135,9 @@ SPECIAL_CHARS = [
     ("&#8339;", "Latin Subscript Small Letter X"), ("&#8340;", "Latin Subscript Small Letter Schwa"),
 ]
 
+HEIGHT = 200
+
+# TODO: change image names when saving
 CKEDITOR_CONFIGS = {
     # 1
     "config_1": {
@@ -144,7 +147,7 @@ CKEDITOR_CONFIGS = {
             ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock", ],
             ["RemoveFormat", ],
         ],
-        "height": 200,
+        "height": HEIGHT,
     },
     # 2
     "config_2": {
@@ -157,7 +160,7 @@ CKEDITOR_CONFIGS = {
             ["RemoveFormat", ],
         ],
         "specialChars": SPECIAL_CHARS,
-        "height": 200,
+        "height": HEIGHT,
     },
     # 3
     "config_3": {
@@ -171,14 +174,14 @@ CKEDITOR_CONFIGS = {
             ["RemoveFormat", ],
         ],
         "specialChars": SPECIAL_CHARS,
-        # TODO: 1. fix image sizes in admin table; 2. change image's name
+        # TODO: fix image sizes in admin table
         "mathJaxLib": "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG",
         "extraPlugins": ",".join([
             "tableresize",
             "image2",
             "mathjax",
         ]),
-        "height": 200,
+        "height": HEIGHT,
     },
 }
 
