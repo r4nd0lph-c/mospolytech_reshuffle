@@ -165,14 +165,17 @@ CKEDITOR_CONFIGS = {
         "toolbar_Custom": [
             ["Bold", "Italic", "Underline", "Subscript", "Superscript", ],
             ["NumberedList", "BulletedList", ],
+            ["Outdent", "Indent", ],
             ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock", ],
-            ["Mathjax", "SpecialChar", ],
+            ["Table", "Image", "SpecialChar", "Mathjax", ],
             ["RemoveFormat", ],
         ],
         "specialChars": SPECIAL_CHARS,
-        # TODO: render formulas as img in admin table
+        # TODO: 1. render formulas as img in admin table; 2. fix image sizes in admin table; 3. change image's name
         "mathJaxLib": "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG",
         "extraPlugins": ",".join([
+            "tableresize",
+            "image2",
             "mathjax",
         ]),
         "height": 200,
