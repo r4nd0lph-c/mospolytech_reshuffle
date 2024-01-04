@@ -1,3 +1,9 @@
+td, th {
+    vertical-align: middle;
+}
+
 .td_content {
     border: 1px solid var(--hairline-color);
+    max-height: 200px;
+    overflow: auto;
 }

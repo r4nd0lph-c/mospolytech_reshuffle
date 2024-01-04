@@ -174,7 +174,6 @@ CKEDITOR_CONFIGS = {
             ["RemoveFormat", ],
         ],
         "specialChars": SPECIAL_CHARS,
-        # TODO: fix image sizes in admin table
         "mathJaxLib": "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG",
         "extraPlugins": ",".join([
             "tableresize",

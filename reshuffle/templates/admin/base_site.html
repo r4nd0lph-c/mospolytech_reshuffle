@@ -4,13 +4,14 @@
 {% block extrastyle %}
     <!-- Custom admin CSS Files -->
     <link href="{% static "admin/css/styles.css" %}" rel="stylesheet">
+    <!-- ---------------------- -->
 {% endblock %}
 
 {% block extrahead %}
     <!-- Custom admin JS Files -->
-    <script type="text/javascript"
-            async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG">
-    </script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG"></script>
+    <script src="{% static "admin/js/scripts.js" %}"></script>
+    <!-- --------------------- -->
 {% endblock %}
 
 {% block title %}
