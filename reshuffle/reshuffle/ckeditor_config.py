@@ -171,7 +171,7 @@ CKEDITOR_CONFIGS = {
             ["RemoveFormat", ],
         ],
         "specialChars": SPECIAL_CHARS,
-        # TODO: 1. render formulas as img in admin table; 2. fix image sizes in admin table; 3. change image's name
+        # TODO: 1. fix image sizes in admin table; 2. change image's name
         "mathJaxLib": "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG",
         "extraPlugins": ",".join([
             "tableresize",

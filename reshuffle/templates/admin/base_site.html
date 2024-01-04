@@ -6,6 +6,13 @@
     <link href="{% static "admin/css/styles.css" %}" rel="stylesheet">
 {% endblock %}
 
+{% block extrahead %}
+    <!-- Custom admin JS Files -->
+    <script type="text/javascript"
+            async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG">
+    </script>
+{% endblock %}
+
 {% block title %}
     {% if subtitle %} {{ subtitle }} | {% endif %} {{ title }} | {{ site_title|default:_('Django site admin') }}
 {% endblock %}
