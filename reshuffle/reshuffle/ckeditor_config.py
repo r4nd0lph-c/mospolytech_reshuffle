@@ -3,7 +3,7 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 SHOW_SOURCE = True
 
 # source: https://www.calculators.org/math/html-math.php
-# TODO: add translation
+# TODO: add translation for special char names
 SPECIAL_CHARS = [
     ("&#43;", "Plus Sign"), ("&#8722;", "Minus Sign"), ("&#215;", "Multiplication Sign"),
     ("&#247;", "Division Sign"), ("&#61;", "Equal Sign"), ("&#8800;", "Not Equal To Sign"),
@@ -138,32 +138,25 @@ SPECIAL_CHARS = [
 HEIGHT = 200
 
 # TODO: change image names when saving
+# TODO: prevent from "empty" field saving
 CKEDITOR_CONFIGS = {
     # 1
     "config_1": {
         "toolbar": "Custom",
         "toolbar_Custom": [
-            ["Bold", "Italic", "Underline", ],
-            ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock", ],
-            ["RemoveFormat", ],
-        ],
-        "height": HEIGHT,
-    },
-    # 2
-    "config_2": {
-        "toolbar": "Custom",
-        "toolbar_Custom": [
             ["Bold", "Italic", "Underline", "Subscript", "Superscript", ],
             ["NumberedList", "BulletedList", ],
+            ["Outdent", "Indent", ],
             ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock", ],
             ["SpecialChar", ],
             ["RemoveFormat", ],
         ],
+        "basicEntities": False,
         "specialChars": SPECIAL_CHARS,
         "height": HEIGHT,
     },
-    # 3
-    "config_3": {
+    # 2
+    "config_2": {
         "toolbar": "Custom",
         "toolbar_Custom": [
             ["Bold", "Italic", "Underline", "Subscript", "Superscript", ],
@@ -173,13 +166,14 @@ CKEDITOR_CONFIGS = {
             ["Table", "Image", "SpecialChar", "Mathjax", ],
             ["RemoveFormat", ],
         ],
-        "specialChars": SPECIAL_CHARS,
         "mathJaxLib": "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG",
         "extraPlugins": ",".join([
             "tableresize",
             "image2",
             "mathjax",
         ]),
+        "basicEntities": False,
+        "specialChars": SPECIAL_CHARS,
         "height": HEIGHT,
     },
 }
