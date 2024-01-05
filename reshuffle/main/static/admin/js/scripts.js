@@ -18,4 +18,9 @@ window.addEventListener("load", () => {
             }
         }
     }
+
+    // Adds asterisk for required fields
+    (function ($) {
+        $(".required").not($(".inline-related").find(".required")).append("<span style='color: var(--error-fg) !important;'> *</span>");
+    })(django.jQuery);
 });

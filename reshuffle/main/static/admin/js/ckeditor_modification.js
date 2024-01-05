@@ -2,8 +2,8 @@ window.addEventListener("load", () => {
     const state = window.location.pathname.split("/").at(-2);
     if (state === "add" || state === "change") {
         // Moves the CKEditor window to a separate line
-        let textarea = document.getElementById("id_content");
-        let container = textarea.parentElement.parentElement;
+        let editor = document.getElementsByClassName("django-ckeditor-widget")[0];
+        let container = editor.parentElement;
         container.classList = null;
 
         // Removes "advanced" settings and unused fields in the table dialog
