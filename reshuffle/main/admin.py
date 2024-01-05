@@ -1,3 +1,5 @@
+# TODO: add action "change activity flag" for selected subjects
+
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.contrib import admin
@@ -13,7 +15,7 @@ admin.site.index_title = _("Administration")
 
 # CUSTOM FILTERS ----------------------------------------------------------------------------------------------------- #
 class InstAvailableFilter(admin.SimpleListFilter):
-    title = _("Instructions available")
+    title = _("Instruction available")
     parameter_name = "is_inst_available__exact"
 
     def lookups(self, request, model_admin):
@@ -46,7 +48,7 @@ class SubjectAdmin(admin.ModelAdmin):
     )
     list_display = ("id", "sbj_title", "inst_available", "is_active", "created", "updated",)
     list_display_links = ("id",)
-    ordering = ("-updated",)
+    ordering = ("id",)
     list_filter = (InstAvailableFilter, "is_active",)
 
     def inst_available(self, obj: "Subject"):
@@ -55,13 +57,54 @@ class SubjectAdmin(admin.ModelAdmin):
         return False
 
     inst_available.boolean = True
-    inst_available.short_description = _("Instructions available")
+    inst_available.short_description = _("Instruction")
 
     class Media:
         css = {
             "all": ("admin/css/ckeditor_modification.css",)
         }
         js = ("admin/js/ckeditor_modification.js",)
+
+
+@admin.register(Part)
+class PartAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (_("Subject"), {
+            "fields": ("subject",)
+        }),
+        (_("Main options"), {
+            "fields": ("title", "answer_type", "task_count", "total_difficulty",)
+        }),
+        (_("Instruction"), {
+            "fields": ("inst_content",)
+        }),
+    )
+    list_display = (
+        "id", "subject", "title", "task_info_merge",
+        "total_difficulty", "inst_available", "created", "updated",
+    )
+    list_display_links = ("id",)
+    ordering = ("subject", "title")
+    list_filter = (("subject", admin.RelatedOnlyFieldListFilter), InstAvailableFilter,)
+
+    def task_info_merge(self, obj: "Part"):
+        return f"{PART_TYPES[obj.answer_type]} ({obj.task_count})"
+
+    task_info_merge.short_description = _("Tasks info")
+
+    def inst_available(self, obj: "Part"):
+        if obj.inst_content:
+            return True
+        return False
+
+    inst_available.boolean = True
+    inst_available.short_description = _("Instruction")
+
+    class Media:
+        css = {
+            "all": ("admin/css/ckeditor_modification.css",)
+        }
+        js = ("admin/js/ckeditor_modification.js", "admin/js/model_part_validation.js")
 
 
 # DOCS INFO ---------------------------------------------------------------------------------------------------------- #

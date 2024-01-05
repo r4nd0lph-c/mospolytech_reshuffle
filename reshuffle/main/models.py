@@ -1,12 +1,30 @@
-# TODO: add action "change activity flag" for selected subjects
-
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
-
 # UTILS -------------------------------------------------------------------------------------------------------------- #
+DIFFICULTY_LVL = {
+    0: _("Easy"),
+    1: _("Medium"),
+    2: _("Hard"),
+}
+
+PART_TITLES = {
+    0: _("A"),
+    1: _("B"),
+    2: _("C"),
+    3: _("D"),
+}
+
+PART_TYPES = {
+    0: _("Tasks with answer choice"),
+    1: _("Tasks with short answer writing"),
+}
+
+PART_NUMS = [15, 10]
+
+
 def help_f(text: str) -> str:
     """ returns a formatted string for the help text field """
 
@@ -31,7 +49,7 @@ class Subject(AbstractDatestamp):
         max_length=STR_LENGTH,
         unique=True,
         db_index=True,
-        help_text=help_f(_("The title of the subject (nominative case)")),
+        help_text=help_f(_("Title of the subject (nominative case)")),
         verbose_name=_("Title")
     )
     case_genitive = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Genitive case"))
@@ -41,8 +59,8 @@ class Subject(AbstractDatestamp):
     case_prepositional = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Prepositional case"))
     inst_title = models.CharField(
         max_length=STR_LENGTH,
-        default=_("Instructions for work performance"),
-        help_text=help_f(_("The title of the instruction")),
+        default=_("Instruction for work performance"),
+        help_text=help_f(_("Title of the instruction")),
         verbose_name=_("Title")
     )
     inst_content = RichTextField(
@@ -58,11 +76,51 @@ class Subject(AbstractDatestamp):
     )
 
     def __str__(self):
-        return f"ID: {self.id} ({self.sbj_title})"
+        return self.sbj_title
 
     class Meta:
         verbose_name = _("Subject")
         verbose_name_plural = _("Subjects")
+
+
+class Part(AbstractDatestamp):
+    subject = models.ForeignKey(
+        Subject,
+        on_delete=models.CASCADE,
+        help_text=help_f(_("Subject to which the part belongs")),
+        verbose_name=_("Subject")
+    )
+    title = models.PositiveSmallIntegerField(
+        choices=PART_TITLES,
+        help_text=help_f(_("Select a subject to enable this field")),
+        verbose_name=_("Title")
+    )
+    answer_type = models.PositiveSmallIntegerField(
+        choices=PART_TYPES,
+        help_text=help_f(_("Select a subject to enable this field")),
+        verbose_name=_("Type of tasks")
+    )
+    task_count = models.PositiveSmallIntegerField(
+        help_text=help_f(_("Select a type of tasks to enable this field")),
+        verbose_name=_("Number of tasks")
+    )
+    total_difficulty = models.PositiveSmallIntegerField(
+        help_text=help_f(_("Select a number of tasks to enable this field")),
+        verbose_name=_("Total difficulty")
+    )
+    inst_content = RichTextField(
+        blank=True,
+        config_name="config_1",
+        help_text=help_f(_("List of rules for performing the tasks of this part")),
+        verbose_name=_("Content")
+    )
+
+    def __str__(self):
+        return f"{self.subject}, " + _("Part") + f" {PART_TITLES[self.title]}"
+
+    class Meta:
+        verbose_name = _("Part")
+        verbose_name_plural = _("Parts")
 
 
 # DOCS INFO ---------------------------------------------------------------------------------------------------------- #
