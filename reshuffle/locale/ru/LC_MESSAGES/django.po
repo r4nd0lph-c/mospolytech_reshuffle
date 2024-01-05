@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-05 17:36+0300\n"
-"PO-Revision-Date: 2024-01-05 17:36+0300\n"
+"POT-Creation-Date: 2024-01-05 19:19+0300\n"
+"PO-Revision-Date: 2024-01-05 19:19+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c, https://t.me/"
 "rand0lphc\n"
 "Language-Team: Russian\n"
@@ -21,19 +21,31 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\main\admin.py:10
+#: .\main\admin.py:11
 msgid "Administration"
 msgstr "Администрация"
 
-#: .\main\admin.py:17 .\main\models.py:62
+#: .\main\admin.py:16 .\main\admin.py:58
+msgid "Instructions available"
+msgstr "Наличие инструкции"
+
+#: .\main\admin.py:21
+msgid "Yes"
+msgstr "Да"
+
+#: .\main\admin.py:22
+msgid "No"
+msgstr "Нет"
+
+#: .\main\admin.py:36 .\main\models.py:64
 msgid "Subject"
 msgstr "Предмет"
 
-#: .\main\admin.py:20
+#: .\main\admin.py:39
 msgid "Additional options"
 msgstr "Дополнительные опции"
 
-#: .\main\admin.py:24
+#: .\main\admin.py:43
 msgid "Instruction"
 msgstr "Инструкция"
 
@@ -41,96 +53,96 @@ msgstr "Инструкция"
 msgid "Main"
 msgstr "Главная"
 
-#: .\main\models.py:11
+#: .\main\models.py:13
 msgid "Tip"
 msgstr "Подсказка"
 
-#: .\main\models.py:17
+#: .\main\models.py:19
 msgid "Date created"
 msgstr "Дата создания"
 
-#: .\main\models.py:18
+#: .\main\models.py:20
 msgid "Date updated"
 msgstr "Дата обновления"
 
-#: .\main\models.py:32
+#: .\main\models.py:34
 msgid "The title of the subject (nominative case)"
 msgstr "Название предмета (именительный падеж)"
 
-#: .\main\models.py:33 .\main\models.py:44
+#: .\main\models.py:35 .\main\models.py:46
 msgid "Title"
 msgstr "Название"
 
-#: .\main\models.py:35
+#: .\main\models.py:37
 msgid "Genitive case"
 msgstr "Родительный падеж"
 
-#: .\main\models.py:36
+#: .\main\models.py:38
 msgid "Dative case"
 msgstr "Дательный падеж"
 
-#: .\main\models.py:37
+#: .\main\models.py:39
 msgid "Accusative case"
 msgstr "Винительный падеж"
 
-#: .\main\models.py:38
+#: .\main\models.py:40
 msgid "Instrumental case"
 msgstr "Творительный падеж"
 
-#: .\main\models.py:39
+#: .\main\models.py:41
 msgid "Prepositional case"
 msgstr "Предложный падеж"
 
-#: .\main\models.py:42
+#: .\main\models.py:44
 msgid "Instructions for work performance"
 msgstr "Инструкция по выполнению работы"
 
-#: .\main\models.py:43
+#: .\main\models.py:45
 msgid "The title of the instruction"
 msgstr "Название инструкции"
 
-#: .\main\models.py:49
+#: .\main\models.py:51
 msgid "List of general rules for work performance (without specific parts)"
 msgstr "Список общих правил выполнения работы (без специфики частей)"
 
-#: .\main\models.py:50 .\main\models.py:71
+#: .\main\models.py:52 .\main\models.py:73
 msgid "Content"
 msgstr "Содержание"
 
-#: .\main\models.py:54
+#: .\main\models.py:56
 msgid "Determines if this subject is available in the test generation list"
 msgstr "Определяет, виден ли этот предмет в списке генерации тестов"
 
-#: .\main\models.py:55 .\main\models.py:76
+#: .\main\models.py:57 .\main\models.py:78
 msgid "Activity"
 msgstr "Активность"
 
-#: .\main\models.py:63
+#: .\main\models.py:65
 msgid "Subjects"
 msgstr "Предметы"
 
-#: .\main\models.py:70
+#: .\main\models.py:72
 msgid "Information about the institution organizing the testing"
 msgstr "Информация об учреждении, организующем тестирование"
 
-#: .\main\models.py:75
+#: .\main\models.py:77
 msgid "Only one active document header can exist at a time"
 msgstr ""
 "Одновременно может существовать только один активный заголовок документа"
 
-#: .\main\models.py:92
+#: .\main\models.py:94
 msgid "Active"
 msgstr "Активен"
 
-#: .\main\models.py:92
+#: .\main\models.py:94
 msgid "Inactive"
 msgstr "Неактивен"
 
-#: .\main\models.py:96
+#: .\main\models.py:98
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:97
+#: .\main\models.py:99
 msgid "Document headers"
 msgstr "Заголовки документа"
 
