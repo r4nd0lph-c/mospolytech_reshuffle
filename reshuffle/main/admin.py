@@ -14,18 +14,27 @@ admin.site.index_title = _("Administration")
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {
-            "fields": ("case_nominative", "is_active",)
+        (_("Subject"), {
+            "fields": ("sbj_title", "is_active",)
         }),
         (_("Additional options"), {
             "classes": ("collapse",),
             "fields": ("case_genitive", "case_dative", "case_accusative", "case_instrumental", "case_prepositional",)
         }),
+        (_("Instruction"), {
+            "fields": ("inst_title", "inst_content",)
+        }),
     )
-    list_display = ("id", "case_nominative", "is_active", "created", "updated",)
+    list_display = ("id", "sbj_title", "is_active", "created", "updated",)
     list_display_links = ("id",)
     ordering = ("-updated",)
     list_filter = ("is_active",)
+
+    class Media:
+        css = {
+            "all": ("admin/css/ckeditor_modification.css",)
+        }
+        js = ("admin/js/ckeditor_modification.js",)
 
 
 # DOCS INFO ---------------------------------------------------------------------------------------------------------- #

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-03 15:55+0300\n"
-"PO-Revision-Date: 2024-01-03 15:55+0300\n"
+"POT-Creation-Date: 2024-01-05 17:36+0300\n"
+"PO-Revision-Date: 2024-01-05 17:36+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c, https://t.me/"
 "rand0lphc\n"
 "Language-Team: Russian\n"
@@ -25,98 +25,123 @@ msgstr ""
 msgid "Administration"
 msgstr "Администрация"
 
+#: .\main\admin.py:17 .\main\models.py:62
+msgid "Subject"
+msgstr "Предмет"
+
 #: .\main\admin.py:20
 msgid "Additional options"
 msgstr "Дополнительные опции"
+
+#: .\main\admin.py:24
+msgid "Instruction"
+msgstr "Инструкция"
 
 #: .\main\apps.py:8 .\main\views.py:12
 msgid "Main"
 msgstr "Главная"
 
-#: .\main\models.py:10
+#: .\main\models.py:11
 msgid "Tip"
 msgstr "Подсказка"
 
-#: .\main\models.py:16
+#: .\main\models.py:17
 msgid "Date created"
 msgstr "Дата создания"
 
-#: .\main\models.py:17
+#: .\main\models.py:18
 msgid "Date updated"
 msgstr "Дата обновления"
 
-#: .\main\models.py:31
-msgid "Nominative case"
-msgstr "Именительный падеж"
-
 #: .\main\models.py:32
+msgid "The title of the subject (nominative case)"
+msgstr "Название предмета (именительный падеж)"
+
+#: .\main\models.py:33 .\main\models.py:44
 msgid "Title"
 msgstr "Название"
 
-#: .\main\models.py:34
+#: .\main\models.py:35
 msgid "Genitive case"
 msgstr "Родительный падеж"
 
-#: .\main\models.py:35
+#: .\main\models.py:36
 msgid "Dative case"
 msgstr "Дательный падеж"
 
-#: .\main\models.py:36
+#: .\main\models.py:37
 msgid "Accusative case"
 msgstr "Винительный падеж"
 
-#: .\main\models.py:37
+#: .\main\models.py:38
 msgid "Instrumental case"
 msgstr "Творительный падеж"
 
-#: .\main\models.py:38
+#: .\main\models.py:39
 msgid "Prepositional case"
 msgstr "Предложный падеж"
 
-#: .\main\models.py:41
-msgid "Determines if this subject is available in the test generation list"
-msgstr "Определяет, виден ли этот предмет в списке генерации тестов"
+#: .\main\models.py:42
+msgid "Instructions for work performance"
+msgstr "Инструкция по выполнению работы"
 
-#: .\main\models.py:42 .\main\models.py:63
-msgid "Activity"
-msgstr "Активность"
+#: .\main\models.py:43
+msgid "The title of the instruction"
+msgstr "Название инструкции"
 
 #: .\main\models.py:49
-msgid "Subject"
-msgstr "Предмет"
+msgid "List of general rules for work performance (without specific parts)"
+msgstr "Список общих правил выполнения работы (без специфики частей)"
 
-#: .\main\models.py:50
-msgid "Subjects"
-msgstr "Предметы"
-
-#: .\main\models.py:57
-msgid "Information about the institution organizing the testing"
-msgstr "Информация об учреждении, организующем тестирование"
-
-#: .\main\models.py:58
+#: .\main\models.py:50 .\main\models.py:71
 msgid "Content"
 msgstr "Содержание"
 
-#: .\main\models.py:62
-msgid "Only one active document header can exist at a time"
-msgstr "Одновременно может существовать только один активный заголовок документа"
+#: .\main\models.py:54
+msgid "Determines if this subject is available in the test generation list"
+msgstr "Определяет, виден ли этот предмет в списке генерации тестов"
 
-#: .\main\models.py:79
+#: .\main\models.py:55 .\main\models.py:76
+msgid "Activity"
+msgstr "Активность"
+
+#: .\main\models.py:63
+msgid "Subjects"
+msgstr "Предметы"
+
+#: .\main\models.py:70
+msgid "Information about the institution organizing the testing"
+msgstr "Информация об учреждении, организующем тестирование"
+
+#: .\main\models.py:75
+msgid "Only one active document header can exist at a time"
+msgstr ""
+"Одновременно может существовать только один активный заголовок документа"
+
+#: .\main\models.py:92
 msgid "Active"
 msgstr "Активен"
 
-#: .\main\models.py:79
+#: .\main\models.py:92
 msgid "Inactive"
 msgstr "Неактивен"
 
-#: .\main\models.py:83
+#: .\main\models.py:96
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:84
+#: .\main\models.py:97
 msgid "Document headers"
 msgstr "Заголовки документа"
 
 #: .\main\templates\main\index.html:7
 msgid "Index Page"
 msgstr "Главная Страница"
+
+#: .\templates\admin\base_site.html:18
+msgid "Django site admin"
+msgstr "Админ-панель"
+
+#: .\templates\admin\base_site.html:22
+msgid "Django administration"
+msgstr "Администрирование"

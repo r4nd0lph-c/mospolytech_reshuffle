@@ -1,3 +1,5 @@
+# TODO: add action "change activity flag" for selected subjects
+
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from ckeditor.fields import RichTextField
@@ -23,28 +25,40 @@ class AbstractDatestamp(models.Model):
 
 # TESTING MATERIALS -------------------------------------------------------------------------------------------------- #
 class Subject(AbstractDatestamp):
-    TITLE_LENGTH = 64
+    STR_LENGTH = 64
 
-    case_nominative = models.CharField(
-        max_length=TITLE_LENGTH,
+    sbj_title = models.CharField(
+        max_length=STR_LENGTH,
         unique=True,
         db_index=True,
-        help_text=help_f(_("Nominative case")),
+        help_text=help_f(_("The title of the subject (nominative case)")),
         verbose_name=_("Title")
     )
-    case_genitive = models.CharField(max_length=TITLE_LENGTH, blank=True, verbose_name=_("Genitive case"))
-    case_dative = models.CharField(max_length=TITLE_LENGTH, blank=True, verbose_name=_("Dative case"))
-    case_accusative = models.CharField(max_length=TITLE_LENGTH, blank=True, verbose_name=_("Accusative case"))
-    case_instrumental = models.CharField(max_length=TITLE_LENGTH, blank=True, verbose_name=_("Instrumental case"))
-    case_prepositional = models.CharField(max_length=TITLE_LENGTH, blank=True, verbose_name=_("Prepositional case"))
+    case_genitive = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Genitive case"))
+    case_dative = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Dative case"))
+    case_accusative = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Accusative case"))
+    case_instrumental = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Instrumental case"))
+    case_prepositional = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Prepositional case"))
+    inst_title = models.CharField(
+        max_length=STR_LENGTH,
+        default=_("Instructions for work performance"),
+        help_text=help_f(_("The title of the instruction")),
+        verbose_name=_("Title")
+    )
+    inst_content = RichTextField(
+        blank=True,
+        config_name="config_1",
+        help_text=help_f(_("List of general rules for work performance (without specific parts)")),
+        verbose_name=_("Content")
+    )
     is_active = models.BooleanField(
-        default=True,
+        default=False,
         help_text=help_f(_("Determines if this subject is available in the test generation list")),
         verbose_name=_("Activity")
     )
 
     def __str__(self):
-        return self.case_nominative
+        return f"ID: {self.id} ({self.sbj_title})"
 
     class Meta:
         verbose_name = _("Subject")

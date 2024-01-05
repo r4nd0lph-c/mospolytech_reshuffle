@@ -1,9 +1,13 @@
+# TODO: add translation for special char names
+# TODO: change image names when saving
+# TODO: prevent from "empty" field saving
+# TODO: fix margins for "this field is required" message for editor
+
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 SHOW_SOURCE = True
 
 # source: https://www.calculators.org/math/html-math.php
-# TODO: add translation for special char names
 SPECIAL_CHARS = [
     ("&#43;", "Plus Sign"), ("&#8722;", "Minus Sign"), ("&#215;", "Multiplication Sign"),
     ("&#247;", "Division Sign"), ("&#61;", "Equal Sign"), ("&#8800;", "Not Equal To Sign"),
@@ -137,8 +141,6 @@ SPECIAL_CHARS = [
 
 HEIGHT = 200
 
-# TODO: change image names when saving
-# TODO: prevent from "empty" field saving
 CKEDITOR_CONFIGS = {
     # 1
     "config_1": {
