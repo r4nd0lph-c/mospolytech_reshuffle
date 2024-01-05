@@ -1,9 +1,13 @@
-td, th {
+#result_list th {
     vertical-align: middle;
 }
 
-.td_content {
+#result_list td {
+    vertical-align: middle;
     border: 1px solid var(--hairline-color);
+}
+
+.td_content {
     max-height: 200px;
     overflow: auto;
 }
