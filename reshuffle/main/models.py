@@ -22,7 +22,23 @@ PART_TYPES = {
     1: _("Tasks with short answer writing"),
 }
 
-PART_NUMS = [15, 10]
+PARTS = 4
+PART_COUNTS = [15, 10]
+
+PART_LABELS = [
+    [
+        _("Select a subject to enable this field"),
+        _("Select a subject to enable this field"),
+        _("Select a type of tasks to enable this field"),
+        _("Select a number of tasks to enable this field"),
+    ],
+    [
+        _("Reserved title(s)") + ": ",
+        _("Select a type of tasks in the part"),
+        _("Available number of tasks taking into account the previous parts and the selected task type") + ": ",
+        _("The recommended difficulty is set, difficulty range") + ": ",
+    ],
+]
 
 
 def help_f(text: str) -> str:
@@ -92,20 +108,20 @@ class Part(AbstractDatestamp):
     )
     title = models.PositiveSmallIntegerField(
         choices=PART_TITLES,
-        help_text=help_f(_("Select a subject to enable this field")),
+        help_text=help_f(PART_LABELS[0][0]),
         verbose_name=_("Title")
     )
     answer_type = models.PositiveSmallIntegerField(
         choices=PART_TYPES,
-        help_text=help_f(_("Select a subject to enable this field")),
+        help_text=help_f(PART_LABELS[0][1]),
         verbose_name=_("Type of tasks")
     )
     task_count = models.PositiveSmallIntegerField(
-        help_text=help_f(_("Select a type of tasks to enable this field")),
-        verbose_name=_("Number of tasks")
+        help_text=help_f(PART_LABELS[0][2]),
+        verbose_name=_("Count of tasks")
     )
     total_difficulty = models.PositiveSmallIntegerField(
-        help_text=help_f(_("Select a number of tasks to enable this field")),
+        help_text=help_f(PART_LABELS[0][3]),
         verbose_name=_("Total difficulty")
     )
     inst_content = RichTextField(

@@ -11,6 +11,10 @@
     <!-- Custom admin JS Files -->
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG"></script>
     <script src="{% static "admin/js/scripts.js" %}"></script>
+    <script>
+        const CSRF_TOKEN = "{{ csrf_token }}";
+        const URL_VALIDATION_PART = "{% url 'validation_part' %}";
+    </script>
     <!-- --------------------- -->
 {% endblock %}
 
