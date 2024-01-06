@@ -41,12 +41,6 @@ PART_LABELS = [
 ]
 
 
-def help_f(text: str) -> str:
-    """ returns a formatted string for the help text field """
-
-    return _("Tip") + ": " + text
-
-
 class AbstractDatestamp(models.Model):
     """ adds additional date fields for child model classes """
 
@@ -65,7 +59,7 @@ class Subject(AbstractDatestamp):
         max_length=STR_LENGTH,
         unique=True,
         db_index=True,
-        help_text=help_f(_("Title of the subject (nominative case)")),
+        help_text=_("Title of the subject (nominative case)"),
         verbose_name=_("Title")
     )
     case_genitive = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Genitive case"))
@@ -76,18 +70,18 @@ class Subject(AbstractDatestamp):
     inst_title = models.CharField(
         max_length=STR_LENGTH,
         default=_("Instruction for work performance"),
-        help_text=help_f(_("Title of the instruction")),
+        help_text=_("Title of the instruction"),
         verbose_name=_("Title")
     )
     inst_content = RichTextField(
         blank=True,
         config_name="config_1",
-        help_text=help_f(_("List of general rules for work performance (without specific parts)")),
+        help_text=_("List of general rules for work performance (without specific parts)"),
         verbose_name=_("Content")
     )
     is_active = models.BooleanField(
         default=False,
-        help_text=help_f(_("Determines if this subject is available in the test generation list")),
+        help_text=_("Determines if this subject is available in the test generation list"),
         verbose_name=_("Activity")
     )
 
@@ -103,31 +97,31 @@ class Part(AbstractDatestamp):
     subject = models.ForeignKey(
         Subject,
         on_delete=models.CASCADE,
-        help_text=help_f(_("Subject to which the part belongs")),
+        help_text=_("Subject to which the part belongs"),
         verbose_name=_("Subject")
     )
     title = models.PositiveSmallIntegerField(
         choices=PART_TITLES,
-        help_text=help_f(PART_LABELS[0][0]),
+        help_text=PART_LABELS[0][0],
         verbose_name=_("Title")
     )
     answer_type = models.PositiveSmallIntegerField(
         choices=PART_TYPES,
-        help_text=help_f(PART_LABELS[0][1]),
+        help_text=PART_LABELS[0][1],
         verbose_name=_("Type of tasks")
     )
     task_count = models.PositiveSmallIntegerField(
-        help_text=help_f(PART_LABELS[0][2]),
+        help_text=PART_LABELS[0][2],
         verbose_name=_("Count of tasks")
     )
     total_difficulty = models.PositiveSmallIntegerField(
-        help_text=help_f(PART_LABELS[0][3]),
+        help_text=PART_LABELS[0][3],
         verbose_name=_("Total difficulty")
     )
     inst_content = RichTextField(
         blank=True,
         config_name="config_1",
-        help_text=help_f(_("List of rules for performing the tasks of this part")),
+        help_text=_("List of rules for performing the tasks of this part"),
         verbose_name=_("Content")
     )
 
@@ -143,12 +137,12 @@ class Part(AbstractDatestamp):
 class DocHeader(AbstractDatestamp):
     content = RichTextField(
         config_name="config_1",
-        help_text=help_f(_("Information about the institution organizing the testing")),
+        help_text=_("Information about the institution organizing the testing"),
         verbose_name=_("Content")
     )
     is_active = models.BooleanField(
         default=True,
-        help_text=help_f(_("Only one active document header can exist at a time")),
+        help_text=_("Only one active document header can exist at a time"),
         verbose_name=_("Activity")
     )
 
