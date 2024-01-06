@@ -38,7 +38,8 @@ def validation_part(request):
 
             # generates JSON correct response
             return JsonResponse({
-                "subject": (id_sbj, Subject.objects.get(pk=id_sbj).sbj_title) if id_sbj else (None, None),
+                "subject": (id_sbj, Subject.objects.get(pk=id_sbj).sbj_title) if id_sbj else (None, None), \
+                "difficulties": DIFFICULTY_LVL,
                 "titles": {
                     "available": part_titles_available,
                     "reserved": part_titles_reserved,
@@ -48,7 +49,6 @@ def validation_part(request):
                     "static": PART_COUNTS,
                     "reserved": nums_reserved if nums_reserved else None,
                 },
-                "difficulties": DIFFICULTY_LVL,
                 "labels": PART_LABELS,
             })
 
