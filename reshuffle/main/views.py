@@ -1,3 +1,4 @@
+from math import ceil
 from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponseNotFound, JsonResponse
 from django.views.generic import TemplateView
@@ -26,30 +27,26 @@ def validation_part(request):
             id_title = int(id_title) if id_title else None
 
             # generates available & reserved part_titles dicts + nums_reserved list
-            part_titles_available = PART_TITLES.copy()
+            part_titles_available = Part.TITLES.copy()
             part_titles_reserved = {}
             nums_reserved = []
             if id_sbj:
                 for part in Part.objects.filter(subject__pk=id_sbj):
                     if part.title != id_title:
                         del part_titles_available[part.title]
-                        part_titles_reserved[part.title] = PART_TITLES[part.title]
+                        part_titles_reserved[part.title] = Part.TITLES[part.title]
                         nums_reserved.append([part.answer_type, part.task_count])
 
             # generates JSON correct response
             return JsonResponse({
                 "subject": (id_sbj, Subject.objects.get(pk=id_sbj).sbj_title) if id_sbj else (None, None),
-                "difficulties": DIFFICULTY_LVL,
+                "difficulties": DIFFICULTIES,
+                "remained_amount": Part.AMOUNT - sum([ceil(n[1] / Part.CAPACITIES[n[0]]) for n in nums_reserved]),
                 "titles": {
                     "available": part_titles_available,
                     "reserved": part_titles_reserved,
                 },
-                "counts": {
-                    "parts": PARTS,
-                    "static": PART_COUNTS,
-                    "reserved": nums_reserved if nums_reserved else None,
-                },
-                "labels": PART_LABELS,
+                "labels": Part.LABELS,
             })
 
         # generates JSON error response
