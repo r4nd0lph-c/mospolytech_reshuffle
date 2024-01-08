@@ -12,8 +12,6 @@ DIFFICULTIES = {
 
 
 class AbstractDatestamp(models.Model):
-    """ adds additional date fields for child model classes """
-
     created = models.DateTimeField(auto_now_add=True, verbose_name=_("Date created"))
     updated = models.DateTimeField(auto_now=True, verbose_name=_("Date updated"))
 

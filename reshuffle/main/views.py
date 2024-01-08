@@ -20,15 +20,13 @@ class Index(TemplateView):
 def validation_part(request):
     if request.method == "GET":
         if request.user.is_authenticated:
-            # gets data from request
+            # get data from request
             id_sbj = request.GET.get("id_sbj", "None")
             id_sbj = int(id_sbj) if id_sbj else None
-
             # generates JSON correct response
             return JsonResponse({
                 None: None
             })
-
         # generates JSON error response
         return JsonResponse({"error": "you don't have enough permissions"})
 

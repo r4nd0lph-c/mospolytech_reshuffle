@@ -1,8 +1,7 @@
-// On page load actions
+// on page load actions
 window.addEventListener("load", () => {
     const state = window.location.pathname.split("/").at(-2);
-
-    // Adapts the sizes of images and tables in the main table
+    // adapt sizes of images and tables in main table
     if (state === "docheader") {
         const MAX_CONTENT_WIDTH = 500;
         let table = document.getElementById("result_list");
@@ -19,8 +18,7 @@ window.addEventListener("load", () => {
             }
         }
     }
-
-    // Adds asterisk for required fields
+    // add asterisk for required fields
     (function ($) {
         $(".required").not($(".inline-related").find(".required")).append("<span style='color: var(--error-fg) !important;'> *</span>");
     })(django.jQuery);
