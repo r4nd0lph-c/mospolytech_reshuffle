@@ -16,7 +16,7 @@ function debounce(func, timeout = 100) {
 
 // On page load actions
 window.addEventListener("load", () => {
-    let first_load = true;
+    let init_load = true;
     const state = window.location.pathname.split("/").at(-2);
     if (state === "add" || state === "change") {
         // Finds subject & fields & labels
@@ -52,12 +52,48 @@ window.addEventListener("load", () => {
                 // Removes disabled attribute
                 fields[i].disabled = false;
                 // Resets values
-                if (!first_load)
+                if (!init_load)
                     fields[i].value = "";
-                // Calculates values
-                // ... <-- TODO: calc vals
-                // Changes labels
-                labels[i].innerHTML = data["labels"][1][i]; // <-- TODO: add info
+                // Sets values & changes labels
+                if (data["subject"][1]) {
+                    let calc_funcs = [
+                        function () {
+                            let old_selected_val = fields[0].value;
+                            fields[0].innerHTML = "";
+                            for (let key in data["titles"]["available"]) {
+                                let option = document.createElement("option");
+                                option.value = key;
+                                option.text = data["titles"]["available"][key];
+                                fields[0].appendChild(option);
+                                if (old_selected_val === option.value)
+                                    option.selected = true;
+                            }
+                            // if (JSON.stringify(data["titles"]["reserved"]) !== "{}")
+                            //     labels[0].innerHTML = `${data["labels"][1][0]} [${Object.values(data["titles"]["reserved"]).join(", ")}]`;
+                            // else
+                            //     labels[0].innerHTML = `${data["labels"][1][0]} []`;
+                        },
+                        function () {
+                            // labels[1].innerHTML = data["labels"][1][1];
+                        },
+                        function () {
+                            let remained_section_count = data["counts"]["parts"];
+                            for (let section of data["counts"]["reserved"]) {
+                                let count = Math.ceil(section[1] / data["counts"]["cost"][Number(section[0])]);
+                                remained_section_count -= count;
+                                if (remained_section_count) {
+
+                                } else {
+
+                                }
+                            }
+                        },
+                        function () {
+
+                        }
+                    ];
+                    calc_funcs[i]();
+                }
             }
         }
 
@@ -75,18 +111,20 @@ window.addEventListener("load", () => {
                     console.log(data);
                     // Handler for subject
                     id_sbj ? enable_fields([0, 1], data) : disable_fields([0, 1, 2, 3], data);
-                    if (first_load) // <-- TODO: fix fields[2] & fields[3] values disappearance
-                        first_load = false;
                     // Handler for answer_type
                     fields[1].value ? enable_fields([2], data) : disable_fields([2, 3], data);
                     fields[1].onchange = () => {
                         fields[1].value ? enable_fields([2], data) : disable_fields([2, 3], data);
+                        fields[2].value ? enable_fields([3], data) : disable_fields([3], data);
                     }
                     // Handler for task_count
                     fields[2].value ? enable_fields([3], data) : disable_fields([3], data);
                     fields[2].onchange = () => {
                         fields[2].value ? enable_fields([3], data) : disable_fields([3], data);
                     }
+                    // Changes init_load flag
+                    if (init_load)
+                        init_load = false;
                 },
                 error: function () {
                     console.log("validation_part() error");
