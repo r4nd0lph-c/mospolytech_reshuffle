@@ -34,11 +34,11 @@ def validation_part(request):
                     if part.title != id_title:
                         del part_titles_available[part.title]
                         part_titles_reserved[part.title] = PART_TITLES[part.title]
-                        nums_reserved.append({part.answer_type: part.task_count})
+                        nums_reserved.append([part.answer_type, part.task_count])
 
             # generates JSON correct response
             return JsonResponse({
-                "subject": (id_sbj, Subject.objects.get(pk=id_sbj).sbj_title) if id_sbj else (None, None), \
+                "subject": (id_sbj, Subject.objects.get(pk=id_sbj).sbj_title) if id_sbj else (None, None),
                 "difficulties": DIFFICULTY_LVL,
                 "titles": {
                     "available": part_titles_available,
