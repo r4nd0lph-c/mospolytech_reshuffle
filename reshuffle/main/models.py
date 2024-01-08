@@ -4,41 +4,11 @@ from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
 # UTILS -------------------------------------------------------------------------------------------------------------- #
-DIFFICULTY_LVL = {
+DIFFICULTIES = {
     0: _("Easy"),
     1: _("Medium"),
     2: _("Hard"),
 }
-
-PART_TITLES = {
-    0: _("A"),
-    1: _("B"),
-    2: _("C"),
-    3: _("D"),
-}
-
-PART_TYPES = {
-    0: _("Tasks with answer choice"),
-    1: _("Tasks with short answer writing"),
-}
-
-PARTS = 4
-PART_COUNTS = [15, 10]
-
-PART_LABELS = [
-    [
-        _("Select a subject to enable this field"),
-        _("Select a subject to enable this field"),
-        _("Select a type of tasks to enable this field"),
-        _("Select a number of tasks to enable this field"),
-    ],
-    [
-        _("Reserved title(s)") + ": ",
-        _("Select a type of tasks in the part"),
-        _("Available number of tasks taking into account the previous parts and the selected task type") + ": ",
-        _("The recommended difficulty is set, difficulty range") + ": ",
-    ],
-]
 
 
 class AbstractDatestamp(models.Model):
@@ -94,6 +64,33 @@ class Subject(AbstractDatestamp):
 
 
 class Part(AbstractDatestamp):
+    AMOUNT = 4
+    TITLES = {
+        0: _("A"),
+        1: _("B"),
+        2: _("C"),
+        3: _("D"),
+    }
+    TYPES = {
+        0: _("Tasks with answer choice"),
+        1: _("Tasks with short answer writing"),
+    }
+    CAPACITIES = [15, 10]
+    LABELS = [
+        [
+            _("Select a subject to enable this field"),
+            _("Select a subject to enable this field"),
+            _("Select a type of tasks to enable this field"),
+            _("Select a count of tasks to enable this field"),
+        ],
+        [
+            _("Reserved title(s)"),
+            _("Select a type of tasks in the part"),
+            _("Available count of tasks taking into account the previous parts and the selected task type"),
+            _("The recommended difficulty is set, difficulty range"),
+        ],
+    ]
+
     subject = models.ForeignKey(
         Subject,
         on_delete=models.CASCADE,
@@ -101,21 +98,21 @@ class Part(AbstractDatestamp):
         verbose_name=_("Subject")
     )
     title = models.PositiveSmallIntegerField(
-        choices=PART_TITLES,
-        help_text=PART_LABELS[0][0],
+        choices=TITLES,
+        help_text=LABELS[0][0],
         verbose_name=_("Title")
     )
     answer_type = models.PositiveSmallIntegerField(
-        choices=PART_TYPES,
-        help_text=PART_LABELS[0][1],
+        choices=TYPES,
+        help_text=LABELS[0][1],
         verbose_name=_("Type of tasks")
     )
     task_count = models.PositiveSmallIntegerField(
-        help_text=PART_LABELS[0][2],
+        help_text=LABELS[0][2],
         verbose_name=_("Count of tasks")
     )
     total_difficulty = models.PositiveSmallIntegerField(
-        help_text=PART_LABELS[0][3],
+        help_text=LABELS[0][3],
         verbose_name=_("Total difficulty")
     )
     inst_content = RichTextField(
@@ -126,7 +123,7 @@ class Part(AbstractDatestamp):
     )
 
     def __str__(self):
-        return f"{self.subject}, " + _("Part") + f" {PART_TITLES[self.title]}"
+        return f"{self.subject}, " + _("Part") + f" {Part.TITLES[self.title]}"
 
     class Meta:
         verbose_name = _("Part")

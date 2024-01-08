@@ -88,7 +88,7 @@ class PartAdmin(admin.ModelAdmin):
     list_filter = (("subject", admin.RelatedOnlyFieldListFilter), InstAvailableFilter,)
 
     def task_info_merge(self, obj: "Part"):
-        return f"{PART_TYPES[obj.answer_type]} ({obj.task_count})"
+        return f"{Part.TYPES[obj.answer_type]} ({obj.task_count})"
 
     task_info_merge.short_description = _("Tasks info")
 
