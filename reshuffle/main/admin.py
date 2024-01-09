@@ -100,6 +100,13 @@ class PartAdmin(admin.ModelAdmin):
     inst_available.boolean = True
     inst_available.short_description = _("Instruction")
 
+    def get_form(self, request, obj: "Part" = None, **kwargs):
+        form = super(PartAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields["subject"].widget.can_change_related = False
+        form.base_fields["subject"].widget.can_add_related = False
+        form.base_fields["subject"].widget.can_view_related = False
+        return form
+
     class Media:
         css = {
             "all": ("admin/css/ckeditor_modification.css",)
