@@ -156,6 +156,13 @@ window.addEventListener("load", () => {
                 fields[2].value = Math.max(fields[2].value, amount_min);
                 fields[2].value ? enable_fields([3], data) : disable_fields([3], data);
             }
+            // handler for total_difficulty
+            fields[3].onchange = () => {
+                let amount_max = fields[2].value * Object.keys(data["difficulties"]).at(-1);
+                let amount_min = 1 > amount_max ? 0 : Object.keys(data["difficulties"])[0];
+                fields[3].value = Math.min(fields[3].value, amount_max);
+                fields[3].value = Math.max(fields[3].value, amount_min);
+            }
         }
 
         // add onchange listener for subject

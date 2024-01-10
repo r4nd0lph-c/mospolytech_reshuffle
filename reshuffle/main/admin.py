@@ -1,5 +1,6 @@
 # TODO: add action "change activity flag" for selected subjects
 
+from math import ceil
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.contrib import admin
@@ -88,7 +89,10 @@ class PartAdmin(admin.ModelAdmin):
     list_filter = (("subject", admin.RelatedOnlyFieldListFilter), InstAvailableFilter,)
 
     def task_info_merge(self, obj: "Part"):
-        return f"{Part.TYPES[obj.answer_type]} ({obj.task_count})"
+        return (
+            f"{Part.TYPES[obj.answer_type]}: "
+            f"({ceil(obj.task_count / Part.CAPACITIES[obj.answer_type])}, {obj.task_count})"
+        )
 
     task_info_merge.short_description = _("Tasks info")
 
