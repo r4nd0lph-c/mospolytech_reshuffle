@@ -37,6 +37,7 @@ def validation_part(request):
             return JsonResponse({
                 "difficulties": DIFFICULTIES,
                 "amount": max(0, Part.AMOUNT - sum([ceil(i[0] / Part.CAPACITIES[i[1]]) for i in capacities])),
+                "capacities": Part.CAPACITIES,
                 "titles": {
                     "available": titles_available,
                     "reserved": titles_reserved,
