@@ -1,4 +1,7 @@
+from math import ceil
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 from django.db import models
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -106,6 +109,7 @@ class Part(AbstractDatestamp):
         verbose_name=_("Type of tasks")
     )
     task_count = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
         help_text=LABELS[0][2],
         verbose_name=_("Count of tasks")
     )
@@ -119,6 +123,46 @@ class Part(AbstractDatestamp):
         help_text=_("List of rules for performing the tasks of this part"),
         verbose_name=_("Content")
     )
+
+    def clean(self, *args, **kwargs):
+        # title
+        amount = Part.AMOUNT
+        titles_available = Part.TITLES.copy()
+        exception = Part.objects.get(pk=self.id).title if self.id else -1
+        for part in Part.objects.filter(subject__pk=self.subject_id):
+            if part.title != exception:
+                del titles_available[part.title]
+                amount -= ceil(part.task_count / Part.CAPACITIES[part.answer_type])
+        if self.title not in titles_available.keys():
+            raise ValidationError({
+                "title": _("Available title(s)") + f": [{', '.join([str(t) for t in titles_available.values()])}]."
+            })
+        # answer_type
+        if self.answer_type is None:
+            raise ValidationError({})
+        # task_count
+        if self.task_count is None:
+            raise ValidationError({})
+        count_max = amount * Part.CAPACITIES[self.answer_type]
+        count_min = 0 if 1 > count_max else 1
+        if not (count_min <= self.task_count <= count_max):
+            raise ValidationError({
+                "task_count": _("Invalid value") + "."
+            })
+        # total_difficulty
+        if self.total_difficulty is None:
+            raise ValidationError({})
+        difficulty_max = self.task_count * list(DIFFICULTIES.keys())[-1]
+        difficulty_min = 0 if 1 > difficulty_max else list(DIFFICULTIES.keys())[0]
+        if self.total_difficulty:
+            if not (difficulty_min <= self.total_difficulty <= difficulty_max):
+                raise ValidationError({
+                    "total_difficulty": _("Invalid value") + "."
+                })
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.subject}, " + _("Part") + f" {Part.TITLES[self.title]}"

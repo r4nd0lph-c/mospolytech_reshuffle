@@ -117,7 +117,7 @@ window.addEventListener("load", () => {
                     () => {
                         // value
                         let amount_max = fields[2].value * Object.keys(data["difficulties"]).at(-1);
-                        let amount_min = 1 > amount_max ? 0 : Object.keys(data["difficulties"])[0];
+                        let amount_min = 1 > amount_max ? 0 : 1 * Object.keys(data["difficulties"])[0];
                         fields[3].max = amount_max;
                         fields[3].min = amount_min;
                         fields[3].value = Math.floor(amount_max / 2);
@@ -138,7 +138,6 @@ window.addEventListener("load", () => {
 
         // validate all fields based on received data
         function validate(id_sbj, data) {
-            console.log(data);
             // handler for subject
             id_sbj ? enable_fields([0, 1], data) : disable_fields([0, 1, 2, 3], data);
             // handler for answer_type
@@ -159,7 +158,7 @@ window.addEventListener("load", () => {
             // handler for total_difficulty
             fields[3].onchange = () => {
                 let amount_max = fields[2].value * Object.keys(data["difficulties"]).at(-1);
-                let amount_min = 1 > amount_max ? 0 : Object.keys(data["difficulties"])[0];
+                let amount_min = 1 > amount_max ? 0 : 1 * Object.keys(data["difficulties"])[0];
                 fields[3].value = Math.min(fields[3].value, amount_max);
                 fields[3].value = Math.max(fields[3].value, amount_min);
             }
