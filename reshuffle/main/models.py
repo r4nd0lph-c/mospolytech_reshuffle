@@ -205,6 +205,19 @@ class Task(AbstractDatestamp):
         verbose_name=_("Activity")
     )
 
+    def clean(self, *args, **kwargs):
+        # position
+        if not self.position:
+            raise ValidationError({})
+        if not (1 <= self.position <= Part.objects.get(pk=self.part.pk).task_count):
+            raise ValidationError({
+                "position": _("Invalid value") + "."
+            })
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.part} ({Part.TYPES[self.part.answer_type]}), #{self.position}"
 
