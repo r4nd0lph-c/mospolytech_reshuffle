@@ -47,6 +47,21 @@ def validation_part(request):
         return JsonResponse({"error": "you don't have enough permissions"})
 
 
+def validation_task(request):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            # get data from request
+            id_prt = int(request.GET.get("id_prt")) if request.GET.get("id_prt") else None
+            # generate JSON response (correct)
+            return JsonResponse({
+                "amount_min": 1 if id_prt else 0,
+                "amount_max": Part.objects.get(pk=id_prt).task_count if id_prt else 0,
+                "labels": Task.LABELS,
+            })
+        # generate JSON response (error)
+        return JsonResponse({"error": "you don't have enough permissions"})
+
+
 # ERRORS ------------------------------------------------------------------------------------------------------------- #
 def page_not_found(request, exception):
     return HttpResponseNotFound("Error 404")

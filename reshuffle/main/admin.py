@@ -112,7 +112,7 @@ class PartAdmin(admin.ModelAdmin):
         css = {
             "all": ("admin/css/ckeditor_modification.css",)
         }
-        js = ("admin/js/ckeditor_modification.js", "admin/js/model_part_validation.js")
+        js = ("admin/js/ckeditor_modification.js", "admin/js/model_part_validation.js",)
 
 
 @admin.register(Task)
@@ -138,7 +138,7 @@ class TaskAdmin(admin.ModelAdmin):
         css = {
             "all": ("admin/css/ckeditor_modification.css",)
         }
-        js = ("admin/js/ckeditor_modification.js",)
+        js = ("admin/js/ckeditor_modification.js", "admin/js/model_task_validation.js",)
 
 
 # DOCS INFO ---------------------------------------------------------------------------------------------------------- #
