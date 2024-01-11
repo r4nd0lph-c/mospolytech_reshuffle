@@ -1,4 +1,3 @@
-from math import ceil
 from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponseNotFound, JsonResponse
 from django.views.generic import TemplateView

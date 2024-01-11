@@ -1,6 +1,6 @@
-# TODO: add action "change activity flag" for selected subjects
+# TODO: add action "change activity flag" for selected SubjectAdmin & TaskAdmin
+# TODO: add filter by "position" field for TaskAdmin
 
-from math import ceil
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.contrib import admin
@@ -113,6 +113,32 @@ class PartAdmin(admin.ModelAdmin):
             "all": ("admin/css/ckeditor_modification.css",)
         }
         js = ("admin/js/ckeditor_modification.js", "admin/js/model_part_validation.js")
+
+
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ("id", "pretty_content", "part", "position", "difficulty", "is_active", "created", "updated",)
+    list_display_links = ("id",)
+    ordering = ("part", "position", "difficulty", "-is_active",)
+    list_filter = (("part__subject", admin.RelatedOnlyFieldListFilter), "difficulty", "is_active",)
+
+    def pretty_content(self, obj: "Task"):
+        return mark_safe(f"<div class='td_content'> {obj.content} </div>")
+
+    pretty_content.short_description = DocHeader._meta.get_field("content").verbose_name
+
+    def get_form(self, request, obj: "Task" = None, **kwargs):
+        form = super(TaskAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields["part"].widget.can_change_related = False
+        form.base_fields["part"].widget.can_add_related = False
+        form.base_fields["part"].widget.can_view_related = False
+        return form
+
+    class Media:
+        css = {
+            "all": ("admin/css/ckeditor_modification.css",)
+        }
+        js = ("admin/js/ckeditor_modification.js",)
 
 
 # DOCS INFO ---------------------------------------------------------------------------------------------------------- #

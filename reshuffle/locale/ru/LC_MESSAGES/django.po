@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-11 21:14+0300\n"
-"PO-Revision-Date: 2024-01-11 21:14+0300\n"
+"POT-Creation-Date: 2024-01-11 22:16+0300\n"
+"PO-Revision-Date: 2024-01-11 22:16+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -57,7 +57,7 @@ msgstr "Основные опции"
 msgid "Cells"
 msgstr "Ячейки"
 
-#: .\main\apps.py:8 .\main\views.py:15
+#: .\main\apps.py:8 .\main\views.py:14
 msgid "Main"
 msgstr "Главная"
 
@@ -121,7 +121,8 @@ msgstr "Название инструкции"
 msgid "List of general rules for work performance (without specific parts)"
 msgstr "Список общих правил выполнения работы (без специфики частей)"
 
-#: .\main\models.py:51 .\main\models.py:124 .\main\models.py:180
+#: .\main\models.py:51 .\main\models.py:124 .\main\models.py:195
+#: .\main\models.py:221
 msgid "Content"
 msgstr "Содержание"
 
@@ -129,7 +130,7 @@ msgstr "Содержание"
 msgid "Determines if this subject is available in the test generation list"
 msgstr "Определяет, виден ли этот предмет в списке генерации тестов"
 
-#: .\main\models.py:56 .\main\models.py:185
+#: .\main\models.py:56 .\main\models.py:205 .\main\models.py:226
 msgid "Activity"
 msgstr "Активность"
 
@@ -201,11 +202,11 @@ msgstr "Предмет, к которому относится часть"
 msgid "Type of tasks"
 msgstr "Тип заданий"
 
-#: .\main\models.py:114
+#: .\main\models.py:114 .\main\models.py:213
 msgid "Tasks"
 msgstr "Задания"
 
-#: .\main\models.py:118
+#: .\main\models.py:118 .\main\models.py:200
 msgid "Difficulty"
 msgstr "Сложность"
 
@@ -221,7 +222,7 @@ msgstr "Доступные названия"
 msgid "Invalid value"
 msgstr "Недопустимое значение"
 
-#: .\main\models.py:168 .\main\models.py:171
+#: .\main\models.py:168 .\main\models.py:171 .\main\models.py:185
 msgid "Part"
 msgstr "Часть"
 
@@ -229,28 +230,60 @@ msgstr "Часть"
 msgid "Parts"
 msgstr "Части"
 
-#: .\main\models.py:179
+#: .\main\models.py:177
+msgid "Select a part to enable this field"
+msgstr "Сначала выберите часть, чтобы разблокировать это поле"
+
+#: .\main\models.py:178
+msgid "Order number of the task in the part, range of valid positions"
+msgstr "Порядковый номер задания в части, диапазон допустимых позиций"
+
+#: .\main\models.py:184
+msgid "Subject and part to which the task relates"
+msgstr "Предмет и часть, к которым относится задание"
+
+#: .\main\models.py:190
+msgid "Position"
+msgstr "Порядковый номер"
+
+#: .\main\models.py:194
+msgid "The essence of the task"
+msgstr "Суть задания"
+
+#: .\main\models.py:199
+msgid "Difficulty of the task relative to other tasks of the same order number"
+msgstr "Сложность задания относительно других заданий того же порядкового номера"
+
+#: .\main\models.py:204
+msgid "Determines if this task is included in document generation"
+msgstr "Определяет, включено ли это задание в генерацию документов"
+
+#: .\main\models.py:212
+msgid "Task"
+msgstr "Задание"
+
+#: .\main\models.py:220
 msgid "Information about the institution organizing the testing"
 msgstr "Информация об учреждении, организующем тестирование"
 
-#: .\main\models.py:184
+#: .\main\models.py:225
 msgid "Only one active document header can exist at a time"
 msgstr ""
 "Одновременно может существовать только один активный заголовок документа"
 
-#: .\main\models.py:201
+#: .\main\models.py:242
 msgid "Active"
 msgstr "Активен"
 
-#: .\main\models.py:201
+#: .\main\models.py:242
 msgid "Inactive"
 msgstr "Неактивен"
 
-#: .\main\models.py:205
+#: .\main\models.py:246
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:206
+#: .\main\models.py:247
 msgid "Document headers"
 msgstr "Заголовки документа"
 

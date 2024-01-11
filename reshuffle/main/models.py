@@ -172,6 +172,47 @@ class Part(AbstractDatestamp):
         verbose_name_plural = _("Parts")
 
 
+class Task(AbstractDatestamp):
+    LABELS = [
+        _("Select a part to enable this field"),
+        _("Order number of the task in the part, range of valid positions"),
+    ]
+
+    part = models.ForeignKey(
+        Part,
+        on_delete=models.CASCADE,
+        help_text=_("Subject and part to which the task relates"),
+        verbose_name=_("Part")
+    )
+    position = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        help_text=LABELS[0],
+        verbose_name=_("Position")
+    )
+    content = RichTextUploadingField(
+        config_name="config_2",
+        help_text=_("The essence of the task"),
+        verbose_name=_("Content")
+    )
+    difficulty = models.PositiveSmallIntegerField(
+        choices=DIFFICULTIES,
+        help_text=_("Difficulty of the task relative to other tasks of the same order number"),
+        verbose_name=_("Difficulty")
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text=_("Determines if this task is included in document generation"),
+        verbose_name=_("Activity")
+    )
+
+    def __str__(self):
+        return f"{self.part} ({Part.TYPES[self.part.answer_type]}), #{self.position}"
+
+    class Meta:
+        verbose_name = _("Task")
+        verbose_name_plural = _("Tasks")
+
+
 # DOCS INFO ---------------------------------------------------------------------------------------------------------- #
 class DocHeader(AbstractDatestamp):
     content = RichTextField(
