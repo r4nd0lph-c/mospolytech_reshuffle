@@ -23,7 +23,6 @@ window.addEventListener("load", () => {
         let position = document.getElementById("id_position");
         let label = document.getElementById("id_position_helptext").children[0];
 
-
         // send request to backend, receive validation info
         function validation_task(id_prt) {
             $.ajax({
@@ -52,6 +51,8 @@ window.addEventListener("load", () => {
                 position.max = data["amount_max"];
                 if (old_selected_val > data["amount_max"])
                     position.value = data["amount_max"];
+                else if (old_selected_val < data["amount_min"])
+                    position.value = data["amount_min"];
                 else
                     position.value = old_selected_val;
                 label.innerHTML = `${data["labels"][1]}: [${data["amount_min"]} – ${data["amount_max"]}]`;
