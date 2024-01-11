@@ -8,10 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-10 21:56+0300\n"
-"PO-Revision-Date: 2024-01-10 21:56+0300\n"
-"Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c, https://t.me/"
-"rand0lphc\n"
+"POT-Creation-Date: 2024-01-11 21:14+0300\n"
+"PO-Revision-Date: 2024-01-11 21:14+0300\n"
+"Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +45,7 @@ msgstr "Предмет"
 msgid "Additional options"
 msgstr "Дополнительные опции"
 
-#: .\main\admin.py:46 .\main\admin.py:61 .\main\admin.py:79 .\main\admin.py:105
+#: .\main\admin.py:46 .\main\admin.py:61 .\main\admin.py:79 .\main\admin.py:102
 msgid "Instruction"
 msgstr "Инструкция"
 
@@ -54,9 +53,9 @@ msgstr "Инструкция"
 msgid "Main options"
 msgstr "Основные опции"
 
-#: .\main\admin.py:97
-msgid "Tasks info"
-msgstr "Информация о заданиях"
+#: .\main\admin.py:94
+msgid "Cells"
+msgstr "Ячейки"
 
 #: .\main\apps.py:8 .\main\views.py:15
 msgid "Main"
@@ -122,7 +121,7 @@ msgstr "Название инструкции"
 msgid "List of general rules for work performance (without specific parts)"
 msgstr "Список общих правил выполнения работы (без специфики частей)"
 
-#: .\main\models.py:51 .\main\models.py:124 .\main\models.py:181
+#: .\main\models.py:51 .\main\models.py:124 .\main\models.py:180
 msgid "Content"
 msgstr "Содержание"
 
@@ -130,7 +129,7 @@ msgstr "Содержание"
 msgid "Determines if this subject is available in the test generation list"
 msgstr "Определяет, виден ли этот предмет в списке генерации тестов"
 
-#: .\main\models.py:56 .\main\models.py:186
+#: .\main\models.py:56 .\main\models.py:185
 msgid "Activity"
 msgstr "Активность"
 
@@ -203,55 +202,55 @@ msgid "Type of tasks"
 msgstr "Тип заданий"
 
 #: .\main\models.py:114
-msgid "Count of tasks"
-msgstr "Количество заданий"
+msgid "Tasks"
+msgstr "Задания"
 
 #: .\main\models.py:118
-msgid "Total difficulty"
+msgid "Difficulty"
 msgstr "Сложность"
 
 #: .\main\models.py:123
 msgid "List of rules for performing the tasks of this part"
 msgstr "Список правил для выполнения заданий данной части"
 
-#: .\main\models.py:139
+#: .\main\models.py:138
 msgid "Available title(s)"
 msgstr "Доступные названия"
 
-#: .\main\models.py:151 .\main\models.py:161
+#: .\main\models.py:150 .\main\models.py:160
 msgid "Invalid value"
 msgstr "Недопустимое значение"
 
-#: .\main\models.py:169 .\main\models.py:172
+#: .\main\models.py:168 .\main\models.py:171
 msgid "Part"
 msgstr "Часть"
 
-#: .\main\models.py:173
+#: .\main\models.py:172
 msgid "Parts"
 msgstr "Части"
 
-#: .\main\models.py:180
+#: .\main\models.py:179
 msgid "Information about the institution organizing the testing"
 msgstr "Информация об учреждении, организующем тестирование"
 
-#: .\main\models.py:185
+#: .\main\models.py:184
 msgid "Only one active document header can exist at a time"
 msgstr ""
 "Одновременно может существовать только один активный заголовок документа"
 
-#: .\main\models.py:202
+#: .\main\models.py:201
 msgid "Active"
 msgstr "Активен"
 
-#: .\main\models.py:202
+#: .\main\models.py:201
 msgid "Inactive"
 msgstr "Неактивен"
 
-#: .\main\models.py:206
+#: .\main\models.py:205
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:207
+#: .\main\models.py:206
 msgid "Document headers"
 msgstr "Заголовки документа"
 

@@ -111,11 +111,11 @@ class Part(AbstractDatestamp):
     task_count = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)],
         help_text=LABELS[0][2],
-        verbose_name=_("Count of tasks")
+        verbose_name=_("Tasks")
     )
     total_difficulty = models.PositiveSmallIntegerField(
         help_text=LABELS[0][3],
-        verbose_name=_("Total difficulty")
+        verbose_name=_("Difficulty")
     )
     inst_content = RichTextField(
         blank=True,
