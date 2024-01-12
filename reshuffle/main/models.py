@@ -219,11 +219,37 @@ class Task(AbstractDatestamp):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.part} ({Part.TYPES[self.part.answer_type]}), #{self.position}"
+        return f"ID: {self.id} ({self.part}, {Part.TYPES[self.part.answer_type]}, {self.position})"
 
     class Meta:
         verbose_name = _("Task")
         verbose_name_plural = _("Tasks")
+
+
+class Option(AbstractDatestamp):
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+        help_text=_("Task to which the option relates"),
+        verbose_name=_("Task")
+    )
+    content = RichTextUploadingField(
+        config_name="config_2",
+        help_text=_("The essence of the option"),
+        verbose_name=_("Content")
+    )
+    is_answer = models.BooleanField(
+        default=False,
+        help_text=_("Determines if this option is the correct answer"),
+        verbose_name=_("Correct answer")
+    )
+
+    def __str__(self):
+        return f"{self.task}, {self.is_answer}"
+
+    class Meta:
+        verbose_name = _("Option")
+        verbose_name_plural = _("Options")
 
 
 # DOCS INFO ---------------------------------------------------------------------------------------------------------- #

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-11 22:16+0300\n"
-"PO-Revision-Date: 2024-01-11 22:16+0300\n"
+"POT-Creation-Date: 2024-01-12 17:26+0300\n"
+"PO-Revision-Date: 2024-01-12 17:26+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -56,6 +56,10 @@ msgstr "Основные опции"
 #: .\main\admin.py:94
 msgid "Cells"
 msgstr "Ячейки"
+
+#: .\main\admin.py:126 .\main\admin.py:156
+msgid "The search is performed by task ID"
+msgstr "Поиск осуществляется по ID задания"
 
 #: .\main\apps.py:8 .\main\views.py:14
 msgid "Main"
@@ -122,7 +126,7 @@ msgid "List of general rules for work performance (without specific parts)"
 msgstr "Список общих правил выполнения работы (без специфики частей)"
 
 #: .\main\models.py:51 .\main\models.py:124 .\main\models.py:195
-#: .\main\models.py:221
+#: .\main\models.py:239 .\main\models.py:260
 msgid "Content"
 msgstr "Содержание"
 
@@ -130,7 +134,7 @@ msgstr "Содержание"
 msgid "Determines if this subject is available in the test generation list"
 msgstr "Определяет, виден ли этот предмет в списке генерации тестов"
 
-#: .\main\models.py:56 .\main\models.py:205 .\main\models.py:226
+#: .\main\models.py:56 .\main\models.py:205 .\main\models.py:265
 msgid "Activity"
 msgstr "Активность"
 
@@ -202,7 +206,7 @@ msgstr "Предмет, к которому относится часть"
 msgid "Type of tasks"
 msgstr "Тип заданий"
 
-#: .\main\models.py:114 .\main\models.py:213
+#: .\main\models.py:114 .\main\models.py:226
 msgid "Tasks"
 msgstr "Задания"
 
@@ -218,7 +222,7 @@ msgstr "Список правил для выполнения заданий д�
 msgid "Available title(s)"
 msgstr "Доступные названия"
 
-#: .\main\models.py:150 .\main\models.py:160
+#: .\main\models.py:150 .\main\models.py:160 .\main\models.py:214
 msgid "Invalid value"
 msgstr "Недопустимое значение"
 
@@ -252,38 +256,63 @@ msgstr "Суть задания"
 
 #: .\main\models.py:199
 msgid "Difficulty of the task relative to other tasks of the same order number"
-msgstr "Сложность задания относительно других заданий того же порядкового номера"
+msgstr ""
+"Сложность задания относительно других заданий того же порядкового номера"
 
 #: .\main\models.py:204
 msgid "Determines if this task is included in document generation"
 msgstr "Определяет, включено ли это задание в генерацию документов"
 
-#: .\main\models.py:212
+#: .\main\models.py:225 .\main\models.py:234
 msgid "Task"
 msgstr "Задание"
 
-#: .\main\models.py:220
+#: .\main\models.py:233
+msgid "Task to which the option relates"
+msgstr "Задание, к которому относится вариант ответа"
+
+#: .\main\models.py:238
+msgid "The essence of the option"
+msgstr "Суть варианта ответа"
+
+#: .\main\models.py:243
+msgid "Determines if this option is the correct answer"
+msgstr "Определяет, является ли данный вариант ответа правильным"
+
+#: .\main\models.py:244
+msgid "Correct answer"
+msgstr "Правильный ответ"
+
+#: .\main\models.py:251
+msgid "Option"
+msgstr "Вариант ответа"
+
+#: .\main\models.py:252
+msgid "Options"
+msgstr "Варианты ответа"
+
+#: .\main\models.py:259
 msgid "Information about the institution organizing the testing"
 msgstr "Информация об учреждении, организующем тестирование"
 
-#: .\main\models.py:225
+#: .\main\models.py:264
 msgid "Only one active document header can exist at a time"
 msgstr ""
 "Одновременно может существовать только один активный заголовок документа"
 
-#: .\main\models.py:242
+#: .\main\models.py:281
 msgid "Active"
 msgstr "Активен"
 
-#: .\main\models.py:242
+#: .\main\models.py:281
 msgid "Inactive"
 msgstr "Неактивен"
 
-#: .\main\models.py:246
+#: .\main\models.py:285
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:247
+#: .\main\models.py:286
 msgid "Document headers"
 msgstr "Заголовки документа"
 
@@ -291,10 +320,10 @@ msgstr "Заголовки документа"
 msgid "Index Page"
 msgstr "Главная Страница"
 
-#: .\templates\admin\base_site.html:22
+#: .\templates\admin\base_site.html:23
 msgid "Django site admin"
 msgstr "Админ-панель"
 
-#: .\templates\admin\base_site.html:26
+#: .\templates\admin\base_site.html:27
 msgid "Django administration"
 msgstr "Администрирование"

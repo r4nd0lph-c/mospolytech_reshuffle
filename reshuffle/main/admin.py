@@ -121,11 +121,14 @@ class TaskAdmin(admin.ModelAdmin):
     list_display_links = ("id",)
     ordering = ("part", "position", "difficulty", "-is_active",)
     list_filter = (("part__subject", admin.RelatedOnlyFieldListFilter), "difficulty", "is_active",)
+    search_fields = ("id",)
+
+    search_help_text = _("The search is performed by task ID")
 
     def pretty_content(self, obj: "Task"):
         return mark_safe(f"<div class='td_content'> {obj.content} </div>")
 
-    pretty_content.short_description = DocHeader._meta.get_field("content").verbose_name
+    pretty_content.short_description = Task._meta.get_field("content").verbose_name
 
     def get_form(self, request, obj: "Task" = None, **kwargs):
         form = super(TaskAdmin, self).get_form(request, obj, **kwargs)
@@ -139,6 +142,29 @@ class TaskAdmin(admin.ModelAdmin):
             "all": ("admin/css/ckeditor_modification.css",)
         }
         js = ("admin/js/ckeditor_modification.js", "admin/js/model_task_validation.js",)
+
+
+@admin.register(Option)
+class OptionAdmin(admin.ModelAdmin):
+    list_display = ("id", "pretty_content", "task", "is_answer", "created", "updated",)
+    list_display_links = ("id",)
+    ordering = ("task", "-is_answer",)
+    list_filter = (("task__part__subject", admin.RelatedOnlyFieldListFilter), "is_answer",)
+    autocomplete_fields = ("task",)
+    search_fields = ("task__id",)
+
+    search_help_text = _("The search is performed by task ID")
+
+    def pretty_content(self, obj: "Option"):
+        return mark_safe(f"<div class='td_content'> {obj.content} </div>")
+
+    pretty_content.short_description = Option._meta.get_field("content").verbose_name
+
+    class Media:
+        css = {
+            "all": ("admin/css/ckeditor_modification.css",)
+        }
+        js = ("admin/js/ckeditor_modification.js",)
 
 
 # DOCS INFO ---------------------------------------------------------------------------------------------------------- #
