@@ -3,17 +3,6 @@ if (!$) {
     $ = django.jQuery;
 }
 
-// wrap other functions, reduces workload
-function debounce(func, timeout = 100) {
-    let timer;
-    return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            func.apply(this, args);
-        }, timeout);
-    };
-}
-
 // on page load actions
 window.addEventListener("load", () => {
     const state = window.location.pathname.split("/").at(-2);
@@ -26,7 +15,6 @@ window.addEventListener("load", () => {
         let tags = ["title", "answer_type", "task_count", "total_difficulty"];
         let fields = tags.map(t => document.getElementById(`id_${t}`));
         let labels = tags.map(t => document.getElementById(`id_${t}_helptext`).children[0]);
-
 
         // send request to backend, receive validation info
         function validation_part(id_sbj) {
@@ -172,6 +160,5 @@ window.addEventListener("load", () => {
 
         // check initialized subject value
         validation_part(subject.value);
-
     }
 });

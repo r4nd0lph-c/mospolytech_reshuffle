@@ -3,17 +3,6 @@ if (!$) {
     $ = django.jQuery;
 }
 
-// wrap other functions, reduces workload
-function debounce(func, timeout = 100) {
-    let timer;
-    return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            func.apply(this, args);
-        }, timeout);
-    };
-}
-
 // on page load actions
 window.addEventListener("load", () => {
     const state = window.location.pathname.split("/").at(-2);

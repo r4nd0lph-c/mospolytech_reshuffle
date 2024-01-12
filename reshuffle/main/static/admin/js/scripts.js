@@ -1,3 +1,15 @@
+// wrap other functions, reduces workload
+function debounce(func, timeout = 100) {
+    let timer;
+    return (...args) => {
+        console.log("DEBOUNCED");
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(this, args);
+        }, timeout);
+    };
+}
+
 // on page load actions
 window.addEventListener("load", () => {
     const state = window.location.pathname.split("/").at(-2);
@@ -18,6 +30,7 @@ window.addEventListener("load", () => {
             }
         }
     }
+
     // add asterisk for required fields
     (function ($) {
         $(".required").not($(".inline-related").find(".required")).append("<span style='color: var(--error-fg) !important;'> *</span>");
