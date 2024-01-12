@@ -2,7 +2,6 @@
 function debounce(func, timeout = 100) {
     let timer;
     return (...args) => {
-        console.log("DEBOUNCED");
         clearTimeout(timer);
         timer = setTimeout(() => {
             func.apply(this, args);
