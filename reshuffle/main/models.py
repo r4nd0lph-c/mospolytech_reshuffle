@@ -61,7 +61,7 @@ class Subject(AbstractDatestamp):
 
     class Meta:
         verbose_name = _("Subject")
-        verbose_name_plural = _("Subjects")
+        verbose_name_plural = " " * 4 + _("Subjects")
 
 
 class Part(AbstractDatestamp):
@@ -169,7 +169,7 @@ class Part(AbstractDatestamp):
 
     class Meta:
         verbose_name = _("Part")
-        verbose_name_plural = _("Parts")
+        verbose_name_plural = " " * 3 + _("Parts")
 
 
 class Task(AbstractDatestamp):
@@ -223,7 +223,7 @@ class Task(AbstractDatestamp):
 
     class Meta:
         verbose_name = _("Task")
-        verbose_name_plural = _("Tasks")
+        verbose_name_plural = " " * 2 + _("Tasks")
 
 
 class Option(AbstractDatestamp):
@@ -249,7 +249,7 @@ class Option(AbstractDatestamp):
 
     class Meta:
         verbose_name = _("Option")
-        verbose_name_plural = _("Options")
+        verbose_name_plural = " " * 1 + _("Options")
 
 
 # DOCS INFO ---------------------------------------------------------------------------------------------------------- #
@@ -283,7 +283,7 @@ class DocHeader(AbstractDatestamp):
 
     class Meta:
         verbose_name = _("Document header")
-        verbose_name_plural = _("Document headers")
+        verbose_name_plural = " " * 5 + _("Document headers")
 
 # MODERATION --------------------------------------------------------------------------------------------------------- #
 # ...
