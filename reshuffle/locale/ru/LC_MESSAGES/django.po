@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-12 17:26+0300\n"
-"PO-Revision-Date: 2024-01-12 17:26+0300\n"
+"POT-Creation-Date: 2024-01-13 17:47+0300\n"
+"PO-Revision-Date: 2024-01-13 17:47+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -57,7 +57,7 @@ msgstr "Основные опции"
 msgid "Cells"
 msgstr "Ячейки"
 
-#: .\main\admin.py:126 .\main\admin.py:156
+#: .\main\admin.py:125 .\main\admin.py:154
 msgid "The search is performed by task ID"
 msgstr "Поиск осуществляется по ID задания"
 

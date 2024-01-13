@@ -119,10 +119,9 @@ class PartAdmin(admin.ModelAdmin):
 class TaskAdmin(admin.ModelAdmin):
     list_display = ("id", "pretty_content", "part", "position", "difficulty", "is_active", "created", "updated",)
     list_display_links = ("id",)
-    ordering = ("part", "position", "difficulty", "-is_active",)
+    ordering = ("part__subject", "part", "position", "difficulty", "-is_active",)
     list_filter = (("part__subject", admin.RelatedOnlyFieldListFilter), "difficulty", "is_active",)
     search_fields = ("id",)
-
     search_help_text = _("The search is performed by task ID")
 
     def pretty_content(self, obj: "Task"):
@@ -152,7 +151,6 @@ class OptionAdmin(admin.ModelAdmin):
     list_filter = (("task__part__subject", admin.RelatedOnlyFieldListFilter), "is_answer",)
     autocomplete_fields = ("task",)
     search_fields = ("task__id",)
-
     search_help_text = _("The search is performed by task ID")
 
     def pretty_content(self, obj: "Option"):
