@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-13 17:47+0300\n"
-"PO-Revision-Date: 2024-01-13 17:47+0300\n"
+"POT-Creation-Date: 2024-01-14 16:05+0300\n"
+"PO-Revision-Date: 2024-01-14 16:05+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -20,50 +20,62 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\main\admin.py:14
+#: .\main\admin.py:15
 msgid "Administration"
 msgstr "Администрация"
 
-#: .\main\admin.py:19
+#: .\main\admin.py:23
 msgid "Instruction available"
 msgstr "Наличие инструкции"
 
-#: .\main\admin.py:24
+#: .\main\admin.py:28
 msgid "Yes"
 msgstr "Да"
 
-#: .\main\admin.py:25
+#: .\main\admin.py:29
 msgid "No"
 msgstr "Нет"
 
-#: .\main\admin.py:39 .\main\admin.py:73 .\main\models.py:63
+#: .\main\admin.py:43 .\main\admin.py:77 .\main\models.py:63
 #: .\main\models.py:99
 msgid "Subject"
 msgstr "Предмет"
 
-#: .\main\admin.py:42
+#: .\main\admin.py:46
 msgid "Additional options"
 msgstr "Дополнительные опции"
 
-#: .\main\admin.py:46 .\main\admin.py:61 .\main\admin.py:79 .\main\admin.py:102
+#: .\main\admin.py:50 .\main\admin.py:65 .\main\admin.py:83 .\main\admin.py:106
 msgid "Instruction"
 msgstr "Инструкция"
 
-#: .\main\admin.py:76
+#: .\main\admin.py:80
 msgid "Main options"
 msgstr "Основные опции"
 
-#: .\main\admin.py:94
+#: .\main\admin.py:98
 msgid "Cells"
 msgstr "Ячейки"
 
-#: .\main\admin.py:125 .\main\admin.py:154
+#: .\main\admin.py:129 .\main\admin.py:158
 msgid "The search is performed by task ID"
 msgstr "Поиск осуществляется по ID задания"
 
-#: .\main\apps.py:8 .\main\views.py:14
+#: .\main\apps.py:8 .\main\views.py:22
 msgid "Main"
 msgstr "Главная"
+
+#: .\main\forms.py:8
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: .\main\forms.py:17
+msgid "Password"
+msgstr "Пароль"
+
+#: .\main\forms.py:26
+msgid "Remember me"
+msgstr "Запомнить меня"
 
 #: .\main\models.py:11
 msgid "Easy"
@@ -316,9 +328,36 @@ msgstr "Заголовок документа"
 msgid "Document headers"
 msgstr "Заголовки документа"
 
+#: .\main\templates\main\auth.html:23
+#, python-format
+msgid ""
+"You are logged in as <b>%(user)s</b>, but you do not have sufficient\n"
+"                            rights to view this page. Perhaps you would like "
+"to log in using a different\n"
+"                            account?"
+msgstr ""
+"Вы вошли как <b>%(user)s</b>, но у вас недостаточно прав для просмотра этой "
+"страницы. Возможно, вы хотите войти под другой учётной записью?"
+
+#: .\main\templates\main\auth.html:39
+msgid "Log in"
+msgstr "Вход"
+
+#: .\main\templates\main\auth.html:56
+msgid "Authorization"
+msgstr "Авторизоваться"
+
+#: .\main\templates\main\auth.html:67 .\main\templates\main\auth.html:77
+msgid "Having problems"
+msgstr "Возникли проблемы"
+
 #: .\main\templates\main\index.html:7
 msgid "Index Page"
 msgstr "Главная Страница"
+
+#: .\main\views.py:33
+msgid "Auth"
+msgstr "Авторизация"
 
 #: .\templates\admin\base_site.html:23
 msgid "Django site admin"

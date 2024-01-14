@@ -1,18 +1,52 @@
 from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponseNotFound, JsonResponse
+from django.contrib.auth import logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from reshuffle.settings import PROJECT_NAME
+from main.forms import *
 from main.models import *
 
 
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
-class Index(TemplateView):
+class Index(LoginRequiredMixin, TemplateView):
     template_name = "main/index.html"
+    login_url = reverse_lazy("auth")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Main") + " | " + PROJECT_NAME
         return context
+
+
+class Auth(LoginView):
+    form_class = AuthForm
+    template_name = "main/auth.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["project_name"] = PROJECT_NAME.upper()
+        context["title"] = _("Auth") + " | " + PROJECT_NAME
+        return context
+
+    def form_valid(self, form):
+        remember_me = form.cleaned_data["remember_me"]
+        if not remember_me:
+            self.request.session.set_expiry(0)
+            self.request.session.modified = True
+        return super(Auth, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("index")
+
+
+def logout_user(request):
+    logout(request)
+    return redirect("auth")
 
 
 # VALIDATORS --------------------------------------------------------------------------------------------------------- #

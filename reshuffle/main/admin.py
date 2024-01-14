@@ -6,12 +6,16 @@ from django.utils.safestring import mark_safe
 from django.contrib import admin
 from django.db.models import Q
 from reshuffle.settings import PROJECT_NAME
+from main.views import Auth, logout_user
 from main.models import *
 
 # UTILS -------------------------------------------------------------------------------------------------------------- #
 admin.site.site_title = PROJECT_NAME
 admin.site.site_header = PROJECT_NAME
 admin.site.index_title = _("Administration")
+
+admin.site.login = Auth.as_view()
+admin.site.logout = logout_user
 
 
 # CUSTOM FILTERS ----------------------------------------------------------------------------------------------------- #

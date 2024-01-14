@@ -1,0 +1,78 @@
+/* GENERAL */
+
+:root {
+    --white: #FFFFFF;
+    --light: #F5F5F5;
+    --bs-border-color: #DEE2E6;
+    --secondary: #CED4DA;
+    --text-secondary: #6C757D;
+    --dark: #212529;
+    --primary: #0D6EFD;
+    --pr-accent: #86B7FE;
+}
+
+*:focus {
+    box-shadow: none !important;
+}
+
+html,
+body {
+    background-color: var(--light);
+    height: 100%;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.form-floating > input + label:after {
+    background: none !important;
+}
+
+
+/* CUSTOM CONTAINER */
+
+.custom-container {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.custom-container header {
+    flex: 0 1 auto;
+    margin-top: 16px;
+    margin-bottom: 32px;
+}
+
+.custom-container main {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.custom-container main .inner {
+    align-self: center;
+    max-width: 500px;
+    padding: 0 16px 0 16px;
+}
+
+.custom-container footer {
+    flex: 0 1 auto;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+
+/* AUTH PAGE */
+
+.form-login {
+    width: 300px;
+    margin: auto;
+}
+
+.form-check .form-check-input {
+    float: none;
+    margin-left: 0;
+    padding-left: 0;
+}
