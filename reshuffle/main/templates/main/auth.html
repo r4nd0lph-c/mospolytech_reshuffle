@@ -36,7 +36,7 @@
             <!-- auth form START -->
             <form method="post" class="form-login">
                 {% csrf_token %}
-                <h3 class="fw-normal mb-3"> {% trans "Log in" %} </h3>
+                <h3 class="fw-normal mb-3"> {% trans "Authorization" %} </h3>
                 <div class="form-floating mb-2">
                     {{ form.username }}
                     <label for="{{ form.username.id_for_label }}"> {{ form.username.label }} </label>
@@ -52,8 +52,8 @@
                         {{ form.remember_me.label }}
                     </label>
                 </div>
-                <button class="btn btn-primary" style="min-width: 152px" type="submit">
-                    {% trans "Authorization" %}
+                <button class="btn btn-primary" style="min-width: 152px;" type="submit">
+                    {% trans "Log in" %}
                 </button>
             </form>
             <!-- auth form END -->
@@ -64,7 +64,7 @@
     <!--footer START -->
     <footer>
         <a href="#" data-bs-toggle="modal" data-bs-target="#feedback_modal">
-            {% trans "Having problems" %}?
+            {% trans "Having problems?" %}
         </a>
     </footer>
     <!--footer END -->
@@ -74,11 +74,11 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="feedback_modal_label">{% trans "Having problems" %}?</h5>
+                    <h5 class="modal-title" id="feedback_modal_label">{% trans "Having problems?" %}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-start">
-                    {# TODO: add help info #}
+                    {# TODO: add dynamic help info #}
                 </div>
             </div>
         </div>

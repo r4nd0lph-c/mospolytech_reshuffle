@@ -1,10 +1,10 @@
 from django.utils.translation import gettext_lazy as _
-from django.http import HttpResponseNotFound, JsonResponse
+from django.http import JsonResponse
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from reshuffle.settings import PROJECT_NAME
 from main.forms import *
@@ -17,9 +17,11 @@ class Index(LoginRequiredMixin, TemplateView):
     login_url = reverse_lazy("auth")
 
     def get_context_data(self, **kwargs):
+        r = self.request
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Main") + " | " + PROJECT_NAME
+        context["user_full_name"] = r.user.get_full_name() if r.user.get_full_name() else r.user.username
         return context
 
 
@@ -98,4 +100,13 @@ def validation_task(request):
 
 # ERRORS ------------------------------------------------------------------------------------------------------------- #
 def page_not_found(request, exception):
-    return HttpResponseNotFound("Error 404")
+    response = render(
+        request,
+        "main/404.html",
+        {
+            "project_name": PROJECT_NAME.upper(),
+            "title": _("Page not Found") + " | " + PROJECT_NAME
+        }
+    )
+    response.status_code = 404
+    return response
