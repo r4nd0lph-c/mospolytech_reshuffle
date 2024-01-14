@@ -1,7 +1,10 @@
 from django.urls import path
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.generic import RedirectView
 from main.views import *
 
 urlpatterns = [
+    path("favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("main/img/favicons/favicon.ico"))),
     path("", Index.as_view(), name="index"),
     path("auth/", Auth.as_view(redirect_authenticated_user=True), name="auth"),
     path("logout/", logout_user, name="logout"),
