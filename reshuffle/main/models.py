@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.contrib.auth.models import Group
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
@@ -285,5 +286,26 @@ class DocHeader(AbstractDatestamp):
         verbose_name = _("Document header")
         verbose_name_plural = " " * 5 + _("Document headers")
 
+
 # MODERATION --------------------------------------------------------------------------------------------------------- #
-# ...
+class Access(AbstractDatestamp):
+    group = models.ForeignKey(
+        Group,
+        on_delete=models.CASCADE,
+        help_text=_("Group for which access to subjects is granted"),
+        verbose_name=_("Group")
+    )
+    subject = models.ForeignKey(
+        Subject,
+        on_delete=models.CASCADE,
+        help_text=_("One of the subjects that will be available for interaction by the selected group"),
+        verbose_name=_("Subject")
+    )
+
+    def __str__(self):
+        return f"ID: {self.id} ({self.group})"
+
+    class Meta:
+        app_label = "auth"
+        verbose_name = _("Access")
+        verbose_name_plural = _("Accesses")

@@ -18,6 +18,13 @@ admin.site.login = Auth.as_view()
 admin.site.logout = logout_user
 
 
+def get_accesses(groups):
+    accesses = []
+    for g in groups:
+        accesses += [a.subject.id for a in Access.objects.filter(group=g)]
+    return accesses
+
+
 # CUSTOM FILTERS ----------------------------------------------------------------------------------------------------- #
 class InstAvailableFilter(admin.SimpleListFilter):
     title = _("Instruction available")
@@ -105,11 +112,21 @@ class PartAdmin(admin.ModelAdmin):
     inst_available.boolean = True
     inst_available.short_description = _("Instruction")
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        groups = request.user.groups.all()
+        if request.user.is_superuser or not groups.exists():
+            return qs
+        return qs.filter(subject__id__in=get_accesses(groups))
+
     def get_form(self, request, obj: "Part" = None, **kwargs):
         form = super(PartAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields["subject"].widget.can_change_related = False
         form.base_fields["subject"].widget.can_add_related = False
         form.base_fields["subject"].widget.can_view_related = False
+        groups = request.user.groups.all()
+        if not request.user.is_superuser or groups.exists():
+            form.base_fields["subject"].queryset = Subject.objects.filter(id__in=get_accesses(groups))
         return form
 
     class Media:
@@ -133,11 +150,21 @@ class TaskAdmin(admin.ModelAdmin):
 
     pretty_content.short_description = Task._meta.get_field("content").verbose_name
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        groups = request.user.groups.all()
+        if request.user.is_superuser or not groups.exists():
+            return qs
+        return qs.filter(part__subject__id__in=get_accesses(groups))
+
     def get_form(self, request, obj: "Task" = None, **kwargs):
         form = super(TaskAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields["part"].widget.can_change_related = False
         form.base_fields["part"].widget.can_add_related = False
         form.base_fields["part"].widget.can_view_related = False
+        groups = request.user.groups.all()
+        if not request.user.is_superuser or groups.exists():
+            form.base_fields["part"].queryset = Part.objects.filter(subject__id__in=get_accesses(groups))
         return form
 
     class Media:
@@ -156,6 +183,20 @@ class OptionAdmin(admin.ModelAdmin):
     autocomplete_fields = ("task",)
     search_fields = ("task__id",)
     search_help_text = _("The search is performed by task ID")
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        groups = request.user.groups.all()
+        if request.user.is_superuser or not groups.exists():
+            return qs
+        return qs.filter(task__part__subject__id__in=get_accesses(groups))
+
+    def get_form(self, request, obj: "Option" = None, **kwargs):
+        form = super(OptionAdmin, self).get_form(request, obj, **kwargs)
+        groups = request.user.groups.all()
+        if not request.user.is_superuser or groups.exists():
+            form.base_fields["task"].queryset = Task.objects.filter(part__subject__id__in=get_accesses(groups))
+        return form
 
     def pretty_content(self, obj: "Option"):
         return mark_safe(f"<div class='td_content'> {obj.content} </div>")
@@ -196,5 +237,11 @@ class DocHeaderAdmin(admin.ModelAdmin):
         }
         js = ("admin/js/ckeditor_modification.js",)
 
+
 # MODERATION --------------------------------------------------------------------------------------------------------- #
-# ...
+@admin.register(Access)
+class AccessAdmin(admin.ModelAdmin):
+    list_display = ("id", "group", "subject", "created", "updated",)
+    list_display_links = ("id",)
+    ordering = ("group", "subject",)
+    list_filter = (("group", admin.RelatedOnlyFieldListFilter), ("subject", admin.RelatedOnlyFieldListFilter),)

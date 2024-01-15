@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 17:04+0300\n"
-"PO-Revision-Date: 2024-01-14 17:04+0300\n"
+"POT-Creation-Date: 2024-01-15 15:52+0300\n"
+"PO-Revision-Date: 2024-01-15 15:52+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -24,40 +24,40 @@ msgstr ""
 msgid "Administration"
 msgstr "Администрация"
 
-#: .\main\admin.py:23
+#: .\main\admin.py:30
 msgid "Instruction available"
 msgstr "Наличие инструкции"
 
-#: .\main\admin.py:28
+#: .\main\admin.py:35
 msgid "Yes"
 msgstr "Да"
 
-#: .\main\admin.py:29
+#: .\main\admin.py:36
 msgid "No"
 msgstr "Нет"
 
-#: .\main\admin.py:43 .\main\admin.py:77 .\main\models.py:63
-#: .\main\models.py:99
+#: .\main\admin.py:50 .\main\admin.py:84 .\main\models.py:64
+#: .\main\models.py:100 .\main\models.py:302
 msgid "Subject"
 msgstr "Предмет"
 
-#: .\main\admin.py:46
+#: .\main\admin.py:53
 msgid "Additional options"
 msgstr "Дополнительные опции"
 
-#: .\main\admin.py:50 .\main\admin.py:65 .\main\admin.py:83 .\main\admin.py:106
+#: .\main\admin.py:57 .\main\admin.py:72 .\main\admin.py:90 .\main\admin.py:113
 msgid "Instruction"
 msgstr "Инструкция"
 
-#: .\main\admin.py:80
+#: .\main\admin.py:87
 msgid "Main options"
 msgstr "Основные опции"
 
-#: .\main\admin.py:98
+#: .\main\admin.py:105
 msgid "Cells"
 msgstr "Ячейки"
 
-#: .\main\admin.py:129 .\main\admin.py:158
+#: .\main\admin.py:146 .\main\admin.py:185
 msgid "The search is performed by task ID"
 msgstr "Поиск осуществляется по ID задания"
 
@@ -77,128 +77,128 @@ msgstr "Пароль"
 msgid "Remember me"
 msgstr "Запомнить меня"
 
-#: .\main\models.py:11
+#: .\main\models.py:12
 msgid "Easy"
 msgstr "Лёгкое"
 
-#: .\main\models.py:12
+#: .\main\models.py:13
 msgid "Medium"
 msgstr "Среднее"
 
-#: .\main\models.py:13
+#: .\main\models.py:14
 msgid "Hard"
 msgstr "Сложное"
 
-#: .\main\models.py:18
+#: .\main\models.py:19
 msgid "Date created"
 msgstr "Дата создания"
 
-#: .\main\models.py:19
+#: .\main\models.py:20
 msgid "Date updated"
 msgstr "Дата обновления"
 
-#: .\main\models.py:33
+#: .\main\models.py:34
 msgid "Title of the subject (nominative case)"
 msgstr "Название предмета (именительный падеж)"
 
-#: .\main\models.py:34 .\main\models.py:45 .\main\models.py:104
+#: .\main\models.py:35 .\main\models.py:46 .\main\models.py:105
 msgid "Title"
 msgstr "Название"
 
-#: .\main\models.py:36
+#: .\main\models.py:37
 msgid "Genitive case"
 msgstr "Родительный падеж"
 
-#: .\main\models.py:37
+#: .\main\models.py:38
 msgid "Dative case"
 msgstr "Дательный падеж"
 
-#: .\main\models.py:38
+#: .\main\models.py:39
 msgid "Accusative case"
 msgstr "Винительный падеж"
 
-#: .\main\models.py:39
+#: .\main\models.py:40
 msgid "Instrumental case"
 msgstr "Творительный падеж"
 
-#: .\main\models.py:40
+#: .\main\models.py:41
 msgid "Prepositional case"
 msgstr "Предложный падеж"
 
-#: .\main\models.py:43
+#: .\main\models.py:44
 msgid "Instruction for work performance"
 msgstr "Инструкция по выполнению работы"
 
-#: .\main\models.py:44
+#: .\main\models.py:45
 msgid "Title of the instruction"
 msgstr "Название инструкции"
 
-#: .\main\models.py:50
+#: .\main\models.py:51
 msgid "List of general rules for work performance (without specific parts)"
 msgstr "Список общих правил выполнения работы (без специфики частей)"
 
-#: .\main\models.py:51 .\main\models.py:124 .\main\models.py:195
-#: .\main\models.py:239 .\main\models.py:260
+#: .\main\models.py:52 .\main\models.py:125 .\main\models.py:196
+#: .\main\models.py:240 .\main\models.py:261
 msgid "Content"
 msgstr "Содержание"
 
-#: .\main\models.py:55
+#: .\main\models.py:56
 msgid "Determines if this subject is available in the test generation list"
 msgstr "Определяет, виден ли этот предмет в списке генерации тестов"
 
-#: .\main\models.py:56 .\main\models.py:205 .\main\models.py:265
+#: .\main\models.py:57 .\main\models.py:206 .\main\models.py:266
 msgid "Activity"
 msgstr "Активность"
 
-#: .\main\models.py:64
+#: .\main\models.py:65
 msgid "Subjects"
 msgstr "Предметы"
 
-#: .\main\models.py:70
+#: .\main\models.py:71
 msgid "A"
 msgstr "А"
 
-#: .\main\models.py:71
+#: .\main\models.py:72
 msgid "B"
 msgstr "Б"
 
-#: .\main\models.py:72
+#: .\main\models.py:73
 msgid "C"
 msgstr "В"
 
-#: .\main\models.py:73
+#: .\main\models.py:74
 msgid "D"
 msgstr "Г"
 
-#: .\main\models.py:76
+#: .\main\models.py:77
 msgid "Tasks with answer choice"
 msgstr "Задания с вариантом ответа"
 
-#: .\main\models.py:77
+#: .\main\models.py:78
 msgid "Tasks with short answer writing"
 msgstr "Задания с кратким ответом"
 
-#: .\main\models.py:82 .\main\models.py:83
+#: .\main\models.py:83 .\main\models.py:84
 msgid "Select a subject to enable this field"
 msgstr "Сначала выберите предмет, чтобы разблокировать это поле"
 
-#: .\main\models.py:84
+#: .\main\models.py:85
 msgid "Select a type of tasks to enable this field"
 msgstr "Сначала выберите тип заданий, чтобы разблокировать это поле"
 
-#: .\main\models.py:85
+#: .\main\models.py:86
 msgid "Select a count of tasks to enable this field"
 msgstr "Сначала выберите количество заданий, чтобы разблокировать это поле"
 
-#: .\main\models.py:88
+#: .\main\models.py:89
 msgid "Reserved title(s)"
 msgstr "Зарезервированные названия"
 
-#: .\main\models.py:89
+#: .\main\models.py:90
 msgid "Select a type of tasks in the part"
 msgstr "Выберите тип заданий для части"
 
-#: .\main\models.py:90
+#: .\main\models.py:91
 msgid ""
 "Available count of tasks taking into account the previous parts and the "
 "selected task type"
@@ -206,127 +206,149 @@ msgstr ""
 "Доступное количество заданий с учётом предыдущих частей и выбранного типа "
 "заданий"
 
-#: .\main\models.py:91
+#: .\main\models.py:92
 msgid "The recommended difficulty is set, difficulty range"
 msgstr "Установлена рекомендуемая сложность, диапазон сложности"
 
-#: .\main\models.py:98
+#: .\main\models.py:99
 msgid "Subject to which the part belongs"
 msgstr "Предмет, к которому относится часть"
 
-#: .\main\models.py:109
+#: .\main\models.py:110
 msgid "Type of tasks"
 msgstr "Тип заданий"
 
-#: .\main\models.py:114 .\main\models.py:226
+#: .\main\models.py:115 .\main\models.py:227
 msgid "Tasks"
 msgstr "Задания"
 
-#: .\main\models.py:118 .\main\models.py:200
+#: .\main\models.py:119 .\main\models.py:201
 msgid "Difficulty"
 msgstr "Сложность"
 
-#: .\main\models.py:123
+#: .\main\models.py:124
 msgid "List of rules for performing the tasks of this part"
 msgstr "Список правил для выполнения заданий данной части"
 
-#: .\main\models.py:138
+#: .\main\models.py:139
 msgid "Available title(s)"
 msgstr "Доступные названия"
 
-#: .\main\models.py:150 .\main\models.py:160 .\main\models.py:214
+#: .\main\models.py:151 .\main\models.py:161 .\main\models.py:215
 msgid "Invalid value"
 msgstr "Недопустимое значение"
 
-#: .\main\models.py:168 .\main\models.py:171 .\main\models.py:185
+#: .\main\models.py:169 .\main\models.py:172 .\main\models.py:186
 msgid "Part"
 msgstr "Часть"
 
-#: .\main\models.py:172
+#: .\main\models.py:173
 msgid "Parts"
 msgstr "Части"
 
-#: .\main\models.py:177
+#: .\main\models.py:178
 msgid "Select a part to enable this field"
 msgstr "Сначала выберите часть, чтобы разблокировать это поле"
 
-#: .\main\models.py:178
+#: .\main\models.py:179
 msgid "Order number of the task in the part, range of valid positions"
 msgstr "Порядковый номер задания в части, диапазон допустимых позиций"
 
-#: .\main\models.py:184
+#: .\main\models.py:185
 msgid "Subject and part to which the task relates"
 msgstr "Предмет и часть, к которым относится задание"
 
-#: .\main\models.py:190
+#: .\main\models.py:191
 msgid "Position"
 msgstr "Порядковый номер"
 
-#: .\main\models.py:194
+#: .\main\models.py:195
 msgid "The essence of the task"
 msgstr "Суть задания"
 
-#: .\main\models.py:199
+#: .\main\models.py:200
 msgid "Difficulty of the task relative to other tasks of the same order number"
 msgstr ""
 "Сложность задания относительно других заданий того же порядкового номера"
 
-#: .\main\models.py:204
+#: .\main\models.py:205
 msgid "Determines if this task is included in document generation"
 msgstr "Определяет, включено ли это задание в генерацию документов"
 
-#: .\main\models.py:225 .\main\models.py:234
+#: .\main\models.py:226 .\main\models.py:235
 msgid "Task"
 msgstr "Задание"
 
-#: .\main\models.py:233
+#: .\main\models.py:234
 msgid "Task to which the option relates"
 msgstr "Задание, к которому относится вариант ответа"
 
-#: .\main\models.py:238
+#: .\main\models.py:239
 msgid "The essence of the option"
 msgstr "Суть варианта ответа"
 
-#: .\main\models.py:243
+#: .\main\models.py:244
 msgid "Determines if this option is the correct answer"
 msgstr "Определяет, является ли данный вариант ответа правильным"
 
-#: .\main\models.py:244
+#: .\main\models.py:245
 msgid "Correct answer"
 msgstr "Правильный ответ"
 
-#: .\main\models.py:251
+#: .\main\models.py:252
 msgid "Option"
 msgstr "Вариант ответа"
 
-#: .\main\models.py:252
+#: .\main\models.py:253
 msgid "Options"
 msgstr "Варианты ответа"
 
-#: .\main\models.py:259
+#: .\main\models.py:260
 msgid "Information about the institution organizing the testing"
 msgstr "Информация об учреждении, организующем тестирование"
 
-#: .\main\models.py:264
+#: .\main\models.py:265
 msgid "Only one active document header can exist at a time"
 msgstr ""
 "Одновременно может существовать только один активный заголовок документа"
 
-#: .\main\models.py:281
+#: .\main\models.py:282
 msgid "Active"
 msgstr "Активен"
 
-#: .\main\models.py:281
+#: .\main\models.py:282
 msgid "Inactive"
 msgstr "Неактивен"
 
-#: .\main\models.py:285
+#: .\main\models.py:286
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:286
+#: .\main\models.py:287
 msgid "Document headers"
 msgstr "Заголовки документа"
+
+#: .\main\models.py:295
+msgid "Group for which access to subjects is granted"
+msgstr "Группа, для которой предоставляется доступ к предметам"
+
+#: .\main\models.py:296
+msgid "Group"
+msgstr "Группа"
+
+#: .\main\models.py:301
+msgid ""
+"One of the subjects that will be available for interaction by the selected "
+"group"
+msgstr "Один из предметов, который будет доступен для взаимодействия выбранной группе"
+
+#: .\main\models.py:310
+msgid "Access"
+msgstr "Право доступа"
+
+#: .\main\models.py:311
+msgid "Accesses"
+msgstr "Права доступа"
 
 #: .\main\templates\main\404.html:17 .\main\views.py:108
 msgid "Page not Found"
@@ -337,9 +359,11 @@ msgid ""
 "The page you are looking for may have been deleted, <br>renamed, or just "
 "temporarily\n"
 "                    unavailable."
-msgstr "Возможно, искомая страница была удалена, <br>переименована или просто временно недоступна."
+msgstr ""
+"Возможно, искомая страница была удалена, <br>переименована или просто "
+"временно недоступна."
 
-#: .\main\templates\main\404.html:22
+#: .\main\templates\main\404.html:23
 msgid "To Main page"
 msgstr "На Главную"
 
