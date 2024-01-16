@@ -129,8 +129,8 @@ class Part(AbstractDatestamp):
         # title
         amount = Part.AMOUNT
         titles_available = Part.TITLES.copy()
-        exception = Part.objects.get(pk=self.id).title if self.id else -1
-        for part in Part.objects.filter(subject__pk=self.subject_id):
+        exception = Part.objects.get(id=self.id).title if self.id else -1
+        for part in Part.objects.filter(subject__id=self.subject_id):
             if part.title != exception:
                 del titles_available[part.title]
                 amount -= ceil(part.task_count / Part.CAPACITIES[part.answer_type])
@@ -210,7 +210,7 @@ class Task(AbstractDatestamp):
         # position
         if not self.position:
             raise ValidationError({})
-        if not (1 <= self.position <= Part.objects.get(pk=self.part.pk).task_count):
+        if not (1 <= self.position <= Part.objects.get(id=self.part.id).task_count):
             raise ValidationError({
                 "position": _("Invalid value") + "."
             })
@@ -273,9 +273,9 @@ class DocHeader(AbstractDatestamp):
 
     def delete(self, *args, **kwargs):
         qs = type(self).objects.order_by("-updated")
-        qs = qs.exclude(pk=self.pk)
+        qs = qs.exclude(id=self.id)
         if qs:
-            qs.filter(pk=qs[0].pk).update(is_active=True)
+            qs.filter(id=qs[0].id).update(is_active=True)
         super().delete(*args, **kwargs)
 
     def __str__(self):
