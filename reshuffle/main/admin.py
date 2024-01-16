@@ -224,7 +224,7 @@ class DocHeaderAdmin(admin.ModelAdmin):
 
     def delete_queryset(self, request, qs):
         if qs.filter(is_active=True):
-            qs_remaining = DocHeader.objects.order_by("-updated").exclude(pk__in=qs.values("pk"))
+            qs_remaining = DocHeader.objects.order_by("-updated").exclude(id__in=qs.values("id"))
             if qs_remaining:
                 obj = qs_remaining[0]
                 obj.is_active = True
