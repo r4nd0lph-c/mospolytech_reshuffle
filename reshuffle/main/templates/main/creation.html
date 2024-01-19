@@ -11,23 +11,17 @@
     <!-- header END -->
 
     <!-- main START -->
-    <main>
+    <main class="content">
         <div class="inner">
-            <h1 style="font-size: calc(10em + 4vw);"> 4<span style="color: var(--primary);">0</span>4 </h1>
-            <h2 class="mb-3">{% trans "Page not Found" %}</h2>
-            <p class="mb-5">
-                {% blocktranslate %}The page you are looking for may have been deleted, <br>renamed, or just temporarily
-                    unavailable.{% endblocktranslate %}
-            </p>
-            <a href="{% url 'index' %}" class="btn btn-primary align-self-center mb-4" style="min-width: 152px;">
-                {% trans "To main page" %}
-            </a>
+
         </div>
     </main>
     <!-- main END -->
 
     <!--footer START -->
-    <footer></footer>
+    <footer>
+        <a href="{% url 'index' %}"> {% trans "To main page" %} </a>
+    </footer>
     <!--footer END -->
 {% endblock %}
 

@@ -12,19 +12,6 @@ from main.models import *
 
 
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
-class Index(LoginRequiredMixin, TemplateView):
-    template_name = "main/index.html"
-    login_url = reverse_lazy("auth")
-
-    def get_context_data(self, **kwargs):
-        r = self.request
-        context = super().get_context_data(**kwargs)
-        context["project_name"] = PROJECT_NAME.upper()
-        context["title"] = _("Main") + " | " + PROJECT_NAME
-        context["user_full_name"] = r.user.get_full_name() if r.user.get_full_name() else r.user.username
-        return context
-
-
 class Auth(LoginView):
     form_class = AuthForm
     template_name = "main/auth.html"
@@ -44,6 +31,31 @@ class Auth(LoginView):
 
     def get_success_url(self):
         return reverse_lazy("index")
+
+
+class Index(LoginRequiredMixin, TemplateView):
+    template_name = "main/index.html"
+    login_url = reverse_lazy("auth")
+
+    def get_context_data(self, **kwargs):
+        r = self.request
+        context = super().get_context_data(**kwargs)
+        context["project_name"] = PROJECT_NAME.upper()
+        context["title"] = _("Main") + " | " + PROJECT_NAME
+        context["user_full_name"] = r.user.get_full_name() if r.user.get_full_name() else r.user.username
+        return context
+
+
+class Creation(LoginRequiredMixin, TemplateView):
+    template_name = "main/creation.html"
+    login_url = reverse_lazy("auth")
+
+    def get_context_data(self, **kwargs):
+        r = self.request
+        context = super().get_context_data(**kwargs)
+        context["project_name"] = PROJECT_NAME.upper()
+        context["title"] = _("Creation") + " | " + PROJECT_NAME
+        return context
 
 
 def logout_user(request):

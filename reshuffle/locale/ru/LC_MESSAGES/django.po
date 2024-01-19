@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-15 15:52+0300\n"
-"PO-Revision-Date: 2024-01-15 15:52+0300\n"
+"POT-Creation-Date: 2024-01-19 12:57+0300\n"
+"PO-Revision-Date: 2024-01-19 12:57+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -61,7 +61,7 @@ msgstr "Ячейки"
 msgid "The search is performed by task ID"
 msgstr "Поиск осуществляется по ID задания"
 
-#: .\main\apps.py:8 .\main\views.py:23
+#: .\main\apps.py:8 .\main\views.py:44
 msgid "Main"
 msgstr "Главная"
 
@@ -340,7 +340,8 @@ msgstr "Группа"
 msgid ""
 "One of the subjects that will be available for interaction by the selected "
 "group"
-msgstr "Один из предметов, который будет доступен для взаимодействия выбранной группе"
+msgstr ""
+"Один из предметов, который будет доступен для взаимодействия выбранной группе"
 
 #: .\main\models.py:310
 msgid "Access"
@@ -350,7 +351,7 @@ msgstr "Право доступа"
 msgid "Accesses"
 msgstr "Права доступа"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:108
+#: .\main\templates\main\404.html:17 .\main\views.py:120
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -363,9 +364,9 @@ msgstr ""
 "Возможно, искомая страница была удалена, <br>переименована или просто "
 "временно недоступна."
 
-#: .\main\templates\main\404.html:23
-msgid "To Main page"
-msgstr "На Главную"
+#: .\main\templates\main\404.html:23 .\main\templates\main\creation.html:23
+msgid "To main page"
+msgstr "На главную"
 
 #: .\main\templates\main\auth.html:23
 #, python-format
@@ -399,9 +400,13 @@ msgstr "Вы вошли как <b>%(user_full_name)s</b>"
 msgid "Log out"
 msgstr "Выйти"
 
-#: .\main\views.py:35
+#: .\main\views.py:22
 msgid "Auth"
 msgstr "Авторизация"
+
+#: .\main\views.py:57
+msgid "Creation"
+msgstr "Создание"
 
 #: .\templates\admin\base_site.html:23
 msgid "Django site admin"
