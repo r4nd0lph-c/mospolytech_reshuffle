@@ -1,3 +1,5 @@
+# TODO: add max_length for DocHeader.content (RichTextField)
+
 from math import ceil
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator

@@ -32,8 +32,28 @@ class GeneratorXLSX:
     ...
     """
 
-    def __init__(self) -> None:
+    __BASE_PATH = os.path.join(MEDIA_ROOT, "base", "sheets.xlsx")
+    __WS_NAME = "blank"
+
+    def __init__(self, custom_base_path: str = None) -> None:
+        self.__wb_path = custom_base_path if custom_base_path else self.__BASE_PATH
+        self.__wb = openpyxl.load_workbook(self.__wb_path)
+        self.__ws = self.__wb[self.__WS_NAME]
+
+    def sample(self, doc_header: str, sbj_title: str) -> None:
         pass
+
+    def reproduce(self, unique_key: str) -> None:
+        pass
+
+    def save(self, path: str) -> None:
+        if path != self.__wb_path:
+            self.__wb.save(path)
+        else:
+            raise ValueError(
+                f"The name of the destination file ({path}) "
+                f"cannot be the same as the name of the source file ({self.__wb_path})."
+            )
 
 
 class GeneratorDOCX:
@@ -52,15 +72,17 @@ class DocumentPackager:
 
     __UNIQUE_KEY_LENGTH = 6
     __OUTPUT_PATH = os.path.join(MEDIA_ROOT, "docs")
-    __OUTPUT_DATA = "data.json"
+    __OUTPUT_JSON = "data.json"
+    __OUTPUT_XLSX = "sheets.xlsx"
 
-    def __init__(self, subject: int, date: str) -> None:
-        self.subject = subject
-        self.date = date
+    def __init__(self, sbj_id: int, date: str) -> None:
+        self.__sbj_id = sbj_id
+        self.__sbj_title = Subject.objects.get(id=sbj_id).sbj_title
+        self.__date = date
 
     def __create_folder(self) -> str:
         date = datetime.today().strftime("%d-%m-%Y_%H-%M-%S")
-        folder = os.path.join(self.__OUTPUT_PATH, f"[{Subject.objects.get(id=self.subject).sbj_title}][{date}]")
+        folder = os.path.join(self.__OUTPUT_PATH, f"[{self.__sbj_title}][{date}]")
         if not os.path.exists(folder):
             os.makedirs(folder)
         return folder
@@ -80,11 +102,11 @@ class DocumentPackager:
             result.append(uk.create())
         return set(result)
 
-    def __collect_data(self) -> dict:
+    def __collect_parts(self) -> list:
         # init result
-        result = {"subject": Subject.objects.get(id=self.subject).sbj_title, "parts": []}
+        result = []
         # populate result with parts
-        for part in Part.objects.filter(subject__id=self.subject):
+        for part in Part.objects.filter(subject__id=self.__sbj_id):
             # create part's info
             info = {
                 "id": part.id,
@@ -122,27 +144,34 @@ class DocumentPackager:
                         "content": task.content,
                         "options": [{"id": o.id, "content": o.content, "is_answer": o.is_answer} for o in options]
                     })
-            # add info & material to result's parts
-            result["parts"].append({"info": info, "material": material})
+            # add part's info & material to result
+            result.append({"info": info, "material": material})
         # return populated result
         return result
 
     def generate(self, count: int) -> str:
         # create output folder
         folder = self.__create_folder()
-        # init JSON data
-        data = {"date": self.date, "doc_header": DocHeader.objects.filter(is_active=True)[0].content, "variants": []}
-        # populate JSON data
+        # init [JSON | XLSX]
+        data = {
+            "subject": self.__sbj_title,
+            "date": self.__date,
+            "doc_header": DocHeader.objects.filter(is_active=True)[0].content,
+            "variants": []
+        }
+        gen_e = GeneratorXLSX()
+        # populate [JSON]
         for unique_key in self.__get_unique_keys(count):
-            data["variants"].append({"unique_key": unique_key} | self.__collect_data())
-        # save JSON data
-        with open(os.path.join(folder, self.__OUTPUT_DATA), "w", encoding="UTF-8") as f:
+            data["variants"].append({"unique_key": unique_key, "parts": self.__collect_parts()})
+        # save [JSON | XLSX]
+        with open(os.path.join(folder, self.__OUTPUT_JSON), "w", encoding="UTF-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
+        gen_e.save(os.path.join(folder, self.__OUTPUT_XLSX))
         # archive & delete output folder
         result = self.__archive_folder(folder)
         return result
 
 
 if __name__ == "__main__":
-    dg = DocumentPackager(subject=19, date="20.01.2024")
+    dg = DocumentPackager(sbj_id=19, date="20.01.2024")
     print(dg.generate(3))
