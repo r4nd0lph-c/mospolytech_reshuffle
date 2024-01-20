@@ -3,12 +3,14 @@ import shutil
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
 
 import django
+from django.utils.translation import gettext_lazy as _
 django.setup()
 from reshuffle.settings import MEDIA_ROOT
 from main.models import *
 
 import json
 import openpyxl
+import re
 from datetime import datetime
 from random import shuffle, choice, choices
 
@@ -39,12 +41,34 @@ class GeneratorXLSX:
         self.__wb_path = custom_base_path if custom_base_path else self.__BASE_PATH
         self.__wb = openpyxl.load_workbook(self.__wb_path)
         self.__ws = self.__wb[self.__WS_NAME]
+        self.__sample_created = False
 
-    def sample(self, doc_header: str, sbj_title: str) -> None:
-        pass
+    def get_sample_created(self) -> bool:
+        return self.__sample_created
+
+    def sample(self, sbj_title: str, date: str, doc_header: str, unique_key: str) -> None:
+        self.__sample_created = True
+        self.__ws.title = unique_key
+        self.__ws["A1"] = re.sub(re.compile("<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});"), "", doc_header)
+        self.__ws["A4"] = f"{sbj_title} – " + _("Entrance exams")
+        self.__ws["B7"] = str(_("Full name of applicant"))
+        self.__ws["B9"] = _("Personnel file") + " №"
+        self.__ws["D13"] = unique_key
+        self.__ws["B14"] = _("Variant") + " №"
+        self.__ws["P13"] = date
+        self.__ws["N14"] = str(_("Exam date"))
+        self.__ws["Z14"] = str(_("Signature of applicant"))
+        self.__ws["A16"] = f"{sbj_title} – " + _("Answer sheet")
+        self.__ws["A18"] = _("Variant") + f" № {unique_key}"
+        self.__ws["A63"] = str(_("Correcting wrong marks"))
+        self.__ws["A67"] = str(_("Results"))
+        self.__ws["A70"] = str(_("Total number of\ncorrectly solved problems"))
+        self.__ws["T70"] = str(_("Signature of examiner"))
 
     def reproduce(self, unique_key: str) -> None:
-        pass
+        self.__wb.copy_worksheet(self.__ws).title = unique_key
+        self.__wb[unique_key]["D13"] = unique_key
+        self.__wb[unique_key]["A18"] = _("Variant") + f" № {unique_key}"
 
     def save(self, path: str) -> None:
         if path != self.__wb_path:
@@ -159,14 +183,18 @@ class DocumentPackager:
             "doc_header": DocHeader.objects.filter(is_active=True)[0].content,
             "variants": []
         }
-        gen_e = GeneratorXLSX()
-        # populate [JSON]
+        gen_xlsx = GeneratorXLSX()
+        # populate [JSON | XLSX]
         for unique_key in self.__get_unique_keys(count):
             data["variants"].append({"unique_key": unique_key, "parts": self.__collect_parts()})
+            if not gen_xlsx.get_sample_created():
+                gen_xlsx.sample(data["subject"], data["date"], data["doc_header"], unique_key)
+            else:
+                gen_xlsx.reproduce(unique_key)
         # save [JSON | XLSX]
         with open(os.path.join(folder, self.__OUTPUT_JSON), "w", encoding="UTF-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
-        gen_e.save(os.path.join(folder, self.__OUTPUT_XLSX))
+        gen_xlsx.save(os.path.join(folder, self.__OUTPUT_XLSX))
         # archive & delete output folder
         result = self.__archive_folder(folder)
         return result
