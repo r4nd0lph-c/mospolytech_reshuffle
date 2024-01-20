@@ -86,7 +86,6 @@ class GeneratorXLSX:
         print(parts_splitted)
         # init answer sheet
         r_init, c_init = 19, 1
-        r_step = 11
         accum = 0
         for count, part in enumerate(parts_splitted):
             # update accum
@@ -107,14 +106,20 @@ class GeneratorXLSX:
                         self.__ws.cell(row=r_init + 3 + 2 * j, column=c_init + 3 + 2 * i).border = self.__BORDER_THIN
             # render part [type 1: 10]
             elif part["answer_type"] == 1:
-                # TODO: render
-                # answer nums
-                # ...
                 # answer titles & cells
-                # ...
-                pass
+                for i in range(part["task_count"]):
+                    self.__ws.cell(
+                        row=r_init + 1 + 2 * (i // 2),
+                        column=c_init + 1 + (32 * (i % 2)),
+                        value=f"{part['title']}{i + 1 + accum}"
+                    )
+                    for j in range(13):
+                        self.__ws.cell(
+                            row=r_init + 1 + 2 * (i // 2),
+                            column=c_init + 3 + (16 * (i % 2)) + j
+                        ).border = self.__BORDER_THIN
             # move render window
-            r_init += r_step
+            r_init += 11
 
     def reproduce(self, unique_key: str) -> None:
         # copy sample & change title
@@ -264,5 +269,5 @@ class DocumentPackager:
 
 
 if __name__ == "__main__":
-    dg = DocumentPackager(sbj_id=19, date="20.01.2024")
+    dg = DocumentPackager(sbj_id=3, date="20.01.2024")
     print(dg.generate(3))
