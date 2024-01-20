@@ -10,6 +10,7 @@ from main.models import *
 
 import json
 import openpyxl
+from openpyxl.styles.borders import Border, Side
 import re
 from datetime import datetime
 from random import shuffle, choice, choices
@@ -37,6 +38,13 @@ class GeneratorXLSX:
     __BASE_PATH = os.path.join(MEDIA_ROOT, "base", "sheets.xlsx")
     __WS_NAME = "blank"
 
+    __BORDER_THIN = Border(
+        left=Side(style="thin"),
+        right=Side(style="thin"),
+        top=Side(style="thin"),
+        bottom=Side(style="thin")
+    )
+
     def __init__(self, custom_base_path: str = None) -> None:
         self.__wb_path = custom_base_path if custom_base_path else self.__BASE_PATH
         self.__wb = openpyxl.load_workbook(self.__wb_path)
@@ -46,8 +54,10 @@ class GeneratorXLSX:
     def get_sample_created(self) -> bool:
         return self.__sample_created
 
-    def sample(self, sbj_title: str, date: str, doc_header: str, unique_key: str) -> None:
+    def sample(self, sbj_title: str, date: str, doc_header: str, unique_key: str, parts: list) -> None:
+        # change sample_created flag
         self.__sample_created = True
+        # init labels fields
         self.__ws.title = unique_key
         self.__ws["A1"] = re.sub(re.compile("<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});"), "", doc_header)
         self.__ws["A4"] = f"{sbj_title} – " + _("Entrance exams")
@@ -64,9 +74,52 @@ class GeneratorXLSX:
         self.__ws["A67"] = str(_("Results"))
         self.__ws["A70"] = str(_("Total number of\ncorrectly solved problems"))
         self.__ws["T70"] = str(_("Signature of examiner"))
+        # split parts for correct render
+        parts_splitted = []
+        for part in parts:
+            while part["task_count"] // Part.CAPACITIES[part["answer_type"]] > 0:
+                parts_splitted.append(part.copy())
+                parts_splitted[-1]["task_count"] = Part.CAPACITIES[part["answer_type"]]
+                part["task_count"] -= Part.CAPACITIES[part["answer_type"]]
+            if part["task_count"]:
+                parts_splitted.append(part.copy())
+        print(parts_splitted)
+        # init answer sheet
+        r_init, c_init = 19, 1
+        r_step = 11
+        accum = 0
+        for count, part in enumerate(parts_splitted):
+            # update accum
+            if count and part["title"] == parts_splitted[count - 1]["title"]:
+                accum += Part.CAPACITIES[part["answer_type"]]
+            else:
+                accum = 0
+            # render part [type 0: 15]
+            if part["answer_type"] == 0:
+                # answer nums
+                for i in range(4):
+                    for j in (1, 33):
+                        self.__ws.cell(row=r_init + 3 + 2 * i, column=c_init + j, value=str((i + 1)))
+                # answer titles & cells
+                for i in range(part["task_count"]):
+                    self.__ws.cell(row=r_init + 1, column=c_init + 3 + 2 * i, value=f"{part['title']}{i + 1 + accum}")
+                    for j in range(4):
+                        self.__ws.cell(row=r_init + 3 + 2 * j, column=c_init + 3 + 2 * i).border = self.__BORDER_THIN
+            # render part [type 1: 10]
+            elif part["answer_type"] == 1:
+                # TODO: render
+                # answer nums
+                # ...
+                # answer titles & cells
+                # ...
+                pass
+            # move render window
+            r_init += r_step
 
     def reproduce(self, unique_key: str) -> None:
+        # copy sample & change title
         self.__wb.copy_worksheet(self.__ws).title = unique_key
+        # change labels fields
         self.__wb[unique_key]["D13"] = unique_key
         self.__wb[unique_key]["A18"] = _("Variant") + f" № {unique_key}"
 
@@ -106,7 +159,7 @@ class DocumentPackager:
 
     def __create_folder(self) -> str:
         date = datetime.today().strftime("%d-%m-%Y_%H-%M-%S")
-        folder = os.path.join(self.__OUTPUT_PATH, f"[{self.__sbj_title}][{date}]")
+        folder = os.path.join(self.__OUTPUT_PATH, f"[{date}][{self.__sbj_title}]")
         if not os.path.exists(folder):
             os.makedirs(folder)
         return folder
@@ -188,7 +241,17 @@ class DocumentPackager:
         for unique_key in self.__get_unique_keys(count):
             data["variants"].append({"unique_key": unique_key, "parts": self.__collect_parts()})
             if not gen_xlsx.get_sample_created():
-                gen_xlsx.sample(data["subject"], data["date"], data["doc_header"], unique_key)
+                gen_xlsx.sample(
+                    data["subject"],
+                    data["date"],
+                    data["doc_header"],
+                    unique_key,
+                    [{
+                        "title": p["info"]["title"],
+                        "answer_type": p["info"]["answer_type"],
+                        "task_count": p["info"]["task_count"]
+                    } for p in data["variants"][0]["parts"]]
+                )
             else:
                 gen_xlsx.reproduce(unique_key)
         # save [JSON | XLSX]
