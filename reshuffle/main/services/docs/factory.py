@@ -11,6 +11,7 @@ from main.models import *
 import json
 import openpyxl
 from openpyxl.styles.borders import Border, Side
+from openpyxl.styles import Font
 import re
 from datetime import datetime
 from random import shuffle, choice, choices
@@ -83,7 +84,6 @@ class GeneratorXLSX:
                 part["task_count"] -= Part.CAPACITIES[part["answer_type"]]
             if part["task_count"]:
                 parts_splitted.append(part.copy())
-        print(parts_splitted)
         # init answer sheet
         r_init, c_init = 19, 1
         accum = 0
@@ -98,12 +98,23 @@ class GeneratorXLSX:
                 # answer nums
                 for i in range(4):
                     for j in (1, 33):
-                        self.__ws.cell(row=r_init + 3 + 2 * i, column=c_init + j, value=str((i + 1)))
+                        self.__ws.cell(
+                            row=r_init + 3 + 2 * i,
+                            column=c_init + j,
+                            value=str((i + 1))
+                        ).font = Font(name="Gilroy", size=8, bold=True)
                 # answer titles & cells
                 for i in range(part["task_count"]):
-                    self.__ws.cell(row=r_init + 1, column=c_init + 3 + 2 * i, value=f"{part['title']}{i + 1 + accum}")
+                    self.__ws.cell(
+                        row=r_init + 1,
+                        column=c_init + 3 + 2 * i,
+                        value=f"{part['title']}{i + 1 + accum}"
+                    ).font = Font(name="Gilroy", size=8, bold=True)
                     for j in range(4):
-                        self.__ws.cell(row=r_init + 3 + 2 * j, column=c_init + 3 + 2 * i).border = self.__BORDER_THIN
+                        self.__ws.cell(
+                            row=r_init + 3 + 2 * j,
+                            column=c_init + 3 + 2 * i
+                        ).border = self.__BORDER_THIN
             # render part [type 1: 10]
             elif part["answer_type"] == 1:
                 # answer titles & cells
@@ -112,7 +123,7 @@ class GeneratorXLSX:
                         row=r_init + 1 + 2 * (i // 2),
                         column=c_init + 1 + (32 * (i % 2)),
                         value=f"{part['title']}{i + 1 + accum}"
-                    )
+                    ).font = Font(name="Gilroy", size=8, bold=True)
                     for j in range(13):
                         self.__ws.cell(
                             row=r_init + 1 + 2 * (i // 2),
