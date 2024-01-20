@@ -46,7 +46,7 @@ class DocsGenerator:
         for part in parts:
             info = {
                 "id": part.id,
-                "title": Part.TITLES[part.title],
+                "title": str(Part.TITLES[part.title]),
                 "answer_type": part.answer_type,
                 "task_count": part.task_count,
                 "difficulty_total": part.total_difficulty,
