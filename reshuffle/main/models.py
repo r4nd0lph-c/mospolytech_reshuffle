@@ -1,4 +1,5 @@
 # TODO: add max_length for DocHeader.content (RichTextField)
+# TODO: add max_length for Option.content (RichTextField) (if Part.answer_type == 1)
 
 from math import ceil
 from django.utils.translation import gettext_lazy as _

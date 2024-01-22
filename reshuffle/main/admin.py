@@ -1,5 +1,6 @@
 # TODO: add action "change activity flag" for selected SubjectAdmin & TaskAdmin
 # TODO: add filter by "position" field for TaskAdmin
+# TODO: add highlighting for uncompleted Parts and Tasks
 
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
