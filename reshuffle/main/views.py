@@ -20,6 +20,7 @@ class Auth(LoginView):
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Auth") + " | " + PROJECT_NAME
+        context["subtitle"] = _("Entrance exams creation system")
         return context
 
     def form_valid(self, form):
@@ -42,6 +43,7 @@ class Index(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Main") + " | " + PROJECT_NAME
+        context["subtitle"] = _("Select an activity")
         context["user_full_name"] = r.user.get_full_name() if r.user.get_full_name() else r.user.username
         return context
 
@@ -55,6 +57,7 @@ class Creation(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Creation") + " | " + PROJECT_NAME
+        context["subtitle"] = _("Create a set of entrance exams")
         return context
 
 

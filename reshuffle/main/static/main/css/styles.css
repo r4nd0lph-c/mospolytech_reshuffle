@@ -30,6 +30,11 @@ a {
     background: none !important;
 }
 
+header .display-6 {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
 
 /* CUSTOM CONTAINER */
 
