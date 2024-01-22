@@ -28,8 +28,44 @@ class AuthForm(AuthenticationForm):
         initial=True,
         widget=forms.CheckboxInput(
             attrs={
-                "class": "form-check-input me-1",
+                "class": "form-check-input",
                 "type": "checkbox"
+            }
+        )
+    )
+
+
+class CreationForm(forms.Form):
+    __MIN = 1
+    __MAX = 500
+
+    def __init__(self, subject_choices, *args, **kwargs):
+        super(CreationForm, self).__init__(*args, **kwargs)
+        self.fields["subject"].queryset = subject_choices
+
+    subject = forms.ModelChoiceField(
+        queryset=None,
+        label=_("Subject"),
+        empty_label=_("Choose a subject"),
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
+                "style": "padding: 1rem .75rem"
+            }
+        )
+    )
+    amount = forms.IntegerField(
+        label=_("Number of variants"),
+        min_value=__MIN,
+        max_value=__MAX,
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control",
+                "style": "padding: 1rem .75rem",
+                "type": "number",
+                "value": __MIN,
+                "min": __MIN,
+                "max": __MAX
             }
         )
     )

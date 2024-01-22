@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from reshuffle.settings import PROJECT_NAME
@@ -20,7 +20,7 @@ class Auth(LoginView):
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Auth") + " | " + PROJECT_NAME
-        context["subtitle"] = _("Entrance exams creation system")
+        context["subtitle"] = _("Entrance exam processing system")
         return context
 
     def form_valid(self, form):
@@ -48,17 +48,33 @@ class Index(LoginRequiredMixin, TemplateView):
         return context
 
 
-class Creation(LoginRequiredMixin, TemplateView):
+class Creation(LoginRequiredMixin, FormView):
+    form_class = CreationForm
     template_name = "main/creation.html"
     login_url = reverse_lazy("auth")
 
     def get_context_data(self, **kwargs):
-        r = self.request
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Creation") + " | " + PROJECT_NAME
         context["subtitle"] = _("Create a set of entrance exams")
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super(Creation, self).get_form_kwargs()
+        qs = Subject.objects.all()
+        groups = self.request.user.groups.all()
+        if self.request.user.is_superuser or not groups.exists():
+            kwargs["subject_choices"] = qs
+        else:
+            accesses = []
+            for g in groups:
+                accesses += [a.subject.id for a in Access.objects.filter(group=g)]
+            kwargs["subject_choices"] = qs.filter(id__in=accesses)
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy("index")  # <-- TODO: redirect to "download" page
 
 
 def logout_user(request):

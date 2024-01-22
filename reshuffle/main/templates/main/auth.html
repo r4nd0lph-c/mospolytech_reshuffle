@@ -15,18 +15,16 @@
     <main class="content">
         <div class="inner">
             <!-- catch form errors START -->
-            <div>
-                {% for error in form.non_field_errors %}
-                    <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300"> {{ error }} </div>
-                {% endfor %}
-                {% if user.is_authenticated %}
-                    <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300">
-                        {% blocktranslate %}You are logged in as <b>{{ user }}</b>, but you do not have sufficient
-                            rights to view this page. Perhaps you would like to log in using a different
-                            account?{% endblocktranslate %}
-                    </div>
-                {% endif %}
-            </div>
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300"> {{ error }} </div>
+            {% endfor %}
+            {% if user.is_authenticated %}
+                <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300">
+                    {% blocktranslate %}You are logged in as <b>{{ user }}</b>, but you do not have sufficient rights to
+                        view this page. Perhaps you would like to log in using a different
+                        account?{% endblocktranslate %}
+                </div>
+            {% endif %}
             {% for f in form %}
                 {% for error in f.errors %}
                     <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300"> {{ error }} </div>
@@ -49,7 +47,7 @@
                 </div>
                 <div class="form-check mb-4" style="padding-left: 0 !important;">
                     {{ form.remember_me }}
-                    <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">
+                    <label class="form-check-label ms-1" for="{{ form.remember_me.id_for_label }}">
                         {{ form.remember_me.label }}
                     </label>
                 </div>

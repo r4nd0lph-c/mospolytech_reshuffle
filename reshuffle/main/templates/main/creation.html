@@ -14,7 +14,35 @@
     <!-- main START -->
     <main class="content">
         <div class="inner">
+            <!-- catch form errors START -->
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300"> {{ error }} </div>
+            {% endfor %}
+            {% for f in form %}
+                {% for error in f.errors %}
+                    <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300"> {{ error }} </div>
+                {% endfor %}
+            {% endfor %}
+            <!-- catch form errors END -->
 
+            <!-- creation form START -->
+            <form method="post" class="form-creation">
+                {# TODO: add labels (?) & show min / max value for form.amount #}
+                {% csrf_token %}
+                <h3 class="fw-normal mb-3"> {% trans "Creation" %} </h3>
+                <div class="mb-2">
+                    {# <label for="{{ form.subject.id_for_label }}"> {{ form.subject.label }} </label> #}
+                    {{ form.subject }}
+                </div>
+                <div class="mb-4">
+                    {# <label for="{{ form.amount.id_for_label }}"> {{ form.amount.label }} </label> #}
+                    {{ form.amount }}
+                </div>
+                <button class="btn btn-primary" style="min-width: 152px;" type="submit">
+                    {% trans "Create" %}
+                </button>
+            </form>
+            <!-- creation form END -->
         </div>
     </main>
     <!-- main END -->
