@@ -11,6 +11,18 @@
     </header>
     <!-- header END -->
 
+    <!-- overlay loading START -->
+    <div id="overlay" style="display: none;">
+        <div class="content">
+            <i class="spinner-border text-primary m-3" style="width: 3rem; height: 3rem;"></i>
+            <p class="fs-4"> {% trans "Materials are being prepared" %}… </p>
+            <p class="fs-4">
+                {% blocktranslate %}Approximate waiting time: <b id="waiting_time"></b> min.{% endblocktranslate %}
+            </p>
+        </div>
+    </div>
+    <!-- overlay loading END -->
+
     <!-- main START -->
     <main class="content">
         <div class="inner">
@@ -53,6 +65,11 @@
         // add "custom-container" & "text-center" classes to body
         document.body.classList.add("custom-container", "text-center");
 
+        // init form fields
+        let subject = document.getElementById("id_subject");
+        let date = document.getElementById("id_date");
+        let amount = document.getElementById("id_amount");
+
         // change datepicker widget
         $(function () {
             $("#id_date").datepicker({
@@ -60,5 +77,30 @@
                 format: "dd.mm.yyyy"
             });
         });
+
+        // lock input for date
+        date.addEventListener("keypress", function (evt) {
+            evt.preventDefault();
+        });
+
+        // validate date string (format: "dd.mm.yyyy")
+        function validate_date(val) {
+            let is_valid = false;
+            let t = val.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+            if (t !== null) {
+                let d = +t[1], m = +t[2], y = +t[3];
+                let date = new Date(y, m - 1, d);
+                is_valid = (date.getFullYear() === y && date.getMonth() === m - 1);
+            }
+            return is_valid;
+        }
+
+        // show overlay if fields are filled in correctly
+        function show_overlay() {
+            if (subject.value && validate_date(date.value) && amount.value >= amount.min && amount.value <= amount.max) {
+                document.getElementById("waiting_time").innerText = "?"; // <-- TODO: calculate time
+                document.getElementById("overlay").style.display = "block";
+            }
+        }
     </script>
 {% endblock %}
