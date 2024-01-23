@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-22 18:28+0300\n"
-"PO-Revision-Date: 2024-01-22 18:28+0300\n"
+"POT-Creation-Date: 2024-01-23 17:14+0300\n"
+"PO-Revision-Date: 2024-01-23 17:14+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -81,7 +81,11 @@ msgstr "Запомнить меня"
 msgid "Choose a subject"
 msgstr "Выберите предмет"
 
-#: .\main\forms.py:58
+#: .\main\forms.py:58 .\main\services\docs\factory.py:70
+msgid "Exam date"
+msgstr "Дата экзамена"
+
+#: .\main\forms.py:68 .\main\forms.py:75
 msgid "Number of variants"
 msgstr "Количество вариантов"
 
@@ -376,10 +380,6 @@ msgstr "Личное дело"
 msgid "Variant"
 msgstr "Вариант"
 
-#: .\main\services\docs\factory.py:70
-msgid "Exam date"
-msgstr "Дата экзамена"
-
 #: .\main\services\docs\factory.py:71
 msgid "Signature of applicant"
 msgstr "Подпись абитуриента"
@@ -408,7 +408,7 @@ msgstr ""
 msgid "Signature of examiner"
 msgstr "Подпись экзаменатора"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:139
+#: .\main\templates\main\404.html:17 .\main\views.py:140
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -421,7 +421,7 @@ msgstr ""
 "Возможно, искомая страница была удалена, <br>переименована или просто "
 "временно недоступна."
 
-#: .\main\templates\main\404.html:23 .\main\templates\main\creation.html:52
+#: .\main\templates\main\404.html:23 .\main\templates\main\creation.html:56
 msgid "To main page"
 msgstr "На главную"
 
@@ -453,7 +453,7 @@ msgstr "Возникли проблемы?"
 msgid "Creation"
 msgstr "Создание"
 
-#: .\main\templates\main\creation.html:42
+#: .\main\templates\main\creation.html:46
 msgid "Create"
 msgstr "Создать"
 

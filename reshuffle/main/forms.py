@@ -54,6 +54,16 @@ class CreationForm(forms.Form):
             }
         )
     )
+    date = forms.DateTimeField(
+        label=_("Exam date"),
+        widget=forms.DateInput(
+            attrs={
+                "class": "form-control",
+                "style": "padding: 1rem .75rem",
+                "type": "date"
+            }
+        )
+    )
     amount = forms.IntegerField(
         label=_("Number of variants"),
         min_value=__MIN,
@@ -62,8 +72,8 @@ class CreationForm(forms.Form):
             attrs={
                 "class": "form-control",
                 "style": "padding: 1rem .75rem",
+                "placeholder": _("Number of variants") + f": {__MIN} – {__MAX}",
                 "type": "number",
-                "value": __MIN,
                 "min": __MIN,
                 "max": __MAX
             }

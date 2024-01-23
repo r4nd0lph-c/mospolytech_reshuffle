@@ -62,7 +62,7 @@ class Creation(LoginRequiredMixin, FormView):
 
     def get_form_kwargs(self):
         kwargs = super(Creation, self).get_form_kwargs()
-        qs = Subject.objects.all()
+        qs = Subject.objects.filter(is_active=True)
         groups = self.request.user.groups.all()
         if self.request.user.is_superuser or not groups.exists():
             kwargs["subject_choices"] = qs
@@ -73,8 +73,9 @@ class Creation(LoginRequiredMixin, FormView):
             kwargs["subject_choices"] = qs.filter(id__in=accesses)
         return kwargs
 
-    def get_success_url(self):
-        return reverse_lazy("index")  # <-- TODO: redirect to "download" page
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return redirect(reverse_lazy("index"))  # <-- TODO: redirect to "download" page
 
 
 def logout_user(request):
