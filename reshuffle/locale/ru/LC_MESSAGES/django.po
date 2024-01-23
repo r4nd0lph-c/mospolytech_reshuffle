@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-23 17:14+0300\n"
-"PO-Revision-Date: 2024-01-23 17:14+0300\n"
+"POT-Creation-Date: 2024-01-23 21:43+0300\n"
+"PO-Revision-Date: 2024-01-23 21:43+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -36,7 +36,7 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: .\main\admin.py:51 .\main\admin.py:85 .\main\forms.py:48 .\main\models.py:67
+#: .\main\admin.py:51 .\main\admin.py:85 .\main\models.py:67
 #: .\main\models.py:103 .\main\models.py:305
 msgid "Subject"
 msgstr "Предмет"
@@ -77,15 +77,15 @@ msgstr "Пароль"
 msgid "Remember me"
 msgstr "Запомнить меня"
 
-#: .\main\forms.py:49
+#: .\main\forms.py:48
 msgid "Choose a subject"
 msgstr "Выберите предмет"
 
-#: .\main\forms.py:58 .\main\services\docs\factory.py:70
+#: .\main\forms.py:62 .\main\services\docs\factory.py:70
 msgid "Exam date"
 msgstr "Дата экзамена"
 
-#: .\main\forms.py:68 .\main\forms.py:75
+#: .\main\forms.py:74
 msgid "Number of variants"
 msgstr "Количество вариантов"
 
@@ -408,7 +408,7 @@ msgstr ""
 msgid "Signature of examiner"
 msgstr "Подпись экзаменатора"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:140
+#: .\main\templates\main\404.html:17 .\main\views.py:141
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -421,7 +421,7 @@ msgstr ""
 "Возможно, искомая страница была удалена, <br>переименована или просто "
 "временно недоступна."
 
-#: .\main\templates\main\404.html:23 .\main\templates\main\creation.html:56
+#: .\main\templates\main\404.html:23 .\main\templates\main\creation.html:58
 msgid "To main page"
 msgstr "На главную"
 
@@ -449,11 +449,19 @@ msgstr "Войти"
 msgid "Having problems?"
 msgstr "Возникли проблемы?"
 
-#: .\main\templates\main\creation.html:32 .\main\views.py:59
+#: .\main\templates\main\creation.html:18
+msgid "Materials are being prepared"
+msgstr "Материалы подготавливаются"
+
+#: .\main\templates\main\creation.html:20
+msgid "Approximate waiting time: <b id=\"waiting_time\"></b> min."
+msgstr "Примерное время ожидания: <b id=\"waiting_time\"></b> мин."
+
+#: .\main\templates\main\creation.html:43 .\main\views.py:59
 msgid "Creation"
 msgstr "Создание"
 
-#: .\main\templates\main\creation.html:46
+#: .\main\templates\main\creation.html:48
 msgid "Create"
 msgstr "Создать"
 
