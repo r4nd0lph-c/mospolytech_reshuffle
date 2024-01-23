@@ -27,22 +27,12 @@
 
             <!-- creation form START -->
             <form method="post" class="form-creation">
-                {# TODO: 1. add labels; 2. show min / max value for form.amount; 3. make custom datepicker widget #}
                 {% csrf_token %}
                 <h3 class="fw-normal mb-3"> {% trans "Creation" %} </h3>
-                <div class="mb-2">
-                    {# <label for="{{ form.subject.id_for_label }}"> {{ form.subject.label }} </label> #}
-                    {{ form.subject }}
-                </div>
-                <div class="mb-2">
-                    {# <label for="{{ form.date.id_for_label }}"> {{ form.date.label }} </label> #}
-                    {{ form.date }}
-                </div>
-                <div class="mb-4">
-                    {# <label for="{{ form.amount.id_for_label }}"> {{ form.amount.label }} </label> #}
-                    {{ form.amount }}
-                </div>
-                <button class="btn btn-primary" style="min-width: 152px;" type="submit">
+                <div class="mb-2"> {{ form.subject }} </div>
+                <div class="mb-2"> {{ form.date }} </div>
+                <div class="mb-4"> {{ form.amount }} </div>
+                <button class="btn btn-primary" style="min-width: 152px;" type="submit" onclick="show_overlay()">
                     {% trans "Create" %}
                 </button>
             </form>
@@ -62,5 +52,13 @@
     <script>
         // add "custom-container" & "text-center" classes to body
         document.body.classList.add("custom-container", "text-center");
+
+        // change datepicker widget
+        $(function () {
+            $("#id_date").datepicker({
+                language: "{{ datepicker_language }}",
+                format: "dd.mm.yyyy"
+            });
+        });
     </script>
 {% endblock %}

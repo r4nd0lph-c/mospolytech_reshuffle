@@ -45,7 +45,6 @@ class CreationForm(forms.Form):
 
     subject = forms.ModelChoiceField(
         queryset=None,
-        label=_("Subject"),
         empty_label=_("Choose a subject"),
         widget=forms.Select(
             attrs={
@@ -55,17 +54,17 @@ class CreationForm(forms.Form):
         )
     )
     date = forms.DateTimeField(
-        label=_("Exam date"),
+        input_formats=["%d.%m.%Y"],
         widget=forms.DateInput(
             attrs={
                 "class": "form-control",
                 "style": "padding: 1rem .75rem",
-                "type": "date"
+                "placeholder": _("Exam date") + ": dd.mm.yyyy",
+                "autocomplete": "off"
             }
         )
     )
     amount = forms.IntegerField(
-        label=_("Number of variants"),
         min_value=__MIN,
         max_value=__MAX,
         widget=forms.NumberInput(

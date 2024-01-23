@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView, FormView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from reshuffle.settings import PROJECT_NAME
+from reshuffle.settings import PROJECT_NAME, LANGUAGE_CODE
 from main.forms import *
 from main.models import *
 
@@ -58,6 +58,7 @@ class Creation(LoginRequiredMixin, FormView):
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Creation") + " | " + PROJECT_NAME
         context["subtitle"] = _("Create a set of entrance exams")
+        context["datepicker_language"] = LANGUAGE_CODE
         return context
 
     def get_form_kwargs(self):

@@ -36,6 +36,67 @@ header .display-6 {
 }
 
 
+/* DATEPICKER */
+
+.datepicker-container {
+    width: 300px;
+}
+
+.datepicker-panel > ul {
+    width: 100%;
+}
+
+.datepicker-panel > ul > li {
+    width: 42.85px;
+}
+
+.datepicker-panel > ul[data-view=months] > li,
+.datepicker-panel > ul[data-view=years] > li {
+    width: 75px;
+}
+
+.datepicker-panel > ul > li[data-view="month current"],
+.datepicker-panel > ul > li[data-view="year current"],
+.datepicker-panel > ul > li[data-view="years current"] {
+    width: 214.28px;
+}
+
+.datepicker-panel > ul > li:hover {
+    color: var(--primary);
+    background-color: transparent;
+}
+
+.datepicker-panel > ul > li.picked {
+    color: var(--white);
+    background-color: var(--pr-accent);
+}
+
+.datepicker-panel > ul > li.picked:hover {
+    color: var(--white);
+    background-color: var(--pr-accent);
+}
+
+.datepicker-panel > ul > li.highlighted {
+    color: var(--primary);
+    background-color: transparent;
+}
+
+.datepicker-panel > ul > li.highlighted:hover {
+    color: var(--primary);
+    background-color: transparent;
+}
+
+.datepicker-panel > ul > li.highlighted.picked {
+    color: var(--white);
+    background-color: var(--pr-accent);
+}
+
+.datepicker-panel > ul > li.muted:hover {
+    color: var(--primary);
+    background-color: transparent;
+}
+
+
 /* CUSTOM CONTAINER */
 
 .custom-container {
