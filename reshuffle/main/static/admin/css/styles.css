@@ -1,3 +1,23 @@
+/* GENERAL */
+
+:root {
+    /* base */
+    --white: #FFFFFF;
+    --bs-border-color: #DEE2E6;
+    --dark: #212529;
+    --pr: #0D6EFD;
+    --pr-hover: #0B5ED7;
+    --pr-accent: #CCDDFF;
+
+    /* override */
+    --border-color: var(--bs-border-color) !important;
+    --hairline-color: var(--bs-border-color) !important;
+    --selected-row: var(--pr-accent) !important;
+}
+
+
+/* TABLES */
+
 #result_list th {
     vertical-align: middle;
 }
@@ -13,6 +33,44 @@
     overflow: auto;
 }
 
+
+/* FIELDS */
+
+input, select {
+    background-color: var(--white) !important;
+}
+
 input:disabled, select:disabled {
-    background-color: var(--darkened-bg);
+    background-color: var(--darkened-bg) !important;
+}
+
+
+/* BUTTONS */
+
+.submit-row input {
+    background-color: var(--white) !important;
+    color: var(--dark);
+    border: 1px solid var(--border-color);
+}
+
+.submit-row input:hover {
+    background-color: #fcfcfc !important;
+}
+
+.submit-row input.default {
+    background-color: var(--pr) !important;
+    color: var(--white);
+}
+
+.submit-row input.default:hover {
+    background-color: var(--pr-hover) !important;
+}
+
+
+/* HIDDEN ELEMENTS */
+
+.submit-row {
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
 }
