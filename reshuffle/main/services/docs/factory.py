@@ -1,12 +1,15 @@
 import os
 import shutil
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
 
 import django
 from django.utils.translation import gettext_lazy as _
+
 django.setup()
 from reshuffle.settings import MEDIA_ROOT
 from main.models import *
+from uploader import FileUploader
 
 import json
 import openpyxl
@@ -281,4 +284,7 @@ class DocumentPackager:
 
 if __name__ == "__main__":
     dg = DocumentPackager(sbj_id=3, date="20.01.2024")
-    print(dg.generate(3))
+    file_path = dg.generate(3)
+    print(file_path)
+    fu = FileUploader()
+    fu.upload(file_path.split("\\")[-1], file_path)

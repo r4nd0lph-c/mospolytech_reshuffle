@@ -130,10 +130,15 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = Path(BASE_DIR, "static")
 
-# Media files
+# Media files (Local & MinIO)
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = Path(BASE_DIR, "media")
+
+MINIO_ENDPOINT = config("MINIO_ENDPOINT")
+MINIO_ACCESS_KEY = config("MINIO_ACCESS_KEY")
+MINIO_SECRET_KEY = config("MINIO_SECRET_KEY")
+MINIO_BUCKET_NAME = config("MINIO_BUCKET_NAME")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
