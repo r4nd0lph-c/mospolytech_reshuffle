@@ -7,6 +7,7 @@ import django
 from django.utils.translation import gettext_lazy as _
 
 django.setup()
+
 from reshuffle.settings import MEDIA_ROOT
 from main.models import *
 from uploader import FileUploader
@@ -152,12 +153,21 @@ class GeneratorXLSX:
             )
 
 
-class GeneratorDOCX:
+class GeneratorPDF:
     """
     ...
     """
 
     def __init__(self) -> None:
+        pass
+
+    def __generate_html(self) -> None:
+        pass
+
+    def generate_pdf(self) -> None:
+        pass
+
+    def save(self) -> None:
         pass
 
 
@@ -248,7 +258,7 @@ class DocumentPackager:
     def generate(self, count: int) -> str:
         # create output folder
         folder = self.__create_folder()
-        # init [JSON | XLSX]
+        # init [JSON | XLSX | PDF]
         data = {
             "subject": self.__sbj_title,
             "date": self.__date,
@@ -256,6 +266,7 @@ class DocumentPackager:
             "variants": []
         }
         gen_xlsx = GeneratorXLSX()
+        gen_pdf = GeneratorPDF()
         # populate [JSON | XLSX]
         for unique_key in self.__get_unique_keys(count):
             data["variants"].append({"unique_key": unique_key, "parts": self.__collect_parts()})
@@ -273,18 +284,21 @@ class DocumentPackager:
                 )
             else:
                 gen_xlsx.reproduce(unique_key)
-        # save [JSON | XLSX]
+        # populate [PDF]
+        # ... pdf ...
+        # save [JSON | XLSX | PDF]
         with open(os.path.join(folder, self.__OUTPUT_JSON), "w", encoding="UTF-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
         gen_xlsx.save(os.path.join(folder, self.__OUTPUT_XLSX))
+        # ... pdf ...
         # archive & delete output folder
         result = self.__archive_folder(folder)
         return result
 
 
 if __name__ == "__main__":
-    dg = DocumentPackager(sbj_id=3, date="20.01.2024")
+    dg = DocumentPackager(sbj_id=2, date="26.01.2024")
     file_path = dg.generate(3)
     print(file_path)
-    fu = FileUploader()
-    fu.upload(file_path.split("\\")[-1], file_path)
+    # fu = FileUploader()
+    # fu.upload(file_path.split("\\")[-1], file_path)
