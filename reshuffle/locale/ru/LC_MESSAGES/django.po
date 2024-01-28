@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-23 21:43+0300\n"
-"PO-Revision-Date: 2024-01-23 21:43+0300\n"
+"POT-Creation-Date: 2024-01-28 16:02+0300\n"
+"PO-Revision-Date: 2024-01-28 16:02+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -36,8 +36,8 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: .\main\admin.py:51 .\main\admin.py:85 .\main\models.py:67
-#: .\main\models.py:103 .\main\models.py:305
+#: .\main\admin.py:51 .\main\admin.py:85 .\main\models.py:61
+#: .\main\models.py:97 .\main\models.py:299
 msgid "Subject"
 msgstr "Предмет"
 
@@ -81,7 +81,7 @@ msgstr "Запомнить меня"
 msgid "Choose a subject"
 msgstr "Выберите предмет"
 
-#: .\main\forms.py:62 .\main\services\docs\factory.py:70
+#: .\main\forms.py:62 .\main\services\docs\factory.py:150
 msgid "Exam date"
 msgstr "Дата экзамена"
 
@@ -113,7 +113,7 @@ msgstr "Дата обновления"
 msgid "Title of the subject (nominative case)"
 msgstr "Название предмета (именительный падеж)"
 
-#: .\main\models.py:38 .\main\models.py:49 .\main\models.py:108
+#: .\main\models.py:38 .\main\models.py:102
 msgid "Title"
 msgstr "Название"
 
@@ -137,80 +137,72 @@ msgstr "Творительный падеж"
 msgid "Prepositional case"
 msgstr "Предложный падеж"
 
-#: .\main\models.py:47
-msgid "Instruction for work performance"
-msgstr "Инструкция по выполнению работы"
-
 #: .\main\models.py:48
-msgid "Title of the instruction"
-msgstr "Название инструкции"
-
-#: .\main\models.py:54
 msgid "List of general rules for work performance (without specific parts)"
 msgstr "Список общих правил выполнения работы (без специфики частей)"
 
-#: .\main\models.py:55 .\main\models.py:128 .\main\models.py:199
-#: .\main\models.py:243 .\main\models.py:264
+#: .\main\models.py:49 .\main\models.py:122 .\main\models.py:193
+#: .\main\models.py:237 .\main\models.py:258
 msgid "Content"
 msgstr "Содержание"
 
-#: .\main\models.py:59
+#: .\main\models.py:53
 msgid "Determines if this subject is available in the test generation list"
 msgstr "Определяет, виден ли этот предмет в списке генерации тестов"
 
-#: .\main\models.py:60 .\main\models.py:209 .\main\models.py:269
+#: .\main\models.py:54 .\main\models.py:203 .\main\models.py:263
 msgid "Activity"
 msgstr "Активность"
 
-#: .\main\models.py:68
+#: .\main\models.py:62
 msgid "Subjects"
 msgstr "Предметы"
 
-#: .\main\models.py:74
+#: .\main\models.py:68
 msgid "A"
 msgstr "А"
 
-#: .\main\models.py:75
+#: .\main\models.py:69
 msgid "B"
 msgstr "Б"
 
-#: .\main\models.py:76
+#: .\main\models.py:70
 msgid "C"
 msgstr "В"
 
-#: .\main\models.py:77
+#: .\main\models.py:71
 msgid "D"
 msgstr "Г"
 
-#: .\main\models.py:80
+#: .\main\models.py:74
 msgid "Tasks with answer choice"
 msgstr "Задания с вариантом ответа"
 
-#: .\main\models.py:81
+#: .\main\models.py:75
 msgid "Tasks with short answer writing"
 msgstr "Задания с кратким ответом"
 
-#: .\main\models.py:86 .\main\models.py:87
+#: .\main\models.py:80 .\main\models.py:81
 msgid "Select a subject to enable this field"
 msgstr "Сначала выберите предмет, чтобы разблокировать это поле"
 
-#: .\main\models.py:88
+#: .\main\models.py:82
 msgid "Select a type of tasks to enable this field"
 msgstr "Сначала выберите тип заданий, чтобы разблокировать это поле"
 
-#: .\main\models.py:89
+#: .\main\models.py:83
 msgid "Select a count of tasks to enable this field"
 msgstr "Сначала выберите количество заданий, чтобы разблокировать это поле"
 
-#: .\main\models.py:92
+#: .\main\models.py:86
 msgid "Reserved title(s)"
 msgstr "Зарезервированные названия"
 
-#: .\main\models.py:93
+#: .\main\models.py:87
 msgid "Select a type of tasks in the part"
 msgstr "Выберите тип заданий для части"
 
-#: .\main\models.py:94
+#: .\main\models.py:88
 msgid ""
 "Available count of tasks taking into account the previous parts and the "
 "selected task type"
@@ -218,185 +210,185 @@ msgstr ""
 "Доступное количество заданий с учётом предыдущих частей и выбранного типа "
 "заданий"
 
-#: .\main\models.py:95
+#: .\main\models.py:89
 msgid "The recommended difficulty is set, difficulty range"
 msgstr "Установлена рекомендуемая сложность, диапазон сложности"
 
-#: .\main\models.py:102
+#: .\main\models.py:96
 msgid "Subject to which the part belongs"
 msgstr "Предмет, к которому относится часть"
 
-#: .\main\models.py:113
+#: .\main\models.py:107
 msgid "Type of tasks"
 msgstr "Тип заданий"
 
-#: .\main\models.py:118 .\main\models.py:230
+#: .\main\models.py:112 .\main\models.py:224
 msgid "Tasks"
 msgstr "Задания"
 
-#: .\main\models.py:122 .\main\models.py:204
+#: .\main\models.py:116 .\main\models.py:198
 msgid "Difficulty"
 msgstr "Сложность"
 
-#: .\main\models.py:127
+#: .\main\models.py:121
 msgid "List of rules for performing the tasks of this part"
 msgstr "Список правил для выполнения заданий данной части"
 
-#: .\main\models.py:142
+#: .\main\models.py:136
 msgid "Available title(s)"
 msgstr "Доступные названия"
 
-#: .\main\models.py:154 .\main\models.py:164 .\main\models.py:218
+#: .\main\models.py:148 .\main\models.py:158 .\main\models.py:212
 msgid "Invalid value"
 msgstr "Недопустимое значение"
 
-#: .\main\models.py:172 .\main\models.py:175 .\main\models.py:189
+#: .\main\models.py:166 .\main\models.py:169 .\main\models.py:183
 msgid "Part"
 msgstr "Часть"
 
-#: .\main\models.py:176
+#: .\main\models.py:170
 msgid "Parts"
 msgstr "Части"
 
-#: .\main\models.py:181
+#: .\main\models.py:175
 msgid "Select a part to enable this field"
 msgstr "Сначала выберите часть, чтобы разблокировать это поле"
 
-#: .\main\models.py:182
+#: .\main\models.py:176
 msgid "Order number of the task in the part, range of valid positions"
 msgstr "Порядковый номер задания в части, диапазон допустимых позиций"
 
-#: .\main\models.py:188
+#: .\main\models.py:182
 msgid "Subject and part to which the task relates"
 msgstr "Предмет и часть, к которым относится задание"
 
-#: .\main\models.py:194
+#: .\main\models.py:188
 msgid "Position"
 msgstr "Порядковый номер"
 
-#: .\main\models.py:198
+#: .\main\models.py:192
 msgid "The essence of the task"
 msgstr "Суть задания"
 
-#: .\main\models.py:203
+#: .\main\models.py:197
 msgid "Difficulty of the task relative to other tasks of the same order number"
 msgstr ""
 "Сложность задания относительно других заданий того же порядкового номера"
 
-#: .\main\models.py:208
+#: .\main\models.py:202
 msgid "Determines if this task is included in document generation"
 msgstr "Определяет, включено ли это задание в генерацию документов"
 
-#: .\main\models.py:229 .\main\models.py:238
+#: .\main\models.py:223 .\main\models.py:232
 msgid "Task"
 msgstr "Задание"
 
-#: .\main\models.py:237
+#: .\main\models.py:231
 msgid "Task to which the option relates"
 msgstr "Задание, к которому относится вариант ответа"
 
-#: .\main\models.py:242
+#: .\main\models.py:236
 msgid "The essence of the option"
 msgstr "Суть варианта ответа"
 
-#: .\main\models.py:247
+#: .\main\models.py:241
 msgid "Determines if this option is the correct answer"
 msgstr "Определяет, является ли данный вариант ответа правильным"
 
-#: .\main\models.py:248
+#: .\main\models.py:242
 msgid "Correct answer"
 msgstr "Правильный ответ"
 
-#: .\main\models.py:255
+#: .\main\models.py:249
 msgid "Option"
 msgstr "Вариант ответа"
 
-#: .\main\models.py:256
+#: .\main\models.py:250
 msgid "Options"
 msgstr "Варианты ответа"
 
-#: .\main\models.py:263
+#: .\main\models.py:257
 msgid "Information about the institution organizing the testing"
 msgstr "Информация об учреждении, организующем тестирование"
 
-#: .\main\models.py:268
+#: .\main\models.py:262
 msgid "Only one active document header can exist at a time"
 msgstr ""
 "Одновременно может существовать только один активный заголовок документа"
 
-#: .\main\models.py:285
+#: .\main\models.py:279
 msgid "Active"
 msgstr "Активен"
 
-#: .\main\models.py:285
+#: .\main\models.py:279
 msgid "Inactive"
 msgstr "Неактивен"
 
-#: .\main\models.py:289
+#: .\main\models.py:283
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:290
+#: .\main\models.py:284
 msgid "Document headers"
 msgstr "Заголовки документа"
 
-#: .\main\models.py:298
+#: .\main\models.py:292
 msgid "Group for which access to subjects is granted"
 msgstr "Группа, для которой предоставляется доступ к предметам"
 
-#: .\main\models.py:299
+#: .\main\models.py:293
 msgid "Group"
 msgstr "Группа"
 
-#: .\main\models.py:304
+#: .\main\models.py:298
 msgid ""
 "One of the subjects that will be available for interaction by the selected "
 "group"
 msgstr ""
 "Один из предметов, который будет доступен для взаимодействия выбранной группе"
 
-#: .\main\models.py:313
+#: .\main\models.py:307
 msgid "Access"
 msgstr "Право доступа"
 
-#: .\main\models.py:314
+#: .\main\models.py:308
 msgid "Accesses"
 msgstr "Права доступа"
 
-#: .\main\services\docs\factory.py:64
+#: .\main\services\docs\factory.py:144
 msgid "Entrance exams"
 msgstr "Вступительные испытания"
 
-#: .\main\services\docs\factory.py:65
+#: .\main\services\docs\factory.py:145
 msgid "Full name of applicant"
 msgstr "ФИО абитуриента"
 
-#: .\main\services\docs\factory.py:66
+#: .\main\services\docs\factory.py:146
 msgid "Personnel file"
 msgstr "Личное дело"
 
-#: .\main\services\docs\factory.py:68 .\main\services\docs\factory.py:73
-#: .\main\services\docs\factory.py:140
+#: .\main\services\docs\factory.py:148 .\main\services\docs\factory.py:153
+#: .\main\services\docs\factory.py:220
 msgid "Variant"
 msgstr "Вариант"
 
-#: .\main\services\docs\factory.py:71
+#: .\main\services\docs\factory.py:151
 msgid "Signature of applicant"
 msgstr "Подпись абитуриента"
 
-#: .\main\services\docs\factory.py:72
+#: .\main\services\docs\factory.py:152
 msgid "Answer sheet"
 msgstr "Бланк ответов"
 
-#: .\main\services\docs\factory.py:74
+#: .\main\services\docs\factory.py:154
 msgid "Correcting wrong marks"
 msgstr "Исправление ошибочных меток"
 
-#: .\main\services\docs\factory.py:75
+#: .\main\services\docs\factory.py:155
 msgid "Results"
 msgstr "Результаты"
 
-#: .\main\services\docs\factory.py:76
+#: .\main\services\docs\factory.py:156
 msgid ""
 "Total number of\n"
 "correctly solved problems"
@@ -404,7 +396,7 @@ msgstr ""
 "Общее количество\n"
 "правильно решённых задач"
 
-#: .\main\services\docs\factory.py:77
+#: .\main\services\docs\factory.py:157
 msgid "Signature of examiner"
 msgstr "Подпись экзаменатора"
 

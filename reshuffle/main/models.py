@@ -42,12 +42,6 @@ class Subject(AbstractDatestamp):
     case_accusative = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Accusative case"))
     case_instrumental = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Instrumental case"))
     case_prepositional = models.CharField(max_length=STR_LENGTH, blank=True, verbose_name=_("Prepositional case"))
-    inst_title = models.CharField(
-        max_length=STR_LENGTH,
-        default=_("Instruction for work performance"),
-        help_text=_("Title of the instruction"),
-        verbose_name=_("Title")
-    )
     inst_content = RichTextField(
         blank=True,
         config_name="config_1",

@@ -56,7 +56,7 @@ class SubjectAdmin(admin.ModelAdmin):
             "fields": ("case_genitive", "case_dative", "case_accusative", "case_instrumental", "case_prepositional",)
         }),
         (_("Instruction"), {
-            "fields": ("inst_title", "inst_content",)
+            "fields": ("inst_content",)
         }),
     )
     list_display = ("id", "sbj_title", "inst_available", "is_active", "created", "updated",)
