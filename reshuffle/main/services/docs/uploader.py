@@ -1,9 +1,10 @@
+from os import path
+from glob import glob
 from minio import Minio
-from minio.error import S3Error
 from reshuffle.settings import MINIO_ENDPOINT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET_NAME
 
 
-class FileUploader:
+class MinioUploader:
     """
     ...
     """
@@ -19,15 +20,23 @@ class FileUploader:
         if not self.client.bucket_exists(self.bucket_name):
             self.client.make_bucket(self.bucket_name)
 
-    def upload(self, object_name:str, file_path: str) -> None:
-        try:
-            self.client.fput_object(
-                bucket_name=self.bucket_name,
-                object_name=object_name,
-                file_path=file_path
-            )
-        except S3Error as e:
-            print(e)
+    def upload_folder(self, folder: str, alias: str = None) -> None:
+        if not alias:
+            alias = folder.split("\\")[-1]
+        for f in glob(folder + "/**"):
+            if not path.isfile(f):
+                self.upload_folder(f, path.join(alias, f.split("\\")[-1]))
+            else:
+                self.client.fput_object(
+                    bucket_name=self.bucket_name,
+                    object_name=path.join(alias, f.split("\\")[-1]).replace("\\", "/"),
+                    file_path=f
+                )
+
+    def upload_file(self, file: str, alias: str = None) -> None:
+        if not alias:
+            alias = file.split("\\")[-1]
+        self.client.fput_object(bucket_name=self.bucket_name, object_name=alias, file_path=file)
 
 
 if __name__ == "__main__":
