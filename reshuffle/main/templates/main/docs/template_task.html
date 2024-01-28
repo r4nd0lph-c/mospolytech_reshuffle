@@ -1,0 +1,121 @@
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> {{ subject.title }} – {% trans "Tasks" %} ({{ date }})</title>
+
+    <!-- Main CSS Files -->
+    <style>
+        html {
+            font-family: "Gilroy", -apple-system, "Segoe UI", Roboto, sans-serif;
+            font-size: 14px;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        ol {
+            margin: 7px;
+        }
+
+        @media print {
+            .pagebreak {
+                page-break-before: always;
+            }
+        }
+
+        .doc_header {
+            text-align: center;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .unique_key {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .inst_global, .inst_local {
+            text-align: center;
+        }
+
+        .inst_title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+
+    <!-- Vendor JS Files -->
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG"></script>
+</head>
+
+<body>
+{% for variant in variants %}
+    <div class="variant {{ variant.unique_key }}">
+        <header>
+            <div class="doc_header">{{ doc_header | safe }}</div>
+            <br><br>
+            <div class="title">{{ subject.title }} – {% trans "Tasks" %} ({{ date }})</div>
+            <div class="unique_key">
+                {% trans "Variant" %} № <span style="font-family: consolas">{{ variant.unique_key }}</span>
+            </div>
+            <br><br>
+            {% if subject.inst_content|length > 0 %}
+                <div class="inst_global">
+                    <div class="inst_title">{% trans "General instructions on how to do tasks" %}</div>
+                    <div class="inst_content">{{ subject.inst_content | safe }}</div>
+                </div>
+                <br><br>
+            {% endif %}
+        </header>
+        <main>
+            {% for part in variant.parts %}
+                <div class="inst_local">
+                    <div class="inst_title">{% trans "Part" %} {{ part.info.title }}</div>
+                    <div class="inst_content">{{ part.info.inst_content | safe }}</div>
+                </div>
+                <br>
+                {% for task in part.material %}
+                    <div class="task">
+                        <b>{{ task.position }}.</b>
+                        <div>{{ task.content | safe }}</div>
+                        {% if part.info.answer_type == 0 %}
+                            <ol>
+                                {% for option in task.options %}
+                                    <li>{{ option.content | safe }}</li>
+                                {% endfor %}
+                            </ol>
+                        {% endif %}
+                    </div>
+                    <br>
+                {% endfor %}
+                <br><br>
+            {% endfor %}
+        </main>
+    </div>
+    <div class="pagebreak"></div>
+{% endfor %}
+<script>
+    // on page load actions
+    window.addEventListener("load", () => {
+        // remove las page break
+        Array.from(document.getElementsByClassName("pagebreak")).at(-1).remove();
+    });
+</script>
+</body>
+
+</html>

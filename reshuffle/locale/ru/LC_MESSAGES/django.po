@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-28 16:02+0300\n"
-"PO-Revision-Date: 2024-01-28 16:02+0300\n"
+"POT-Creation-Date: 2024-01-29 00:34+0300\n"
+"PO-Revision-Date: 2024-01-29 00:34+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -223,6 +223,8 @@ msgid "Type of tasks"
 msgstr "Тип заданий"
 
 #: .\main\models.py:112 .\main\models.py:224
+#: .\main\templates\main\docs\template_task.html:12
+#: .\main\templates\main\docs\template_task.html:72
 msgid "Tasks"
 msgstr "Задания"
 
@@ -243,6 +245,7 @@ msgid "Invalid value"
 msgstr "Недопустимое значение"
 
 #: .\main\models.py:166 .\main\models.py:169 .\main\models.py:183
+#: .\main\templates\main\docs\template_task.html:88
 msgid "Part"
 msgstr "Часть"
 
@@ -369,6 +372,7 @@ msgstr "Личное дело"
 
 #: .\main\services\docs\factory.py:148 .\main\services\docs\factory.py:153
 #: .\main\services\docs\factory.py:220
+#: .\main\templates\main\docs\template_task.html:74
 msgid "Variant"
 msgstr "Вариант"
 
@@ -456,6 +460,10 @@ msgstr "Создание"
 #: .\main\templates\main\creation.html:48
 msgid "Create"
 msgstr "Создать"
+
+#: .\main\templates\main\docs\template_task.html:79
+msgid "General instructions on how to do tasks"
+msgstr "Общая инструкция по выполнению заданий"
 
 #: .\main\templates\main\index.html:26
 #, python-format

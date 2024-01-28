@@ -10,6 +10,7 @@ from datetime import datetime
 from random import shuffle, choice, choices
 import django
 from django.utils.translation import gettext_lazy as _
+from django.template.loader import render_to_string
 django.setup()
 from reshuffle.settings import MEDIA_ROOT
 from main.models import *
@@ -250,95 +251,16 @@ class GeneratorPDF:
     ...
     """
 
-    S = 14
-    M = 16
-    L = 18
-    XL = 20
-
-    __HTML_BASE_TASKS = (
-        """
-        <style>
-            html {
-                font-family: "Gilroy", -apple-system, "Segoe UI", Roboto, sans-serif;
-                font-size: 14px;
-            }
-            p {
-                margin: 0;
-            }
-            @media print {
-                .pagebreak { page-break-before: always; }
-            }
-        </style>
-        """
-    )
-
-    __HTML_BASE_ANSWERS = (
-        """
-        """
-    )
+    __TEMPLATE_TASK_PATH = "main/docs/template_task.html"
+    __TEMPLATE_ANSWER_PATH = "main/docs/template_answer.html"
 
     def __init__(self) -> None:
         pass
 
-    def __collect_html_tasks(self, data: dict) -> str:
-        def wrap(tag: str, s: str, stylesheet: dict = None) -> str:
-            style = f"style='{";".join(f"{k}:{v}" for k, v in stylesheet.items())}'" if stylesheet else ""
-            return f"<{tag} {style}>{s}</{tag}>"
-
-        # create base
-        base = self.__HTML_BASE_TASKS
-        # document header
-        base += wrap("div", data["doc_header"], {"text-align": "center"}) + "<br><br>"
-        # subject name & exam date
-        base += wrap(
-            "div",
-            wrap("b", data["subject"]["title"] + " – " + _("Tasks") + f" ({data['date']})"),
-            {"text-align": "center", "font-size": f"{self.XL}px"}
-        )
-        html = ""
-        # create variants
-        for variant in data["variants"]:
-            html += base
-            # unique_key
-            html += wrap(
-                "div",
-                wrap(
-                    "b",
-                    _("Variant") + " № " + wrap("span", variant["unique_key"], {"font-family": "consolas"})
-                ),
-                {"text-align": "center", "font-size": f"{self.L}px", "margin-top": f"{self.S // 2}px"}
-            )
-            # global instruction
-            if data["subject"]["inst_content"]:
-                html += "<br><br>" + wrap(
-                    "div",
-                    wrap(
-                        "b",
-                        _("General instructions on how to do tasks"),
-                        {"font-size": f"{self.M}px"}
-                    ) + data["subject"]["inst_content"],
-                    {"text-align": "center"}
-                )
-            # create parts
-            # for part in variant["parts"]:
-            #     html += _("Part") + f" {part['info']['title']}"
-            #     for task in part["material"]:
-            #         html += task["position"]
-            #         html += task["content"]
-            #         for i, o in enumerate(task["options"]):
-            #             html += f"[{i + 1}] {o['content']}"
-            # page break
-            html += "<div class='pagebreak'> </div>"
-        return html
-
-    def __collect_html_answers(self, data: dict) -> None:
-        pass
-
     def generate(self, data: dict) -> None:
-        html_tasks = self.__collect_html_tasks(data)
+        html_tasks = render_to_string(template_name=self.__TEMPLATE_TASK_PATH, context=data)
         with open("tasks.html", "w", encoding="UTF-8") as f:
             f.write(html_tasks)
-        print("html_generated")
 
     def save(self, path: str) -> None:
         pass
@@ -396,7 +318,7 @@ if __name__ == "__main__":
 
     n = 2
     dp = DocumentPackager()
-    archive_path = dp.pack(sbj_id=4, count=n, date="28.01.2024")
+    archive_path = dp.pack(sbj_id=5, count=n, date="28.01.2024")
     print(archive_path)
 
     print(time() - t)
