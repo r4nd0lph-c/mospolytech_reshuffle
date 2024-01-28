@@ -39,7 +39,6 @@ class MinioClient:
         self.__client.fput_object(bucket_name=self.__bucket_name, object_name=alias, file_path=file)
 
     def delete_object(self, alias: str) -> None:
-        alias += "/"
         for o in self.__client.list_objects(bucket_name=self.__bucket_name, prefix=alias, recursive=True):
             self.__client.remove_object(bucket_name=self.__bucket_name, object_name=o.object_name)
 
