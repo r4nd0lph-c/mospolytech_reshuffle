@@ -12,7 +12,7 @@ import django
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
 django.setup()
-from reshuffle.settings import MEDIA_ROOT
+from reshuffle.settings import BASE_DIR, MEDIA_ROOT
 from main.models import *
 from main.services.docs.minio_client import MinioClient
 
@@ -90,8 +90,8 @@ class GeneratorJSON:
                 if tasks:
                     tasks_filtered = tasks.filter(difficulty=distribution[position - 1])
                     task = choice(tasks_filtered) if tasks_filtered else choice(tasks)
-                    options = Option.objects.filter(task=task).order_by("?")
-                    info["difficulty_generated"] += task.difficulty  # <-- update info "difficulty_generated" field
+                    options = Option.objects.filter(task=task).order_by("?")  # <-- TODO: choose 1 correct + 3 incorrect
+                    info["difficulty_generated"] += task.difficulty
                     material.append({
                         "id": task.id,
                         "position": f"{Part.TITLES[part.title]}{position}",
@@ -258,7 +258,10 @@ class GeneratorPDF:
         pass
 
     def generate(self, data: dict) -> None:
-        html_tasks = render_to_string(template_name=self.__TEMPLATE_TASK_PATH, context=data)
+        html_tasks = render_to_string(
+            template_name=self.__TEMPLATE_TASK_PATH,
+            context=data | {"base_dir": json.dumps(str(BASE_DIR))}
+        )
         with open("tasks.html", "w", encoding="UTF-8") as f:
             f.write(html_tasks)
 
@@ -300,9 +303,9 @@ class DocumentPackager:
         data = gen_json.generate(count)
         gen_json.save(os.path.join(folder, self.__OUTPUT_JSON))
         # create sheets [XLSX]
-        # gen_xlsx = GeneratorXLSX()
-        # gen_xlsx.generate(data)
-        # gen_xlsx.save(os.path.join(folder, self.__OUTPUT_XLSX))
+        gen_xlsx = GeneratorXLSX()
+        gen_xlsx.generate(data)
+        gen_xlsx.save(os.path.join(folder, self.__OUTPUT_XLSX))
         # create tasks & answers [PDF]
         gen_pdf = GeneratorPDF()
         gen_pdf.generate(data)
@@ -318,7 +321,7 @@ if __name__ == "__main__":
 
     n = 2
     dp = DocumentPackager()
-    archive_path = dp.pack(sbj_id=5, count=n, date="28.01.2024")
+    archive_path = dp.pack(sbj_id=5, count=n, date="29.01.2024")
     print(archive_path)
 
     print(time() - t)

@@ -18,6 +18,12 @@
             font-size: 14px;
         }
 
+        @media print {
+            .pagebreak {
+                page-break-before: always;
+            }
+        }
+
         p {
             margin: 0;
         }
@@ -26,10 +32,9 @@
             margin: 7px;
         }
 
-        @media print {
-            .pagebreak {
-                page-break-before: always;
-            }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
         }
 
         .doc_header {
@@ -91,8 +96,7 @@
                 <br>
                 {% for task in part.material %}
                     <div class="task">
-                        <b>{{ task.position }}.</b>
-                        <div>{{ task.content | safe }}</div>
+                        <div class="{{ task.position }}">{{ task.content | safe }}</div>
                         {% if part.info.answer_type == 0 %}
                             <ol>
                                 {% for option in task.options %}
@@ -114,6 +118,18 @@
     window.addEventListener("load", () => {
         // remove las page break
         Array.from(document.getElementsByClassName("pagebreak")).at(-1).remove();
+
+        // merge task position & content
+        for (let task of document.getElementsByClassName("task")) {
+            let p = task.children[0].children[0];
+            p.innerHTML = `<b>${task.children[0].className}. </b>` + p.innerHTML;
+        }
+
+        // fix img src
+        for (let img of document.getElementsByTagName("img")) {
+            let base_url = {{ base_dir | safe }};
+            img.src = base_url + "\\" + img.src.split("/").slice(4).join("\\");
+        }
     });
 </script>
 </body>
