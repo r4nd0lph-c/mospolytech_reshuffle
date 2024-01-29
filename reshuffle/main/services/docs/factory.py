@@ -88,10 +88,20 @@ class GeneratorJSON:
             for position in range(1, part.task_count + 1):
                 tasks = Task.objects.filter(part=part, position=position, is_active=True)
                 if tasks:
+                    # choose task
                     tasks_filtered = tasks.filter(difficulty=distribution[position - 1])
                     task = choice(tasks_filtered) if tasks_filtered else choice(tasks)
-                    options = Option.objects.filter(task=task).order_by("?")  # <-- TODO: choose 1 correct + 3 incorrect
+                    # choose options
+                    if info["answer_type"] == 0:
+                        of = Option.objects.filter(task=task, is_answer=False).order_by("?")[:3]
+                        ot = Option.objects.filter(task=task, is_answer=True).order_by("?")[:1]
+                        options = of.union(ot)
+                        options.order_by("?")
+                    else:
+                        options = Option.objects.filter(task=task, is_answer=True)
+                    # update info's difficulty_generated field
                     info["difficulty_generated"] += task.difficulty
+                    # append material
                     material.append({
                         "id": task.id,
                         "position": f"{Part.TITLES[part.title]}{position}",
@@ -321,7 +331,7 @@ if __name__ == "__main__":
 
     n = 2
     dp = DocumentPackager()
-    archive_path = dp.pack(sbj_id=5, count=n, date="29.01.2024")
+    archive_path = dp.pack(sbj_id=2, count=n, date="29.01.2024")
     print(archive_path)
 
     print(time() - t)
