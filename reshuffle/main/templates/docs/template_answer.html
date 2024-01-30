@@ -17,6 +17,10 @@
             font-size: 14px;
         }
 
+        a {
+            text-decoration: none;
+        }
+
         p {
             margin: 0;
         }
@@ -48,8 +52,40 @@
             margin-top: 8px;
         }
 
+        .sheet ul {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: center;
+            padding: 0;
+        }
+
+        .sheet li {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 5px;
+            padding: 5px;
+            border: 1px solid lightgray;
+            min-width: 40px;
+        }
+
+        .content_table ol {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+
         .content_table li {
             font-family: consolas;
+            margin: 5px;
+            padding: 5px;
+            min-width: 60px;
         }
 
         @page {
@@ -82,13 +118,14 @@
     <br><br>
     <div class="document_title">{{ subject.title }} – {% trans "Answers" %} ({{ date }})</div>
     <div class="content_table">
-        <div class="document_subtitle">{% trans "Table of contents" %}</div>
+        <div class="document_subtitle">{% trans "Table of contents" %} ({{ variants | length }})</div>
         <ol>
             {% for variant in variants %}
                 <li><a href="#{{ variant.unique_key }}">{{ variant.unique_key }}</a></li>
             {% endfor %}
         </ol>
     </div>
+    <br><br>
     <div class="page_break"></div>
 </header>
 <main>
@@ -111,7 +148,7 @@
                                 <ul style="list-style: none;">
                                     {% for task in part.material %}
                                         <li>
-                                            <b>{{ task.position }}.</b>
+                                            <b>{{ task.position }}</b>
                                             {% for option in task.options %}
                                                 {% if part.info.answer_type == 0 %}
                                                     {% if option.is_answer == 1 %}
