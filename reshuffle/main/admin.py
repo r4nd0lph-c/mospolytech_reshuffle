@@ -265,3 +265,9 @@ class ObjectStorageEntryAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return False
+
+    def delete_queryset(self, request, qs):
+        mc = MinioClient()
+        for obj in qs:
+            mc.delete_object(obj.prefix)
+        qs.delete()

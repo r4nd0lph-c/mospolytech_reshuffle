@@ -10,6 +10,7 @@ from datetime import datetime
 from random import shuffle, choice, choices
 import django
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from django.template.loader import render_to_string
 django.setup()
 from reshuffle.settings import BASE_DIR, MEDIA_ROOT
@@ -313,7 +314,7 @@ class DocumentPackager:
             shutil.rmtree(folder)
         return f"{folder}.{self.__ARCHIVE_FORMAT}"
 
-    def pack(self, sbj_id: int, count: int, date: str) -> None:
+    def pack(self, user_id: int, sbj_id: int, count: int, date: str) -> None:
         # create output folder
         folder = self.__create_folder(f"[{datetime.today().strftime('%d-%m-%Y_%H-%M-%S-%f')}][{sbj_id}]")
         # create data [JSON]
@@ -338,8 +339,14 @@ class DocumentPackager:
         mc.upload_file(archive)
         # delete archive
         os.remove(archive)
-        # TODO: add entry to db
-        # ...
+        # add object storage entry to db
+        ObjectStorageEntry.objects.create(
+            user=User.objects.get(id=user_id),
+            subject=Subject.objects.get(id=sbj_id),
+            amount=count,
+            date=timezone.make_aware(datetime.strptime(date, "%d.%m.%Y"), timezone=timezone.get_current_timezone()),
+            prefix=folder.split("\\")[-1]
+        )
 
 
 if __name__ == "__main__":
@@ -349,7 +356,7 @@ if __name__ == "__main__":
 
     n = 2
     dp = DocumentPackager()
-    dp.pack(sbj_id=2, count=n, date="30.01.2024")
+    dp.pack(user_id=1, sbj_id=2, count=n, date="30.01.2024")
 
     print(time() - t)
     print((time() - t) / n)

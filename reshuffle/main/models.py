@@ -9,6 +9,7 @@ from django.db import models
 from django.contrib.auth.models import Group, User
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
+from main.services.docs.minio_client import MinioClient
 
 # UTILS -------------------------------------------------------------------------------------------------------------- #
 DIFFICULTIES = {
@@ -336,6 +337,11 @@ class ObjectStorageEntry(AbstractDatestamp):
         help_text=_("Unique name of the archive"),
         verbose_name=_("Prefix")
     )
+
+    def delete(self, *args, **kwargs):
+        mc = MinioClient()
+        mc.delete_object(self.prefix)
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return f"ID: {self.id} ({self.subject}, {self.amount}, {self.date})"
