@@ -1,6 +1,5 @@
 import os
 import shutil
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
 import json
 import openpyxl
@@ -12,7 +11,6 @@ from random import shuffle, choice, choices
 import django
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
-
 django.setup()
 from reshuffle.settings import BASE_DIR, MEDIA_ROOT
 from main.models import *
