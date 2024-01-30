@@ -296,7 +296,7 @@ class DocumentPackager:
     """
 
     __OUTPUT_PATH = os.path.join(MEDIA_ROOT, "docs")
-    ARCHIVE_FORMAT = "zip"
+    __ARCHIVE_FORMAT = "zip"
 
     def __init__(self) -> None:
         pass
@@ -308,10 +308,10 @@ class DocumentPackager:
         return folder
 
     def __archive_folder(self, folder: str, delete: bool = True) -> str:
-        shutil.make_archive(folder, self.ARCHIVE_FORMAT, folder)
+        shutil.make_archive(folder, self.__ARCHIVE_FORMAT, folder)
         if delete:
             shutil.rmtree(folder)
-        return f"{folder}.{self.ARCHIVE_FORMAT}"
+        return f"{folder}.{self.__ARCHIVE_FORMAT}"
 
     def pack(self, sbj_id: int, count: int, date: str) -> None:
         # create output folder
