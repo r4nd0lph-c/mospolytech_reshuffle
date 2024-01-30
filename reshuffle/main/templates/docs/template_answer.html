@@ -26,6 +26,11 @@
             border-collapse: collapse;
         }
 
+        table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
         .document_header {
             text-align: center;
         }
@@ -34,6 +39,17 @@
             text-align: center;
             font-size: 20px;
             font-weight: bold;
+        }
+
+        .document_subtitle {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .content_table li {
+            font-family: consolas;
         }
 
         @page {
@@ -50,6 +66,10 @@
             .page_break {
                 page-break-before: always;
             }
+
+            .sheet {
+                page-break-inside: avoid;
+            }
         }
     </style>
 
@@ -61,23 +81,58 @@
     <div class="document_header">{{ doc_header | safe }}</div>
     <br><br>
     <div class="document_title">{{ subject.title }} – {% trans "Answers" %} ({{ date }})</div>
+    <div class="content_table">
+        <div class="document_subtitle">{% trans "Table of contents" %}</div>
+        <ol>
+            {% for variant in variants %}
+                <li><a href="#{{ variant.unique_key }}">{{ variant.unique_key }}</a></li>
+            {% endfor %}
+        </ol>
+    </div>
+    <div class="page_break"></div>
 </header>
 <main>
-    ...
+    {% for variant in variants %}
+        <div class="sheet" id="{{ variant.unique_key }}">
+            <div class="document_subtitle">
+                {% trans "Variant" %} № <span style="font-family: consolas">{{ variant.unique_key }}</span>
+            </div>
+            <br>
+            <div>
+                <table>
+                    <tr>
+                        {% for part in variant.parts %}
+                            <th>{% trans "Part" %} {{ part.info.title }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for part in variant.parts %}
+                            <td>
+                                <ul style="list-style: none;">
+                                    {% for task in part.material %}
+                                        <li>
+                                            <b>{{ task.position }}.</b>
+                                            {% for option in task.options %}
+                                                {% if part.info.answer_type == 0 %}
+                                                    {% if option.is_answer == 1 %}
+                                                        <p>{{ forloop.counter }}</p>
+                                                    {% endif %}
+                                                {% elif  part.info.answer_type == 1 %}
+                                                    {{ option.content | safe }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br><br>
+    {% endfor %}
 </main>
-<script>
-    // on page load actions
-    window.addEventListener("load", () => {
-        // remove last page break
-        Array.from(document.getElementsByClassName("page_break")).at(-1).remove();
-
-        // fix img src
-        for (let img of document.getElementsByTagName("img")) {
-            let base_url = {{ base_dir | safe }};
-            img.src = base_url + "\\" + img.src.split("/").slice(4).join("\\");
-        }
-    });
-</script>
 </body>
 
 </html>
