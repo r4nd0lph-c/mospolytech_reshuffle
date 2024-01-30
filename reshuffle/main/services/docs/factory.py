@@ -1,5 +1,6 @@
 import os
 import shutil
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
 import json
 import openpyxl
@@ -11,6 +12,7 @@ from random import shuffle, choice, choices
 import django
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
+
 django.setup()
 from reshuffle.settings import BASE_DIR, MEDIA_ROOT
 from main.models import *
@@ -37,6 +39,7 @@ class GeneratorJSON:
     """
 
     __UNIQUE_KEY_LENGTH = 6
+    __OUTPUT_JSON = "data.json"
 
     def __init__(self, sbj_id: int, date: str) -> None:
         self.__data = {
@@ -121,7 +124,7 @@ class GeneratorJSON:
         return self.__data
 
     def save(self, path: str) -> None:
-        with open(path, "w", encoding="UTF-8") as f:
+        with open(os.path.join(path, self.__OUTPUT_JSON), "w", encoding="UTF-8") as f:
             json.dump(self.__data, f, ensure_ascii=False, indent=2)
 
 
@@ -132,6 +135,7 @@ class GeneratorXLSX:
 
     __BASE_PATH = os.path.join(MEDIA_ROOT, "base", "sheets.xlsx")
     __WS_NAME = "blank"
+    __OUTPUT_XLSX = "sheets.xlsx"
 
     __BORDER_THIN = Border(
         left=Side(style="thin"),
@@ -248,6 +252,7 @@ class GeneratorXLSX:
                 self.__reproduce(variant["unique_key"])
 
     def save(self, path: str) -> None:
+        path = os.path.join(path, self.__OUTPUT_XLSX)
         if path != self.__wb_path:
             self.__wb.save(path)
         else:
@@ -262,27 +267,29 @@ class GeneratorPDF:
     ...
     """
 
-    __TEMPLATE_TASK_PATH = "docs/template_task.html"
-    __TEMPLATE_ANSWER_PATH = "docs/template_answer.html"
+    __TEMPLATE_TASKS_PATH = "docs/template_tasks.html"
+    __TEMPLATE_ANSWERS_PATH = "docs/template_answers.html"
+    __OUTPUT_TASKS_HTML = "tasks.html"
+    __OUTPUT_ANSWERS_HTML = "answers.html"
 
     def __init__(self) -> None:
-        pass
+        self.__html_tasks = ""
+        self.__html_answers = ""
 
     def generate(self, data: dict) -> None:
         # generate tasks [HTML]
-        html_tasks = render_to_string(
-            template_name=self.__TEMPLATE_TASK_PATH,
+        self.__html_tasks = render_to_string(
+            template_name=self.__TEMPLATE_TASKS_PATH,
             context=data | {"base_dir": json.dumps(str(BASE_DIR))}
         )
-        with open("tasks.html", "w", encoding="UTF-8") as f:
-            f.write(html_tasks)
         # generate answers [HTML]
-        html_answers = render_to_string(template_name=self.__TEMPLATE_ANSWER_PATH, context=data)
-        with open("answers.html", "w", encoding="UTF-8") as f:
-            f.write(html_answers)
+        self.__html_answers = render_to_string(template_name=self.__TEMPLATE_ANSWERS_PATH, context=data)
 
     def save(self, path: str) -> None:
-        pass
+        save_list = [(self.__html_tasks, self.__OUTPUT_TASKS_HTML), (self.__html_answers, self.__OUTPUT_ANSWERS_HTML)]
+        for content, output in save_list:
+            with open(os.path.join(path, output), "w", encoding="UTF-8") as f:
+                f.write(content)
 
 
 class DocumentPackager:
@@ -291,8 +298,6 @@ class DocumentPackager:
     """
 
     __OUTPUT_PATH = os.path.join(MEDIA_ROOT, "docs")
-    __OUTPUT_JSON = "data.json"
-    __OUTPUT_XLSX = "sheets.xlsx"
 
     def __init__(self) -> None:
         pass
@@ -317,14 +322,15 @@ class DocumentPackager:
         # create data [JSON]
         gen_json = GeneratorJSON(sbj_id, date)
         data = gen_json.generate(count)
-        gen_json.save(os.path.join(folder, self.__OUTPUT_JSON))
+        gen_json.save(folder)
         # create sheets [XLSX]
         gen_xlsx = GeneratorXLSX()
         gen_xlsx.generate(data)
-        gen_xlsx.save(os.path.join(folder, self.__OUTPUT_XLSX))
+        gen_xlsx.save(folder)
         # create tasks & answers [PDF]
         gen_pdf = GeneratorPDF()
         gen_pdf.generate(data)
+        gen_pdf.save(folder)
         # archive & delete output folder
         result = self.__archive_folder(folder)
         return result
