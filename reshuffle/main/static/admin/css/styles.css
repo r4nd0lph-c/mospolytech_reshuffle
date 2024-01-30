@@ -72,6 +72,20 @@ input:disabled, select:disabled {
     background-color: var(--pr-hover) !important;
 }
 
+.delete-confirmation form input[type="submit"] {
+    background: var(--delete-button-bg) !important;
+}
+
+.delete-confirmation form .cancel-link {
+    background-color: var(--white) !important;
+    color: var(--dark);
+    border: 1px solid var(--border-color);
+}
+
+.delete-confirmation form .cancel-link:hover {
+    background-color: #FCFCFC !important;
+}
+
 
 /* RECOLORED ELEMENTS */
 
