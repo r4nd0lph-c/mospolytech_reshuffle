@@ -261,8 +261,8 @@ class GeneratorPDF:
     ...
     """
 
-    __TEMPLATE_TASK_PATH = "main/docs/template_task.html"
-    __TEMPLATE_ANSWER_PATH = "main/docs/template_answer.html"
+    __TEMPLATE_TASK_PATH = "docs/template_task.html"
+    __TEMPLATE_ANSWER_PATH = "docs/template_answer.html"
 
     def __init__(self) -> None:
         pass
