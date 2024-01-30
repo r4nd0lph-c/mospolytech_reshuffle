@@ -1,0 +1,83 @@
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> {{ subject.title }} – {% trans "Answers" %} ({{ date }})</title>
+
+    <style>
+        html {
+            font-family: "Gilroy", -apple-system, "Segoe UI", Roboto, sans-serif;
+            font-size: 14px;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .document_header {
+            text-align: center;
+        }
+
+        .document_title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        @page {
+            size: A4;
+            margin: 12.7mm 12.7mm 12.7mm 12.7mm;
+        }
+
+        @media print {
+            html, body {
+                width: 210mm;
+                height: 297mm;
+            }
+
+            .page_break {
+                page-break-before: always;
+            }
+        }
+    </style>
+
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG"></script>
+</head>
+
+<body>
+<header>
+    <div class="document_header">{{ doc_header | safe }}</div>
+    <br><br>
+    <div class="document_title">{{ subject.title }} – {% trans "Answers" %} ({{ date }})</div>
+</header>
+<main>
+    ...
+</main>
+<script>
+    // on page load actions
+    window.addEventListener("load", () => {
+        // remove last page break
+        Array.from(document.getElementsByClassName("page_break")).at(-1).remove();
+
+        // fix img src
+        for (let img of document.getElementsByTagName("img")) {
+            let base_url = {{ base_dir | safe }};
+            img.src = base_url + "\\" + img.src.split("/").slice(4).join("\\");
+        }
+    });
+</script>
+</body>
+
+</html>

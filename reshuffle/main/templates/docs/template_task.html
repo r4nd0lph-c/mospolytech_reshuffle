@@ -47,11 +47,8 @@
             margin-top: 8px;
         }
 
-        .inst_global, .inst_local {
-            text-align: center;
-        }
-
         .inst_title {
+            text-align: center;
             font-size: 16px;
             font-weight: bold;
         }
@@ -128,7 +125,7 @@
 <script>
     // on page load actions
     window.addEventListener("load", () => {
-        // remove las page break
+        // remove last page break
         Array.from(document.getElementsByClassName("page_break")).at(-1).remove();
 
         // merge task position & content

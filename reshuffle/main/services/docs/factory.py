@@ -1,5 +1,6 @@
 import os
 import shutil
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
 import json
 import openpyxl
@@ -11,6 +12,7 @@ from random import shuffle, choice, choices
 import django
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
+
 django.setup()
 from reshuffle.settings import BASE_DIR, MEDIA_ROOT
 from main.models import *
@@ -268,12 +270,17 @@ class GeneratorPDF:
         pass
 
     def generate(self, data: dict) -> None:
+        # generate tasks [HTML]
         html_tasks = render_to_string(
             template_name=self.__TEMPLATE_TASK_PATH,
             context=data | {"base_dir": json.dumps(str(BASE_DIR))}
         )
         with open("tasks.html", "w", encoding="UTF-8") as f:
             f.write(html_tasks)
+        # generate answers [HTML]
+        html_answers = render_to_string(template_name=self.__TEMPLATE_ANSWER_PATH, context=data)
+        with open("answers.html", "w", encoding="UTF-8") as f:
+            f.write(html_answers)
 
     def save(self, path: str) -> None:
         pass
@@ -331,7 +338,7 @@ if __name__ == "__main__":
 
     n = 2
     dp = DocumentPackager()
-    archive_path = dp.pack(sbj_id=2, count=n, date="29.01.2024")
+    archive_path = dp.pack(sbj_id=2, count=n, date="30.01.2024")
     print(archive_path)
 
     print(time() - t)
