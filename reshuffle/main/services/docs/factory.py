@@ -1,6 +1,5 @@
 import os
 import shutil
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
 import json
 import openpyxl
@@ -12,7 +11,6 @@ from random import shuffle, choice, choices
 import django
 from django.utils.translation import gettext_lazy as _
 from django.template.loader import render_to_string
-
 django.setup()
 from reshuffle.settings import BASE_DIR, MEDIA_ROOT
 from main.models import *
@@ -94,12 +92,13 @@ class GeneratorJSON:
                     tasks_filtered = tasks.filter(difficulty=distribution[position - 1])
                     task = choice(tasks_filtered) if tasks_filtered else choice(tasks)
                     # choose options
+                    options = Option.objects.none()
                     if info["answer_type"] == 0:
-                        of = Option.objects.filter(task=task, is_answer=False).order_by("?")[:3]
-                        ot = Option.objects.filter(task=task, is_answer=True).order_by("?")[:1]
-                        options = of.union(ot)
-                        options.order_by("?")
-                    else:
+                        options = (
+                                Option.objects.filter(task=task, is_answer=False).order_by("?")[:3] |
+                                Option.objects.filter(task=task, is_answer=True).order_by("?")[:1]
+                        ).order_by("?")
+                    elif info["answer_type"] == 1:
                         options = Option.objects.filter(task=task, is_answer=True)
                     # update info's difficulty_generated field
                     info["difficulty_generated"] += task.difficulty
