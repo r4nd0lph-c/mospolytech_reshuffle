@@ -246,3 +246,22 @@ class AccessAdmin(admin.ModelAdmin):
     list_display_links = ("id",)
     ordering = ("group", "subject",)
     list_filter = (("group", admin.RelatedOnlyFieldListFilter), ("subject", admin.RelatedOnlyFieldListFilter),)
+
+
+@admin.register(ObjectStorageEntry)
+class ObjectStorageEntryAdmin(admin.ModelAdmin):
+    list_display = ("id", "subject", "amount", "date", "username", "created",)
+    list_display_links = ("id",)
+    ordering = ("-created",)
+    list_filter = (("subject", admin.RelatedOnlyFieldListFilter), ("user", admin.RelatedOnlyFieldListFilter),)
+
+    def username(self, obj: "ObjectStorageEntry"):
+        return obj.user.get_full_name() if obj.user.get_full_name() else obj.user.username
+
+    username.short_description = ObjectStorageEntry._meta.get_field("user").verbose_name
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-30 16:54+0300\n"
-"PO-Revision-Date: 2024-01-30 16:54+0300\n"
+"POT-Creation-Date: 2024-01-30 21:45+0300\n"
+"PO-Revision-Date: 2024-01-30 21:45+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -37,7 +37,7 @@ msgid "No"
 msgstr "Нет"
 
 #: .\main\admin.py:51 .\main\admin.py:85 .\main\models.py:61
-#: .\main\models.py:97 .\main\models.py:299
+#: .\main\models.py:97 .\main\models.py:299 .\main\models.py:324
 msgid "Subject"
 msgstr "Предмет"
 
@@ -81,7 +81,7 @@ msgstr "Запомнить меня"
 msgid "Choose a subject"
 msgstr "Выберите предмет"
 
-#: .\main\forms.py:62 .\main\services\docs\factory.py:161
+#: .\main\forms.py:62 .\main\models.py:332 .\main\services\docs\factory.py:163
 msgid "Exam date"
 msgstr "Дата экзамена"
 
@@ -223,8 +223,8 @@ msgid "Type of tasks"
 msgstr "Тип заданий"
 
 #: .\main\models.py:112 .\main\models.py:224
-#: .\main\templates\docs\template_task.html:12
-#: .\main\templates\docs\template_task.html:86
+#: .\main\templates\docs\template_tasks.html:12
+#: .\main\templates\docs\template_tasks.html:86
 msgid "Tasks"
 msgstr "Задания"
 
@@ -245,8 +245,8 @@ msgid "Invalid value"
 msgstr "Недопустимое значение"
 
 #: .\main\models.py:166 .\main\models.py:169 .\main\models.py:183
-#: .\main\templates\docs\template_answer.html:142
-#: .\main\templates\docs\template_task.html:102
+#: .\main\templates\docs\template_answers.html:142
+#: .\main\templates\docs\template_tasks.html:102
 msgid "Part"
 msgstr "Часть"
 
@@ -359,42 +359,82 @@ msgstr "Право доступа"
 msgid "Accesses"
 msgstr "Права доступа"
 
-#: .\main\services\docs\factory.py:155
+#: .\main\models.py:317
+msgid "User who created the archive"
+msgstr "Пользователь, который создал архив"
+
+#: .\main\models.py:318
+msgid "User"
+msgstr "Пользователь"
+
+#: .\main\models.py:323
+msgid "Subject for which the archive was created"
+msgstr "Предмет, для которого был создан архив"
+
+#: .\main\models.py:327
+msgid "Amount of unique variants in the archive"
+msgstr "Количество уникальных вариантов в архиве"
+
+#: .\main\models.py:328
+msgid "Amount"
+msgstr "Количество"
+
+#: .\main\models.py:331
+msgid "Date of the exam for which the archive was created"
+msgstr "Дата экзамена, для которого был создан архив"
+
+#: .\main\models.py:336
+msgid "Unique name of the archive"
+msgstr "Уникальное имя архива"
+
+#: .\main\models.py:337
+msgid "Prefix"
+msgstr "Префикс"
+
+#: .\main\models.py:345
+msgid "Object storage entry"
+msgstr "Запись объектного хранилища"
+
+#: .\main\models.py:346
+msgid "Object storage entries"
+msgstr "Записи объектного хранилища"
+
+#: .\main\services\docs\factory.py:157
 msgid "Entrance exams"
 msgstr "Вступительные испытания"
 
-#: .\main\services\docs\factory.py:156
+#: .\main\services\docs\factory.py:158
 msgid "Full name of applicant"
 msgstr "ФИО абитуриента"
 
-#: .\main\services\docs\factory.py:157
+#: .\main\services\docs\factory.py:159
 msgid "Personnel file"
 msgstr "Личное дело"
 
-#: .\main\services\docs\factory.py:159 .\main\services\docs\factory.py:164
-#: .\main\services\docs\factory.py:231
-#: .\main\templates\docs\template_answer.html:135
-#: .\main\templates\docs\template_task.html:88
+#: .\main\services\docs\factory.py:161 .\main\services\docs\factory.py:166
+#: .\main\services\docs\factory.py:233
+#: .\main\templates\docs\template_answers.html:135
+#: .\main\templates\docs\template_tasks.html:88
 msgid "Variant"
 msgstr "Вариант"
 
-#: .\main\services\docs\factory.py:162
+#: .\main\services\docs\factory.py:164
 msgid "Signature of applicant"
 msgstr "Подпись абитуриента"
 
-#: .\main\services\docs\factory.py:163
+#: .\main\services\docs\factory.py:165
 msgid "Answer sheet"
 msgstr "Бланк ответов"
 
-#: .\main\services\docs\factory.py:165
+#: .\main\services\docs\factory.py:167
 msgid "Correcting wrong marks"
 msgstr "Исправление ошибочных меток"
 
-#: .\main\services\docs\factory.py:166
+#: .\main\services\docs\factory.py:168
 msgid "Results"
 msgstr "Результаты"
 
-#: .\main\services\docs\factory.py:167
+#: .\main\services\docs\factory.py:169
 msgid ""
 "Total number of\n"
 "correctly solved problems"
@@ -402,20 +442,20 @@ msgstr ""
 "Общее количество\n"
 "правильно решённых задач"
 
-#: .\main\services\docs\factory.py:168
+#: .\main\services\docs\factory.py:170
 msgid "Signature of examiner"
 msgstr "Подпись экзаменатора"
 
-#: .\main\templates\docs\template_answer.html:12
-#: .\main\templates\docs\template_answer.html:119
+#: .\main\templates\docs\template_answers.html:12
+#: .\main\templates\docs\template_answers.html:119
 msgid "Answers"
 msgstr "Ответы"
 
-#: .\main\templates\docs\template_answer.html:121
+#: .\main\templates\docs\template_answers.html:121
 msgid "Table of contents"
 msgstr "Содержание"
 
-#: .\main\templates\docs\template_task.html:93
+#: .\main\templates\docs\template_tasks.html:93
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 

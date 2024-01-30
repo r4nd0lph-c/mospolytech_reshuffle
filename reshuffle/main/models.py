@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
@@ -306,3 +306,41 @@ class Access(AbstractDatestamp):
         app_label = "auth"
         verbose_name = _("Access")
         verbose_name_plural = _("Accesses")
+
+
+class ObjectStorageEntry(AbstractDatestamp):
+    STR_LENGTH = 64
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        help_text=_("User who created the archive"),
+        verbose_name=_("User")
+    )
+    subject = models.ForeignKey(
+        Subject,
+        on_delete=models.CASCADE,
+        help_text=_("Subject for which the archive was created"),
+        verbose_name=_("Subject")
+    )
+    amount = models.PositiveSmallIntegerField(
+        help_text=_("Amount of unique variants in the archive"),
+        verbose_name=_("Amount")
+    )
+    date = models.DateTimeField(
+        help_text=_("Date of the exam for which the archive was created"),
+        verbose_name=_("Exam date")
+    )
+    prefix = models.CharField(
+        max_length=STR_LENGTH,
+        help_text=_("Unique name of the archive"),
+        verbose_name=_("Prefix")
+    )
+
+    def __str__(self):
+        return f"ID: {self.id} ({self.subject}, {self.amount}, {self.date})"
+
+    class Meta:
+        app_label = "auth"
+        verbose_name = _("Object storage entry")
+        verbose_name_plural = _("Object storage entries")
