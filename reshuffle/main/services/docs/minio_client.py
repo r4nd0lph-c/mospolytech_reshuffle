@@ -1,5 +1,5 @@
 from os import path
-from glob import glob
+from glob import glob, escape
 from minio import Minio
 from reshuffle.settings import MINIO_ENDPOINT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET_NAME
 
@@ -23,7 +23,7 @@ class MinioClient:
     def upload_folder(self, folder: str, alias: str = None) -> None:
         if not alias:
             alias = folder.split("\\")[-1]
-        for f in glob(folder + "/**"):
+        for f in glob(escape(folder) + "/**"):
             if not path.isfile(f):
                 self.upload_folder(f, path.join(alias, f.split("\\")[-1]))
             else:

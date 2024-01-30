@@ -296,6 +296,7 @@ class DocumentPackager:
     """
 
     __OUTPUT_PATH = os.path.join(MEDIA_ROOT, "docs")
+    ARCHIVE_FORMAT = "zip"
 
     def __init__(self) -> None:
         pass
@@ -306,17 +307,15 @@ class DocumentPackager:
             os.makedirs(folder)
         return folder
 
-    @staticmethod
-    def __archive_folder(folder: str, delete: bool = True) -> str:
-        archive_format = "zip"
-        shutil.make_archive(folder, archive_format, folder)
+    def __archive_folder(self, folder: str, delete: bool = True) -> str:
+        shutil.make_archive(folder, self.ARCHIVE_FORMAT, folder)
         if delete:
             shutil.rmtree(folder)
-        return f"{folder}.{archive_format}"
+        return f"{folder}.{self.ARCHIVE_FORMAT}"
 
-    def pack(self, sbj_id: int, count: int, date: str) -> str:
+    def pack(self, sbj_id: int, count: int, date: str) -> None:
         # create output folder
-        folder = self.__create_folder(f"[{datetime.today().strftime('%d-%m-%Y_%H-%M-%S')}][{sbj_id}]")
+        folder = self.__create_folder(f"[{datetime.today().strftime('%d-%m-%Y_%H-%M-%S-%f')}][{sbj_id}]")
         # create data [JSON]
         gen_json = GeneratorJSON(sbj_id, date)
         data = gen_json.generate(count)
@@ -329,9 +328,18 @@ class DocumentPackager:
         gen_pdf = GeneratorPDF()
         gen_pdf.generate(data)
         gen_pdf.save(folder)
+        # init object storage client
+        mc = MinioClient()
+        # send output folder to object storage
+        mc.upload_folder(folder)
         # archive & delete output folder
-        result = self.__archive_folder(folder)
-        return result
+        archive = self.__archive_folder(folder)
+        # send archive to object storage
+        mc.upload_file(archive)
+        # delete archive
+        os.remove(archive)
+        # TODO: add entry to db
+        # ...
 
 
 if __name__ == "__main__":
@@ -341,8 +349,7 @@ if __name__ == "__main__":
 
     n = 2
     dp = DocumentPackager()
-    archive_path = dp.pack(sbj_id=2, count=n, date="30.01.2024")
-    print(archive_path)
+    dp.pack(sbj_id=2, count=n, date="30.01.2024")
 
     print(time() - t)
     print((time() - t) / n)
