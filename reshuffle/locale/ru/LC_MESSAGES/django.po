@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-29 00:34+0300\n"
-"PO-Revision-Date: 2024-01-29 00:34+0300\n"
+"POT-Creation-Date: 2024-01-30 16:54+0300\n"
+"PO-Revision-Date: 2024-01-30 16:54+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -81,7 +81,7 @@ msgstr "Запомнить меня"
 msgid "Choose a subject"
 msgstr "Выберите предмет"
 
-#: .\main\forms.py:62 .\main\services\docs\factory.py:150
+#: .\main\forms.py:62 .\main\services\docs\factory.py:161
 msgid "Exam date"
 msgstr "Дата экзамена"
 
@@ -223,8 +223,8 @@ msgid "Type of tasks"
 msgstr "Тип заданий"
 
 #: .\main\models.py:112 .\main\models.py:224
-#: .\main\templates\main\docs\template_task.html:12
-#: .\main\templates\main\docs\template_task.html:72
+#: .\main\templates\docs\template_task.html:12
+#: .\main\templates\docs\template_task.html:86
 msgid "Tasks"
 msgstr "Задания"
 
@@ -245,7 +245,8 @@ msgid "Invalid value"
 msgstr "Недопустимое значение"
 
 #: .\main\models.py:166 .\main\models.py:169 .\main\models.py:183
-#: .\main\templates\main\docs\template_task.html:88
+#: .\main\templates\docs\template_answer.html:142
+#: .\main\templates\docs\template_task.html:102
 msgid "Part"
 msgstr "Часть"
 
@@ -358,41 +359,42 @@ msgstr "Право доступа"
 msgid "Accesses"
 msgstr "Права доступа"
 
-#: .\main\services\docs\factory.py:144
+#: .\main\services\docs\factory.py:155
 msgid "Entrance exams"
 msgstr "Вступительные испытания"
 
-#: .\main\services\docs\factory.py:145
+#: .\main\services\docs\factory.py:156
 msgid "Full name of applicant"
 msgstr "ФИО абитуриента"
 
-#: .\main\services\docs\factory.py:146
+#: .\main\services\docs\factory.py:157
 msgid "Personnel file"
 msgstr "Личное дело"
 
-#: .\main\services\docs\factory.py:148 .\main\services\docs\factory.py:153
-#: .\main\services\docs\factory.py:220
-#: .\main\templates\main\docs\template_task.html:74
+#: .\main\services\docs\factory.py:159 .\main\services\docs\factory.py:164
+#: .\main\services\docs\factory.py:231
+#: .\main\templates\docs\template_answer.html:135
+#: .\main\templates\docs\template_task.html:88
 msgid "Variant"
 msgstr "Вариант"
 
-#: .\main\services\docs\factory.py:151
+#: .\main\services\docs\factory.py:162
 msgid "Signature of applicant"
 msgstr "Подпись абитуриента"
 
-#: .\main\services\docs\factory.py:152
+#: .\main\services\docs\factory.py:163
 msgid "Answer sheet"
 msgstr "Бланк ответов"
 
-#: .\main\services\docs\factory.py:154
+#: .\main\services\docs\factory.py:165
 msgid "Correcting wrong marks"
 msgstr "Исправление ошибочных меток"
 
-#: .\main\services\docs\factory.py:155
+#: .\main\services\docs\factory.py:166
 msgid "Results"
 msgstr "Результаты"
 
-#: .\main\services\docs\factory.py:156
+#: .\main\services\docs\factory.py:167
 msgid ""
 "Total number of\n"
 "correctly solved problems"
@@ -400,9 +402,22 @@ msgstr ""
 "Общее количество\n"
 "правильно решённых задач"
 
-#: .\main\services\docs\factory.py:157
+#: .\main\services\docs\factory.py:168
 msgid "Signature of examiner"
 msgstr "Подпись экзаменатора"
+
+#: .\main\templates\docs\template_answer.html:12
+#: .\main\templates\docs\template_answer.html:119
+msgid "Answers"
+msgstr "Ответы"
+
+#: .\main\templates\docs\template_answer.html:121
+msgid "Table of contents"
+msgstr "Содержание"
+
+#: .\main\templates\docs\template_task.html:93
+msgid "General instructions on how to do tasks"
+msgstr "Общая инструкция по выполнению заданий"
 
 #: .\main\templates\main\404.html:17 .\main\views.py:141
 msgid "Page not Found"
@@ -460,10 +475,6 @@ msgstr "Создание"
 #: .\main\templates\main\creation.html:48
 msgid "Create"
 msgstr "Создать"
-
-#: .\main\templates\main\docs\template_task.html:79
-msgid "General instructions on how to do tasks"
-msgstr "Общая инструкция по выполнению заданий"
 
 #: .\main\templates\main\index.html:26
 #, python-format
