@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-31 22:21+0300\n"
-"PO-Revision-Date: 2024-01-31 22:21+0300\n"
+"POT-Creation-Date: 2024-02-01 00:56+0300\n"
+"PO-Revision-Date: 2024-02-01 00:56+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -61,7 +61,9 @@ msgstr "Ячейки"
 msgid "The search is performed by task ID"
 msgstr "Поиск осуществляется по ID задания"
 
-#: .\main\admin.py:273 .\main\views.py:73
+#: .\main\admin.py:273 .\main\templates\main\download.html:19
+#: .\main\templates\main\download.html:28 .\main\views.py:69
+#: .\main\views.py:125
 msgid "Download"
 msgstr "Скачать"
 
@@ -463,7 +465,7 @@ msgstr "Содержание"
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:177
+#: .\main\templates\main\404.html:17 .\main\views.py:202
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -476,7 +478,8 @@ msgstr ""
 "Возможно, искомая страница была удалена, <br>переименована или просто "
 "временно недоступна."
 
-#: .\main\templates\main\404.html:23 .\main\templates\main\creation.html:115
+#: .\main\templates\main\404.html:23
+#: .\main\templates\main\object_storage.html:98
 msgid "To main page"
 msgstr "На главную"
 
@@ -504,41 +507,40 @@ msgstr "Войти"
 msgid "Having problems?"
 msgstr "Возникли проблемы?"
 
-#: .\main\templates\main\creation.html:18
-msgid "Materials are being prepared"
-msgstr "Материалы подготавливаются"
-
-#: .\main\templates\main\creation.html:20
-msgid "Approximate waiting time: <b id=\"waiting_time\"></b> min."
-msgstr "Примерное время ожидания: <b id=\"waiting_time\"></b> мин."
-
-#: .\main\templates\main\creation.html:43 .\main\views.py:63
+#: .\main\templates\main\creation.html:21 .\main\views.py:90
 msgid "Creation"
 msgstr "Создание"
 
-#: .\main\templates\main\creation.html:48
+#: .\main\templates\main\creation.html:26
 msgid "Create"
 msgstr "Создать"
 
-#: .\main\templates\main\creation.html:57
-msgid "Table of archives"
-msgstr "Таблица архивов"
+#: .\main\templates\main\download.html:9
+msgid "Archive"
+msgstr "Архив"
 
-#: .\main\templates\main\creation.html:84
-#: .\main\templates\main\creation.html:87
-msgid "First"
-msgstr "Начало"
+#: .\main\templates\main\download.html:12
+msgid "Your archive is ready to download."
+msgstr "Ваш архив готов к скачиванию."
 
-#: .\main\templates\main\creation.html:94
-#: .\main\templates\main\creation.html:97
-msgid "Last"
-msgstr "Конец"
+#: .\main\templates\main\download.html:13
+#: .\main\templates\main\download.html:24
+msgid "Click"
+msgstr "Нажмите"
 
-#: .\main\templates\main\creation.html:104
-msgid ""
-"In the future, there will be a table here with the archives that are "
-"available for you to download. At the moment there are none."
-msgstr "В будущем здесь появится таблица с архивами, которые вам доступны для скачивания. В настоящий момент таких нет."
+#: .\main\templates\main\download.html:13
+#: .\main\templates\main\download.html:24
+msgid "here"
+msgstr "сюда"
+
+#: .\main\templates\main\download.html:14
+#: .\main\templates\main\download.html:25
+msgid "if you want to create more archives."
+msgstr ", если хотите создать больше архивов."
+
+#: .\main\templates\main\download.html:23
+msgid "You haven't created any archives."
+msgstr "Вы не создали ни одного архива."
 
 #: .\main\templates\main\index.html:26
 #, python-format
@@ -548,6 +550,36 @@ msgstr "Вы вошли как <b>%(user_full_name)s</b>"
 #: .\main\templates\main\index.html:29
 msgid "Log out"
 msgstr "Выйти"
+
+#: .\main\templates\main\object_storage.html:18
+msgid "Materials are being prepared"
+msgstr "Материалы подготавливаются"
+
+#: .\main\templates\main\object_storage.html:20
+msgid "Approximate waiting time: <b id=\"waiting_time\"></b> min."
+msgstr "Примерное время ожидания: <b id=\"waiting_time\"></b> мин."
+
+#: .\main\templates\main\object_storage.html:38
+msgid "Table of archives"
+msgstr "Таблица архивов"
+
+#: .\main\templates\main\object_storage.html:67
+#: .\main\templates\main\object_storage.html:70
+msgid "First"
+msgstr "Начало"
+
+#: .\main\templates\main\object_storage.html:77
+#: .\main\templates\main\object_storage.html:80
+msgid "Last"
+msgstr "Конец"
+
+#: .\main\templates\main\object_storage.html:88
+msgid ""
+"In the future there will be information here about archives you can "
+"download. At the moment they are not available."
+msgstr ""
+"В будущем здесь появится информация об архивах, которые вам доступны для "
+"скачивания. В настоящий момент таких нет."
 
 #: .\main\views.py:25
 msgid "Auth"
@@ -561,9 +593,13 @@ msgstr "Система обработки экзаменов"
 msgid "Select an activity"
 msgstr "Выберите действие"
 
-#: .\main\views.py:64
+#: .\main\views.py:91
 msgid "Create a set of entrance exams"
 msgstr "Создайте набор экзаменов"
+
+#: .\main\views.py:126
+msgid "Download a set of entrance exams"
+msgstr "Скачайте набор экзаменов"
 
 #: .\templates\admin\base_site.html:23
 msgid "Django site admin"

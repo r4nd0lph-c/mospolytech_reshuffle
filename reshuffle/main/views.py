@@ -13,10 +13,8 @@ from main.models import *
 from main.services.docs.minio_client import MinioClient
 from main.services.docs.factory import DocumentPackager
 
+
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
-PAGINATION_SIZE = 10
-
-
 class Auth(LoginView):
     template_name = "main/auth.html"
     form_class = AuthForm
@@ -53,19 +51,15 @@ class Index(LoginRequiredMixin, TemplateView):
         return context
 
 
-class Creation(LoginRequiredMixin, FormView, ListView):
-    template_name = "main/creation.html"
+class ObjectStorageListView(LoginRequiredMixin, ListView):
+    """ Parent for Creation CBV & Download CBV """
+
     login_url = reverse_lazy("auth")
-    form_class = CreationForm
-    paginate_by = PAGINATION_SIZE
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
-        context["title"] = _("Creation") + " | " + PROJECT_NAME
-        context["subtitle"] = _("Create a set of entrance exams")
-        context["datepicker_language"] = LANGUAGE_CODE
-        context["avg_generate_time"] = config("AVG_GENERATE_TIME")
         context["table_head"] = [
             ObjectStorageEntry._meta.get_field("subject").verbose_name,
             ObjectStorageEntry._meta.get_field("amount").verbose_name,
@@ -74,6 +68,29 @@ class Creation(LoginRequiredMixin, FormView, ListView):
             ObjectStorageEntry._meta.get_field("created").verbose_name,
             _("Download")
         ]
+        return context
+
+    def get_queryset(self):
+        qs = ObjectStorageEntry.objects.all().order_by("-created")
+        groups = self.request.user.groups.all()
+        if self.request.user.is_superuser or not groups.exists():
+            return qs
+        accesses = []
+        for g in groups:
+            accesses += [a.subject.id for a in Access.objects.filter(group=g)]
+        return qs.filter(subject__id__in=accesses)
+
+
+class Creation(ObjectStorageListView, FormView):
+    template_name = "main/creation.html"
+    form_class = CreationForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = _("Creation") + " | " + PROJECT_NAME
+        context["subtitle"] = _("Create a set of entrance exams")
+        context["datepicker_language"] = LANGUAGE_CODE
+        context["avg_generate_time"] = config("AVG_GENERATE_TIME")
         return context
 
     def get_form_kwargs(self):
@@ -97,17 +114,19 @@ class Creation(LoginRequiredMixin, FormView, ListView):
             count=form.cleaned_data["amount"],
             date=form.cleaned_data["date"].strftime("%d.%m.%Y")
         )
-        return redirect(f"{reverse_lazy("download_archive", kwargs={"prefix": prefix})}")
+        return redirect(reverse_lazy("download"))
 
-    def get_queryset(self):
-        qs = ObjectStorageEntry.objects.all().order_by("-created")
-        groups = self.request.user.groups.all()
-        if self.request.user.is_superuser or not groups.exists():
-            return qs
-        accesses = []
-        for g in groups:
-            accesses += [a.subject.id for a in Access.objects.filter(group=g)]
-        return qs.filter(subject__id__in=accesses)
+
+class Download(ObjectStorageListView):
+    template_name = "main/download.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = _("Download") + " | " + PROJECT_NAME
+        context["subtitle"] = _("Download a set of entrance exams")
+        qs = ObjectStorageEntry.objects.filter(user=self.request.user).order_by("-created")
+        context["prefix_created"] = qs[0].prefix if qs else None
+        return context
 
 
 def download_archive(request, prefix: str = None):

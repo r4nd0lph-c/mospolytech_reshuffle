@@ -1,134 +1,36 @@
-{% extends "main/base.html" %}
+{% extends "main/object_storage.html" %}
 
 {% load i18n %}
 {% load static %}
 
-{% block body %}
-    <!-- header START -->
-    <header>
-        <a href="{% url 'index' %}" class="display-1 fw-bold"> {{ project_name }} </a>
-        <p class="display-6"> {{ subtitle }} </p>
-    </header>
-    <!-- header END -->
+{% block inner_content %}
+    <!-- catch form errors START -->
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300"> {{ error }} </div>
+    {% endfor %}
+    {% for f in form %}
+        {% for error in f.errors %}
+            <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300"> {{ error }} </div>
+        {% endfor %}
+    {% endfor %}
+    <!-- catch form errors END -->
 
-    <!-- overlay loading START -->
-    <div id="overlay" style="display: none;">
-        <div class="content">
-            <i class="spinner-border text-primary m-3" style="width: 3rem; height: 3rem;"></i>
-            <p class="fs-4"> {% trans "Materials are being prepared" %}… </p>
-            <p class="fs-4">
-                {% blocktranslate %}Approximate waiting time: <b id="waiting_time"></b> min.{% endblocktranslate %}
-            </p>
-        </div>
-    </div>
-    <!-- overlay loading END -->
-
-    <!-- main START -->
-    <main class="content">
-        <div class="inner">
-            <!-- catch form errors START -->
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300"> {{ error }} </div>
-            {% endfor %}
-            {% for f in form %}
-                {% for error in f.errors %}
-                    <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300"> {{ error }} </div>
-                {% endfor %}
-            {% endfor %}
-            <!-- catch form errors END -->
-
-            <!-- creation form START -->
-            <form method="post" class="form-creation mb-4">
-                {% csrf_token %}
-                <h3 class="fw-normal mb-3"> {% trans "Creation" %} </h3>
-                <div class="mb-2"> {{ form.subject }} </div>
-                <div class="mb-2"> {{ form.date }} </div>
-                <div class="mb-4"> {{ form.amount }} </div>
-                <button class="btn btn-primary" style="min-width: 152px;" type="submit" onclick="show_overlay()">
-                    {% trans "Create" %}
-                </button>
-            </form>
-            <!-- creation form END -->
-        </div>
-
-        <!-- object storage table START -->
-        {% if page_obj %}
-            <div class="mt-5">
-                <h3 class="fw-normal mb-3"> {% trans "Table of archives" %} </h3>
-                <div class="table-container mb-2">
-                    <table id="object_storage_table" class="table" style="margin: 0;">
-                        <thead>
-                        <tr>
-                            {% for th in table_head %}
-                                <th scope="col">{{ th }}</th>
-                            {% endfor %}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for obj in page_obj %}
-                            <tr>
-                                <td>{{ obj.subject }}</td>
-                                <td>{{ obj.amount }}</td>
-                                <td>{{ obj.date }}</td>
-                                <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
-                                <td>{{ obj.created }}</td>
-                                <td>
-                                    <a class="bi bi-download" href="{% url 'download_archive' prefix=obj.prefix %}"></a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="pagination mb-5">
-                <span class="step-links">
-                    {% if page_obj.has_previous %}
-                        <a class="btn btn-light me-1" href="?page=1">{% trans "First" %}</a>
-                        <a class="btn btn-light me-1" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
-                    {% else %}
-                        <button class="btn btn-light me-1" type="button" disabled>{% trans "First" %}</button>
-                        <button class="btn btn-light me-1" type="button" disabled>&laquo;</button>
-                    {% endif %}
-                    <span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
-                    {% if page_obj.has_next %}
-                        <a class="btn btn-light ms-1" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
-                        <a class="btn btn-light ms-1"
-                           href="?page={{ page_obj.paginator.num_pages }}">{% trans "Last" %}</a>
-                    {% else %}
-                        <button class="btn btn-light ms-1" type="button" disabled>&raquo;</button>
-                        <button class="btn btn-light ms-1" type="button" disabled>{% trans "Last" %}</button>
-                    {% endif %}
-                </span>
-                </div>
-            </div>
-        {% else %}
-            <div class="alert-container mt-4 mb-2">
-                <div class="alert alert-primary" role="alert">
-                    {% trans "In the future, there will be a table here with the archives that are available for you to download. At the moment there are none." %}
-                </div>
-            </div>
-        {% endif %}
-        <!-- object storage table END -->
-    </main>
-    <!-- main END -->
-
-    <!--footer START -->
-    <footer>
-        <a href="{% url 'index' %}"> {% trans "To main page" %} </a>
-    </footer>
-    <!--footer END -->
+    <!-- creation form START -->
+    <form method="post" class="form-creation mb-4">
+        {% csrf_token %}
+        <h3 class="fw-normal mb-3"> {% trans "Creation" %} </h3>
+        <div class="mb-2"> {{ form.subject }} </div>
+        <div class="mb-2"> {{ form.date }} </div>
+        <div class="mb-4"> {{ form.amount }} </div>
+        <button class="btn btn-primary" style="min-width: 152px;" type="submit" onclick="show_overlay()">
+            {% trans "Create" %}
+        </button>
+    </form>
+    <!-- creation form END -->
 {% endblock %}
 
-{% block extra_js %}
+{% block extra_js_custom_logic %}
     <script>
-        // add "custom-container" & "text-center" classes to body
-        document.body.classList.add("custom-container", "text-center");
-
-        // remove unnecessary bottom border for object_storage_table last tr
-        let object_storage_table = document.getElementById("object_storage_table");
-        let tbody = object_storage_table.getElementsByTagName("tbody")[0];
-        Array.from(tbody.getElementsByTagName("tr")).at(-1).style.borderBottom = "transparent";
-
         // init form fields
         let subject = document.getElementById("id_subject");
         let date = document.getElementById("id_date");

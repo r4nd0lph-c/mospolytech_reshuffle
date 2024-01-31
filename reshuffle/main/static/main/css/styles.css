@@ -217,3 +217,14 @@ header .display-6 {
     display: flex;
     justify-content: center;
 }
+
+
+/* DOWNLOAD PAGE */
+
+.div-download {
+    margin: auto;
+}
+
+.div-download p {
+    margin: 0;
+}
