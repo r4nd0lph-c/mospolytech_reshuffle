@@ -97,8 +97,14 @@
 
         // show overlay if fields are filled in correctly
         function show_overlay() {
-            if (subject.value && validate_date(date.value) && amount.value >= amount.min && amount.value <= amount.max) {
-                document.getElementById("waiting_time").innerText = "?"; // <-- TODO: calculate time
+            if (
+                subject.value &&
+                validate_date(date.value) &&
+                Number(amount.value) >= Number(amount.min) &&
+                Number(amount.value) <= Number(amount.max)
+            ) {
+                let wt = Number({{ avg_generate_time }}) * Number(amount.value) / 60;
+                document.getElementById("waiting_time").innerText = wt < 1 ? "< 1" : `${Math.ceil(wt)}`;
                 document.getElementById("overlay").style.display = "block";
             }
         }

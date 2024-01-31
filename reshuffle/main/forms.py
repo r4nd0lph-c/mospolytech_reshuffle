@@ -37,7 +37,7 @@ class AuthForm(AuthenticationForm):
 
 class CreationForm(forms.Form):
     __MIN = 1
-    __MAX = 500
+    __MAX = 100
 
     def __init__(self, subject_choices, *args, **kwargs):
         super(CreationForm, self).__init__(*args, **kwargs)
@@ -53,7 +53,7 @@ class CreationForm(forms.Form):
             }
         )
     )
-    date = forms.DateTimeField(
+    date = forms.DateField(
         input_formats=["%d.%m.%Y"],
         widget=forms.DateInput(
             attrs={

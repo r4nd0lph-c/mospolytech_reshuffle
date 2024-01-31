@@ -1,6 +1,5 @@
 import os
 import shutil
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
 import json
 import openpyxl
 from openpyxl.styles.borders import Border, Side
@@ -8,11 +7,9 @@ from openpyxl.styles import Font
 import re
 from datetime import datetime
 from random import shuffle, choice, choices
-import django
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.template.loader import render_to_string
-django.setup()
 from reshuffle.settings import BASE_DIR, MEDIA_ROOT
 from main.models import *
 from main.services.docs.minio_client import MinioClient
@@ -297,7 +294,7 @@ class DocumentPackager:
     """
 
     __OUTPUT_PATH = os.path.join(MEDIA_ROOT, "docs")
-    __ARCHIVE_FORMAT = "zip"
+    ARCHIVE_FORMAT = "zip"
 
     def __init__(self) -> None:
         pass
@@ -309,12 +306,12 @@ class DocumentPackager:
         return folder
 
     def __archive_folder(self, folder: str, delete: bool = True) -> str:
-        shutil.make_archive(folder, self.__ARCHIVE_FORMAT, folder)
+        shutil.make_archive(folder, self.ARCHIVE_FORMAT, folder)
         if delete:
             shutil.rmtree(folder)
-        return f"{folder}.{self.__ARCHIVE_FORMAT}"
+        return f"{folder}.{self.ARCHIVE_FORMAT}"
 
-    def pack(self, user_id: int, sbj_id: int, count: int, date: str) -> None:
+    def pack(self, user_id: int, sbj_id: int, count: int, date: str) -> str:
         # init object storage client
         mc = MinioClient()
         # find related subject
@@ -351,6 +348,7 @@ class DocumentPackager:
             date=timezone.make_aware(datetime.strptime(date, "%d.%m.%Y"), timezone=timezone.get_current_timezone()),
             prefix=folder.split("\\")[-1]
         )
+        return folder.split("\\")[-1]
 
 
 if __name__ == "__main__":

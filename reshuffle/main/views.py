@@ -1,3 +1,4 @@
+from decouple import config
 from django.utils.translation import gettext_lazy as _
 from django.http import JsonResponse
 from django.contrib.auth import logout
@@ -10,6 +11,7 @@ from reshuffle.settings import PROJECT_NAME, LANGUAGE_CODE
 from main.forms import *
 from main.models import *
 from main.services.docs.minio_client import MinioClient
+from main.services.docs.factory import DocumentPackager
 
 
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
@@ -60,6 +62,7 @@ class Creation(LoginRequiredMixin, FormView):
         context["title"] = _("Creation") + " | " + PROJECT_NAME
         context["subtitle"] = _("Create a set of entrance exams")
         context["datepicker_language"] = LANGUAGE_CODE
+        context["avg_generate_time"] = config("AVG_GENERATE_TIME")
         return context
 
     def get_form_kwargs(self):
@@ -76,8 +79,14 @@ class Creation(LoginRequiredMixin, FormView):
         return kwargs
 
     def form_valid(self, form):
-        print(form.cleaned_data)
-        return redirect(reverse_lazy("index"))  # <-- TODO: redirect to "download" page
+        dp = DocumentPackager()
+        prefix = dp.pack(
+            user_id=self.request.user.id,
+            sbj_id=form.cleaned_data["subject"].id,
+            count=form.cleaned_data["amount"],
+            date=form.cleaned_data["date"].strftime("%d.%m.%Y")
+        )
+        return redirect(f"{reverse_lazy("download")}?prefix={prefix}")
 
 
 def download(request):
@@ -87,7 +96,7 @@ def download(request):
             if prefix:
                 # redirect to generated tmp link
                 mc = MinioClient()
-                return redirect(mc.get_object_url(prefix + ".zip"))
+                return redirect(mc.get_object_url(f"{prefix}.{DocumentPackager.ARCHIVE_FORMAT}"))
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
 
