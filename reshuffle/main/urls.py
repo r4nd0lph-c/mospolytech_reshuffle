@@ -8,7 +8,7 @@ urlpatterns = [
     path("auth/", Auth.as_view(redirect_authenticated_user=True), name="auth"),
     path("", Index.as_view(), name="index"),
     path("creation/", Creation.as_view(), name="creation"),
-    path("download/", download, name="download"),
+    path("download/<str:prefix>", download, name="download"),
     path("logout/", logout_user, name="logout"),
     path("validation_part/", validation_part, name="validation_part"),
     path("validation_task/", validation_task, name="validation_task"),

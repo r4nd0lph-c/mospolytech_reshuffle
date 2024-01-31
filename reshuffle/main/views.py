@@ -95,7 +95,7 @@ class Creation(LoginRequiredMixin, FormView, ListView):
             count=form.cleaned_data["amount"],
             date=form.cleaned_data["date"].strftime("%d.%m.%Y")
         )
-        return redirect(f"{reverse_lazy("download")}?prefix={prefix}")
+        return redirect(f"{reverse_lazy("download", kwargs={"prefix": prefix})}")
 
     def get_queryset(self):
         qs = ObjectStorageEntry.objects.all().order_by("-created")
@@ -108,10 +108,9 @@ class Creation(LoginRequiredMixin, FormView, ListView):
         return qs.filter(subject__id__in=accesses)
 
 
-def download(request):
+def download(request, prefix: str = None):
     if request.method == "GET":
         if request.user.is_authenticated:
-            prefix = request.GET.get("prefix") if request.GET.get("prefix") else None
             if prefix:
                 # redirect to generated tmp link
                 mc = MinioClient()

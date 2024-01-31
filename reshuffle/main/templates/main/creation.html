@@ -72,7 +72,7 @@
                                 <td>{{ obj.date }}</td>
                                 <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
                                 <td>{{ obj.created }}</td>
-                                <td>???</td>
+                                <td><a class="bi bi-download" href="{% url 'download' prefix=obj.prefix %}"></a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

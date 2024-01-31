@@ -268,7 +268,7 @@ class ObjectStorageEntryAdmin(admin.ModelAdmin):
                 <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
             </svg>
         """
-        return mark_safe(f"<a href='{reverse_lazy("download")}?prefix={obj.prefix}'> {btn} </a>")
+        return mark_safe(f"<a href='{reverse_lazy("download", kwargs={"prefix": obj.prefix})}'> {btn} </a>")
 
     download_button.short_description = _("Download")
 
