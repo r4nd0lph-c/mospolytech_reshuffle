@@ -59,7 +59,7 @@ class CreationForm(forms.Form):
             attrs={
                 "class": "form-control",
                 "style": "padding: 1rem .75rem",
-                "placeholder": _("Exam date") + ": dd.mm.yyyy",
+                "placeholder": _("Exam date") + ": " + _("dd.mm.yyyy"),
                 "autocomplete": "off"
             }
         )
