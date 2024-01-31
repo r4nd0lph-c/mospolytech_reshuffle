@@ -35,6 +35,23 @@ header .display-6 {
     margin: 0;
 }
 
+.btn-light {
+    background-color: var(--white);
+    border: 1px solid var(--bs-border-color) !important;
+}
+
+.btn-light:hover {
+    background-color: #FCFCFC;
+}
+
+.btn-light:active {
+    background-color: var(--light) !important;
+}
+
+.btn-light:disabled {
+    color: var(--text-secondary);
+}
+
 
 /* DATEPICKER */
 
@@ -177,8 +194,23 @@ header .display-6 {
     user-select: none;
 }
 
+.alert-container {
+    margin: 0 16px;
+}
+
 .table-container {
     margin: 0 16px;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.375rem;
+    overflow: hidden;
+}
+
+@media (width <= 800px) {
+    .table-container {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 }
 
 .pagination {

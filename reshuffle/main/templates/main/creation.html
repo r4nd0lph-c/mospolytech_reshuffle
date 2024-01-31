@@ -52,50 +52,60 @@
         </div>
 
         <!-- object storage table START -->
-        <div class="mt-4">
-            <div class="table-container mb-4">
-                <table class="table" style="margin: 0;">
-                    <thead>
-                    <tr>
-                        {% for th in table_head %}
-                            <th scope="col">{{ th }}</th>
-                        {% endfor %}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for obj in page_obj %}
+        {% if page_obj %}
+            <div class="mt-5">
+                <h3 class="fw-normal mb-3"> {% trans "Table of archives" %} </h3>
+                <div class="table-container mb-2">
+                    <table id="object_storage_table" class="table" style="margin: 0;">
+                        <thead>
                         <tr>
-                            <td>{{ obj.subject }}</td>
-                            <td>{{ obj.amount }}</td>
-                            <td>{{ obj.date }}</td>
-                            <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
-                            <td>{{ obj.created }}</td>
-                            <td>???</td>
+                            {% for th in table_head %}
+                                <th scope="col">{{ th }}</th>
+                            {% endfor %}
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="pagination">
+                        </thead>
+                        <tbody>
+                        {% for obj in page_obj %}
+                            <tr>
+                                <td>{{ obj.subject }}</td>
+                                <td>{{ obj.amount }}</td>
+                                <td>{{ obj.date }}</td>
+                                <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
+                                <td>{{ obj.created }}</td>
+                                <td>???</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination mb-5">
                 <span class="step-links">
                     {% if page_obj.has_previous %}
-                        <a href="?page=1">{% trans "First" %}</a>
-                        <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                        <a class="btn btn-light me-1" href="?page=1">{% trans "First" %}</a>
+                        <a class="btn btn-light me-1" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
                     {% else %}
-                        <span>{% trans "First" %}</span>
-                        <span>&laquo;</span>
+                        <button class="btn btn-light me-1" type="button" disabled>{% trans "First" %}</button>
+                        <button class="btn btn-light me-1" type="button" disabled>&laquo;</button>
                     {% endif %}
                     <span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
                     {% if page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
-                        <a href="?page={{ page_obj.paginator.num_pages }}">{% trans "Last" %}</a>
+                        <a class="btn btn-light ms-1" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                        <a class="btn btn-light ms-1"
+                           href="?page={{ page_obj.paginator.num_pages }}">{% trans "Last" %}</a>
                     {% else %}
-                        <span>&raquo;</span>
-                        <span>{% trans "Last" %}</span>
+                        <button class="btn btn-light ms-1" type="button" disabled>&raquo;</button>
+                        <button class="btn btn-light ms-1" type="button" disabled>{% trans "Last" %}</button>
                     {% endif %}
                 </span>
+                </div>
             </div>
-        </div>
+        {% else %}
+            <div class="alert-container mt-4 mb-2">
+                <div class="alert alert-primary" role="alert">
+                    {% trans "In the future, there will be a table here with the archives that are available for you to download. At the moment there are none." %}
+                </div>
+            </div>
+        {% endif %}
         <!-- object storage table END -->
     </main>
     <!-- main END -->
@@ -111,6 +121,11 @@
     <script>
         // add "custom-container" & "text-center" classes to body
         document.body.classList.add("custom-container", "text-center");
+
+        // remove unnecessary bottom border for object_storage_table last tr
+        let object_storage_table = document.getElementById("object_storage_table");
+        let tbody = object_storage_table.getElementsByTagName("tbody")[0];
+        Array.from(tbody.getElementsByTagName("tr")).at(-1).style.borderBottom = "transparent";
 
         // init form fields
         let subject = document.getElementById("id_subject");
