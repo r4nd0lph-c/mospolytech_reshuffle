@@ -13,8 +13,10 @@ from main.models import *
 from main.services.docs.minio_client import MinioClient
 from main.services.docs.factory import DocumentPackager
 
-
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
+PAGINATION_SIZE = 10
+
+
 class Auth(LoginView):
     template_name = "main/auth.html"
     form_class = AuthForm
@@ -55,7 +57,7 @@ class Creation(LoginRequiredMixin, FormView, ListView):
     template_name = "main/creation.html"
     login_url = reverse_lazy("auth")
     form_class = CreationForm
-    paginate_by = 10
+    paginate_by = PAGINATION_SIZE
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -95,7 +97,7 @@ class Creation(LoginRequiredMixin, FormView, ListView):
             count=form.cleaned_data["amount"],
             date=form.cleaned_data["date"].strftime("%d.%m.%Y")
         )
-        return redirect(f"{reverse_lazy("download", kwargs={"prefix": prefix})}")
+        return redirect(f"{reverse_lazy("download_archive", kwargs={"prefix": prefix})}")
 
     def get_queryset(self):
         qs = ObjectStorageEntry.objects.all().order_by("-created")
@@ -108,7 +110,7 @@ class Creation(LoginRequiredMixin, FormView, ListView):
         return qs.filter(subject__id__in=accesses)
 
 
-def download(request, prefix: str = None):
+def download_archive(request, prefix: str = None):
     if request.method == "GET":
         if request.user.is_authenticated:
             if prefix:
