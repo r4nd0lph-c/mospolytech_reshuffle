@@ -315,8 +315,14 @@ class DocumentPackager:
         return f"{folder}.{self.__ARCHIVE_FORMAT}"
 
     def pack(self, user_id: int, sbj_id: int, count: int, date: str) -> None:
+        # init object storage client
+        mc = MinioClient()
+        # find related subject
+        sbj = Subject.objects.get(id=sbj_id)
         # create output folder
-        folder = self.__create_folder(f"[{datetime.today().strftime('%d-%m-%Y_%H-%M-%S-%f')}][{sbj_id}]")
+        folder = self.__create_folder(
+            f"[{datetime.today().strftime('%d.%m.%Y_%H.%M.%S.%f')}][{sbj.sbj_title}][{count}][{date}]"
+        )
         # create data [JSON]
         gen_json = GeneratorJSON(sbj_id, date)
         data = gen_json.generate(count)
@@ -329,8 +335,6 @@ class DocumentPackager:
         gen_pdf = GeneratorPDF()
         gen_pdf.generate(data)
         gen_pdf.save(folder)
-        # init object storage client
-        mc = MinioClient()
         # send output folder to object storage
         mc.upload_folder(folder)
         # archive & delete output folder
@@ -342,7 +346,7 @@ class DocumentPackager:
         # add object storage entry to db
         ObjectStorageEntry.objects.create(
             user=User.objects.get(id=user_id),
-            subject=Subject.objects.get(id=sbj_id),
+            subject=sbj,
             amount=count,
             date=timezone.make_aware(datetime.strptime(date, "%d.%m.%Y"), timezone=timezone.get_current_timezone()),
             prefix=folder.split("\\")[-1]
@@ -350,13 +354,4 @@ class DocumentPackager:
 
 
 if __name__ == "__main__":
-    from time import time
-
-    t = time()
-
-    n = 2
-    dp = DocumentPackager()
-    dp.pack(user_id=1, sbj_id=2, count=n, date="30.01.2024")
-
-    print(time() - t)
-    print((time() - t) / n)
+    pass

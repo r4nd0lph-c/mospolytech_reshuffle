@@ -1,5 +1,6 @@
 from os import path
 from glob import glob, escape
+from datetime import timedelta
 from minio import Minio
 from reshuffle.settings import MINIO_ENDPOINT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET_NAME
 
@@ -37,6 +38,14 @@ class MinioClient:
         if not alias:
             alias = file.split("\\")[-1]
         self.__client.fput_object(bucket_name=self.__bucket_name, object_name=alias, file_path=file)
+
+    def get_object_url(self, alias: str) -> str:
+        return self.__client.get_presigned_url(
+            method="GET",
+            bucket_name=self.__bucket_name,
+            object_name=alias,
+            expires=timedelta(minutes=1)
+        )
 
     def delete_object(self, alias: str) -> None:
         for o in self.__client.list_objects(bucket_name=self.__bucket_name, prefix=alias, recursive=True):

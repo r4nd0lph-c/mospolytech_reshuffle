@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from reshuffle.settings import PROJECT_NAME, LANGUAGE_CODE
 from main.forms import *
 from main.models import *
+from main.services.docs.minio_client import MinioClient
 
 
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
@@ -79,6 +80,18 @@ class Creation(LoginRequiredMixin, FormView):
         return redirect(reverse_lazy("index"))  # <-- TODO: redirect to "download" page
 
 
+def download(request):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            prefix = request.GET.get("prefix") if request.GET.get("prefix") else None
+            if prefix:
+                # redirect to generated tmp link
+                mc = MinioClient()
+                return redirect(mc.get_object_url(prefix + ".zip"))
+    # generate JSON response (error)
+    return JsonResponse({"error": "you don't have enough permissions"})
+
+
 def logout_user(request):
     logout(request)
     return redirect("auth")
@@ -112,8 +125,8 @@ def validation_part(request):
                 },
                 "labels": Part.LABELS
             })
-        # generate JSON response (error)
-        return JsonResponse({"error": "you don't have enough permissions"})
+    # generate JSON response (error)
+    return JsonResponse({"error": "you don't have enough permissions"})
 
 
 def validation_task(request):
@@ -127,8 +140,8 @@ def validation_task(request):
                 "amount_max": Part.objects.get(pk=id_prt).task_count if id_prt else 0,
                 "labels": Task.LABELS,
             })
-        # generate JSON response (error)
-        return JsonResponse({"error": "you don't have enough permissions"})
+    # generate JSON response (error)
+    return JsonResponse({"error": "you don't have enough permissions"})
 
 
 # ERRORS ------------------------------------------------------------------------------------------------------------- #

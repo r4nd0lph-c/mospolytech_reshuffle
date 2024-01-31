@@ -4,6 +4,7 @@
 
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
+from django.urls import reverse_lazy
 from django.contrib import admin
 from django.db.models import Q
 from reshuffle.settings import PROJECT_NAME
@@ -250,7 +251,7 @@ class AccessAdmin(admin.ModelAdmin):
 
 @admin.register(ObjectStorageEntry)
 class ObjectStorageEntryAdmin(admin.ModelAdmin):
-    list_display = ("id", "subject", "amount", "date", "username", "created",)
+    list_display = ("id", "subject", "amount", "date", "username", "created", "download_button",)
     list_display_links = ("id",)
     ordering = ("-created",)
     list_filter = (("subject", admin.RelatedOnlyFieldListFilter), ("user", admin.RelatedOnlyFieldListFilter),)
@@ -259,6 +260,17 @@ class ObjectStorageEntryAdmin(admin.ModelAdmin):
         return obj.user.get_full_name() if obj.user.get_full_name() else obj.user.username
 
     username.short_description = ObjectStorageEntry._meta.get_field("user").verbose_name
+
+    def download_button(self, obj: "ObjectStorageEntry"):
+        btn = """
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+            </svg>
+        """
+        return mark_safe(f"<a href='{reverse_lazy("download")}?prefix={obj.prefix}'> {btn} </a>")
+
+    download_button.short_description = _("Download")
 
     def has_add_permission(self, request):
         return False

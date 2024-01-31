@@ -16,6 +16,7 @@
     --breadcrumbs-bg: #A3ADB6 !important;
     --breadcrumbs-fg: var(--white) !important;
     --link-selected-fg: var(--pr) !important;
+    --link-hover-color: var(--pr) !important;
     --border-color: var(--bs-border-color) !important;
     --hairline-color: var(--bs-border-color) !important;
     --selected-row: var(--pr-accent) !important;
@@ -29,6 +30,11 @@
 }
 
 #result_list td {
+    vertical-align: middle;
+    border: 1px solid var(--hairline-color);
+}
+
+#result_list thead th {
     vertical-align: middle;
     border: 1px solid var(--hairline-color);
 }

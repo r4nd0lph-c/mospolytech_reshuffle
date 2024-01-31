@@ -328,7 +328,7 @@ class ObjectStorageEntry(AbstractDatestamp):
         help_text=_("Amount of unique variants in the archive"),
         verbose_name=_("Amount")
     )
-    date = models.DateTimeField(
+    date = models.DateField(
         help_text=_("Date of the exam for which the archive was created"),
         verbose_name=_("Exam date")
     )
