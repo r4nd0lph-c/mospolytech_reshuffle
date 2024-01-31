@@ -55,8 +55,7 @@ class Creation(LoginRequiredMixin, FormView, ListView):
     template_name = "main/creation.html"
     login_url = reverse_lazy("auth")
     form_class = CreationForm
-    paginate_by = 2
-    model = ObjectStorageEntry
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -97,6 +96,16 @@ class Creation(LoginRequiredMixin, FormView, ListView):
             date=form.cleaned_data["date"].strftime("%d.%m.%Y")
         )
         return redirect(f"{reverse_lazy("download")}?prefix={prefix}")
+
+    def get_queryset(self):
+        qs = ObjectStorageEntry.objects.all().order_by("-created")
+        groups = self.request.user.groups.all()
+        if self.request.user.is_superuser or not groups.exists():
+            return qs
+        accesses = []
+        for g in groups:
+            accesses += [a.subject.id for a in Access.objects.filter(group=g)]
+        return qs.filter(subject__id__in=accesses)
 
 
 def download(request):
