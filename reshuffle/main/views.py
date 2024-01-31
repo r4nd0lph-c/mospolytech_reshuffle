@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from reshuffle.settings import PROJECT_NAME, LANGUAGE_CODE
@@ -16,8 +16,8 @@ from main.services.docs.factory import DocumentPackager
 
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
 class Auth(LoginView):
-    form_class = AuthForm
     template_name = "main/auth.html"
+    form_class = AuthForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,10 +51,12 @@ class Index(LoginRequiredMixin, TemplateView):
         return context
 
 
-class Creation(LoginRequiredMixin, FormView):
-    form_class = CreationForm
+class Creation(LoginRequiredMixin, FormView, ListView):
     template_name = "main/creation.html"
     login_url = reverse_lazy("auth")
+    form_class = CreationForm
+    paginate_by = 2
+    model = ObjectStorageEntry
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -63,6 +65,14 @@ class Creation(LoginRequiredMixin, FormView):
         context["subtitle"] = _("Create a set of entrance exams")
         context["datepicker_language"] = LANGUAGE_CODE
         context["avg_generate_time"] = config("AVG_GENERATE_TIME")
+        context["table_head"] = [
+            ObjectStorageEntry._meta.get_field("subject").verbose_name,
+            ObjectStorageEntry._meta.get_field("amount").verbose_name,
+            ObjectStorageEntry._meta.get_field("date").verbose_name,
+            ObjectStorageEntry._meta.get_field("user").verbose_name,
+            ObjectStorageEntry._meta.get_field("created").verbose_name,
+            _("Download")
+        ]
         return context
 
     def get_form_kwargs(self):

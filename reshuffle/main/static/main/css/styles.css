@@ -115,6 +115,7 @@ header .display-6 {
     flex: 1 1 auto;
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 
 .custom-container main .inner {
@@ -126,7 +127,7 @@ header .display-6 {
 .custom-container footer {
     flex: 0 1 auto;
     margin-top: 32px;
-    margin-bottom: 16px;
+    padding-bottom: 16px;
 }
 
 
@@ -174,4 +175,13 @@ header .display-6 {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.table-container {
+    margin: 0 16px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
 }

@@ -38,7 +38,7 @@
             <!-- catch form errors END -->
 
             <!-- creation form START -->
-            <form method="post" class="form-creation">
+            <form method="post" class="form-creation mb-4">
                 {% csrf_token %}
                 <h3 class="fw-normal mb-3"> {% trans "Creation" %} </h3>
                 <div class="mb-2"> {{ form.subject }} </div>
@@ -50,6 +50,53 @@
             </form>
             <!-- creation form END -->
         </div>
+
+        <!-- object storage table START -->
+        <div class="mt-4">
+            <div class="table-container mb-4">
+                <table class="table" style="margin: 0;">
+                    <thead>
+                    <tr>
+                        {% for th in table_head %}
+                            <th scope="col">{{ th }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for obj in page_obj %}
+                        <tr>
+                            <td>{{ obj.subject }}</td>
+                            <td>{{ obj.amount }}</td>
+                            <td>{{ obj.date }}</td>
+                            <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
+                            <td>{{ obj.created }}</td>
+                            <td>???</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">{% trans "First" %}</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                    {% else %}
+                        <span>{% trans "First" %}</span>
+                        <span>&laquo;</span>
+                    {% endif %}
+                    <span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">{% trans "Last" %}</a>
+                    {% else %}
+                        <span>&raquo;</span>
+                        <span>{% trans "Last" %}</span>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        <!-- object storage table END -->
     </main>
     <!-- main END -->
 
