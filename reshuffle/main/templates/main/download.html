@@ -4,29 +4,29 @@
 {% load static %}
 
 {% block inner_content %}
-    {% if page_obj %}
-        <div class="div-download mb-4">
-            <h3 class="fw-normal mb-3"> {% trans "Archive" %} </h3>
-            {% if prefix_created %}
-                <p>
-                    {% trans "Your archive is ready to download." %} <br>
-                    {% trans "Click" %} <a
-                        href="{% url 'creation' %}">{% trans "here" %}</a>{% trans " if you want to create more archives." %}
-                </p>
-                <p class="bi bi-cloud-download mb-4" style="font-size: 94px; color: var(--text-secondary)"></p>
-                <a class="btn btn-primary" style="min-width: 152px;"
-                   href="{% url 'download_archive' prefix=prefix_created %}">
-                    {% trans "Download" %}
-                </a>
-            {% else %}
-                <p>
-                    {% trans "You haven't created any archives." %} <br>
-                    {% trans "Click" %} <a
-                        href="{% url 'creation' %}">{% trans "here" %}</a>{% trans " if you want to create more archives." %}
-                </p>
-                <p class="bi bi-cloud-download mb-4" style="font-size: 94px; color: var(--text-secondary)"></p>
-                <button class="btn btn-primary" style="min-width: 152px;" disabled>{% trans "Download" %}</button>
-            {% endif %}
-        </div>
-    {% endif %}
+    <!-- download form START -->
+    <div class="div-download mb-4">
+        <h3 class="fw-normal mb-3"> {% trans "Archive" %} </h3>
+        {% if prefix_created %}
+            <p>
+                {% trans "Your archive is ready to download." %} <br>
+                {% trans "Click" %} <a
+                    href="{% url 'creation' %}">{% trans "here" %}</a>{% trans " if you want to create more archives." %}
+            </p>
+            <p class="bi bi-cloud-download mb-4" style="font-size: 94px; color: var(--text-secondary)"></p>
+            <a class="btn btn-primary" style="min-width: 152px;"
+               href="{% url 'download_archive' prefix=prefix_created %}">
+                {% trans "Download" %}
+            </a>
+        {% else %}
+            <p>
+                {% trans "You haven't created any archives." %} <br>
+                {% trans "Click" %} <a
+                    href="{% url 'creation' %}">{% trans "here" %}</a>{% trans " if you want to create more archives." %}
+            </p>
+            <p class="bi bi-cloud-download mb-4" style="font-size: 94px; color: var(--text-secondary)"></p>
+            <button class="btn btn-primary" style="min-width: 152px;" disabled>{% trans "Download" %}</button>
+        {% endif %}
+    </div>
+    <!-- download form END -->
 {% endblock %}
