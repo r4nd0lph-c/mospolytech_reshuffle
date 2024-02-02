@@ -14,36 +14,39 @@ class Analyzer:
     def __init__(self) -> None:
         pass
 
-    def resize(self, img: ndarray, k: float) -> ndarray:
+    def __resize(self, img: ndarray, k: float) -> ndarray:
         (h, w) = img.shape[:2]
         return cv2.resize(img, (round(w / k), round(h / k)))
 
-    def grayscale(self, img: ndarray) -> ndarray:
+    def __grayscale(self, img: ndarray) -> ndarray:
         return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    def blur(self, img: ndarray, kernel: tuple = (5, 5), sigma: float = 1) -> ndarray:
+    def __invert(self, img: ndarray) -> ndarray:
+        return 255 - img
+
+    def __blur(self, img: ndarray, kernel: tuple = (5, 5), sigma: float = 1) -> ndarray:
         return cv2.GaussianBlur(img, kernel, sigma)
 
-    def canny(self, img: ndarray, threshold1: float = 100, threshold2: float = 200) -> ndarray:
+    def __canny(self, img: ndarray, threshold1: float = 100, threshold2: float = 200) -> ndarray:
         if img.shape == 3:
-            img = self.grayscale(img)
-        return cv2.Canny(self.blur(img), threshold1, threshold2)
+            img = self.__grayscale(img)
+        return cv2.Canny(self.__blur(img), threshold1, threshold2)
 
-    def threshold(self, img: ndarray, thresh: float = 85, maxval: float = 255) -> ndarray:
+    def __threshold(self, img: ndarray, thresh: float = 85, maxval: float = 255) -> ndarray:
         return cv2.threshold(img, thresh, maxval, cv2.THRESH_BINARY)[1]
 
-    def dilate(self, img: ndarray, kernel: ndarray = np.ones((5, 5)), iterations: int = 1) -> ndarray:
+    def __dilate(self, img: ndarray, kernel: ndarray = np.ones((5, 5)), iterations: int = 1) -> ndarray:
         return cv2.dilate(img, kernel, iterations=iterations)
 
-    def erode(self, img: ndarray, kernel: ndarray = np.ones((5, 5)), iterations: int = 1) -> ndarray:
+    def __erode(self, img: ndarray, kernel: ndarray = np.ones((5, 5)), iterations: int = 1) -> ndarray:
         return cv2.erode(img, kernel, iterations=iterations)
 
-    def restore_perspective(self, img: ndarray) -> ndarray:
+    def __restore_perspective(self, img: ndarray) -> ndarray:
         # detect edges
         restored = img.copy()
-        img = self.canny(img)
-        img = self.dilate(img, iterations=2)
-        img = self.erode(img)
+        img = self.__canny(img)
+        img = self.__dilate(img, iterations=2)
+        img = self.__erode(img)
         # find the biggest target contour
         contours, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         target_contour = np.array([])
@@ -75,7 +78,7 @@ class Analyzer:
         # return result
         return restored
 
-    def find_mask(self, img: ndarray, l_1: int = 1, l_2: int = 40) -> ndarray:
+    def __find_mask(self, img: ndarray, l_1: int = 1, l_2: int = 40) -> ndarray:
         # define vertical and horizontal kernels
         kernel_1_h = np.ones((1, l_1), np.uint8)
         kernel_1_v = np.ones((l_1, 1), np.uint8)
@@ -88,23 +91,26 @@ class Analyzer:
         img_v = cv2.morphologyEx(~img, cv2.MORPH_CLOSE, kernel_1_v)
         img_v = cv2.morphologyEx(img_v, cv2.MORPH_OPEN, kernel_2_v)
         # merge lines
-        mask = self.dilate(img_h | img_v)
+        mask = self.__dilate(img_h | img_v)
         # return result
-        return self.threshold(mask, maxval=255)
+        return self.__threshold(mask, maxval=255)
+
+    def analyze(self, img: ndarray, data: dict) -> None:
+        img_grayscale = self.__grayscale(img)
+        img_restore_perspective = self.__restore_perspective(img_grayscale)
+        img_threshold = self.__threshold(img_restore_perspective)
+        img_mask = self.__find_mask(img_threshold)
+
+        cv2.imshow("img_base", self.__resize(img=img, k=4))
+        cv2.imshow("threshold_invert", self.__resize(img=self.__invert(img_threshold), k=4))
+        cv2.imshow("mask", self.__resize(img=img_mask, k=4))
+
+        cv2.imwrite("threshold.png", img_threshold)
+        cv2.imwrite("mask.png", img_mask)
+
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
-    a = Analyzer()
-    img_base = cv2.imread("test_1.png")
-    img_restore_perspective = a.restore_perspective(a.grayscale(img_base))
-    img_threshold = a.threshold(img_restore_perspective)
-    img_mask = a.find_mask(img_threshold)
-
-    cv2.imshow("img_base", a.resize(img=img_base, k=4))
-    cv2.imshow("threshold", a.resize(img=img_threshold, k=4))
-    cv2.imwrite("threshold.png", img_threshold)
-    cv2.imshow("mask", a.resize(img=img_mask, k=4))
-    cv2.imwrite("mask.png", img_mask)
-
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    Analyzer().analyze(img=cv2.imread("test_1.png"), data={})
