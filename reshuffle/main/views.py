@@ -62,8 +62,8 @@ class ObjectStorageListView(LoginRequiredMixin, ListView):
         context["project_name"] = PROJECT_NAME.upper()
         context["table_head"] = [
             ObjectStorageEntry._meta.get_field("subject").verbose_name,
-            ObjectStorageEntry._meta.get_field("amount").verbose_name,
             ObjectStorageEntry._meta.get_field("date").verbose_name,
+            ObjectStorageEntry._meta.get_field("amount").verbose_name,
             ObjectStorageEntry._meta.get_field("user").verbose_name,
             ObjectStorageEntry._meta.get_field("created").verbose_name,
             _("Download")

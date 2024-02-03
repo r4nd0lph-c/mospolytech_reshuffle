@@ -49,8 +49,8 @@
                         {% for obj in page_obj %}
                             <tr>
                                 <td>{{ obj.subject }}</td>
-                                <td>{{ obj.amount }}</td>
                                 <td>{{ obj.date }}</td>
+                                <td>{{ obj.amount }}</td>
                                 <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
                                 <td>{{ obj.created }}</td>
                                 <td>
