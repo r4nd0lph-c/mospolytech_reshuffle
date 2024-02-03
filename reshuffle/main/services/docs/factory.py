@@ -20,13 +20,13 @@ class UniqueKey:
     ...
     """
 
-    __BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    __BASE26 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     def __init__(self, length: int) -> None:
         self.length = length
 
     def create(self) -> str:
-        return "".join(choices(self.__BASE36, k=self.length))
+        return "".join(choices(self.__BASE26, k=self.length))
 
 
 class GeneratorJSON:
@@ -160,7 +160,7 @@ class GeneratorXLSX:
         self.__ws["P13"] = date
         self.__ws["N14"] = str(_("Exam date"))
         self.__ws["Z14"] = str(_("Signature of applicant"))
-        self.__ws["A16"] = f"{sbj_title} – " + _("Answer sheet")
+        self.__ws["A16"] = f"{sbj_title} ({date}) – " + _("Answer sheet")
         self.__ws["A18"] = _("Variant") + f" № {unique_key}"
         self.__ws["A63"] = str(_("Correcting wrong marks"))
         self.__ws["A67"] = str(_("Results"))
