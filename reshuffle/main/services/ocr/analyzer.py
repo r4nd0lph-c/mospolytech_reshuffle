@@ -1,3 +1,4 @@
+import json
 import numpy as np
 from numpy import ndarray
 import cv2
@@ -13,7 +14,9 @@ class Analyzer:
 
     __CHECKBOX_W = 20  # px
     __CHECKBOX_H = 20  # px
+
     __CHECKBOX_ATOL = 0.2
+    __TOLERANCE_PERCENTAGE = 0.1
 
     def __init__(self) -> None:
         pass
@@ -99,9 +102,10 @@ class Analyzer:
         # return result
         return self.threshold(mask, maxval=255)
 
-    def analyze(self, mask: ndarray, img: ndarray, data: dict) -> None:
+    def analyze(self, img: ndarray, data: dict) -> None:
         # get stats about all rectangles
-        _, _, stats, centroids = cv2.connectedComponentsWithStats(~mask, connectivity=8, ltype=cv2.CV_32S)
+        mask = self.find_mask(img)
+        _, _, stats, _ = cv2.connectedComponentsWithStats(~mask, connectivity=8, ltype=cv2.CV_32S)
         # filter stats for checkboxes only
         stats = stats[2:]
         stats = stats[np.isclose(
@@ -109,32 +113,45 @@ class Analyzer:
             self.__CHECKBOX_W / self.__CHECKBOX_H,
             atol=self.__CHECKBOX_ATOL
         )]
+        # calc tolerance
+        _, _, w, h, _ = stats[0]
+        tolerance = (w + h) / 2 * self.__TOLERANCE_PERCENTAGE
+        # categorize checkboxes
+        y_set = set(stats[:, 1])
+        y_max = max(y_set)
+        checkboxes_correction = stats[np.isclose(stats[:, 1], y_max, atol=tolerance)]
+        y_set = y_set - set(checkboxes_correction[:, 1])
+        y_max = max(y_set)
+        checkboxes_answers = stats[stats[:, 1] <= y_max]
 
+        # debug
         detected = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        for x, y, w, h, area in stats:
-            print(f"{(x, y), (x + w, y + h), w / h}\n")
-            cv2.rectangle(detected, (x, y), (x + w, y + h), (0, 255, 0), 5)
+        for i, (x, y, w, h, area) in enumerate(stats):
+            # print(f"{(x, y), (x + w, y + h), w / h}\n")
+            cv2.rectangle(detected, (x, y), (x + w, y + h), [(255, 0, 0), (0, 255, 0), (0, 0, 255)][i % 3], 5)
         cv2.imshow("detected", a.resize(img=detected, k=4))
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
-    img_base = cv2.imread("test_1.png")
+    img_base = cv2.imread("test_5.png")
+    with open("data_it.json", "r", encoding="UTF-8") as f:
+        data_base = json.load(f)
     a = Analyzer()
     img_grayscale = a.grayscale(img_base)
     img_restore_perspective = a.restore_perspective(img_grayscale)
     img_threshold = a.threshold(img_restore_perspective)
     img_mask = a.find_mask(img_threshold)
 
-    a.analyze(img_mask, img_threshold, {})
+    a.analyze(img_threshold, data_base)
 
-    cv2.imshow("img_base", a.resize(img=img_base, k=4))
-    cv2.imshow("threshold_invert", a.resize(img=a.invert(img_threshold), k=4))
-    cv2.imshow("mask", a.resize(img=img_mask, k=4))
+    # cv2.imshow("img_base", a.resize(img=img_base, k=4))
+    # cv2.imshow("threshold_invert", a.resize(img=a.invert(img_threshold), k=4))
+    # cv2.imshow("mask", a.resize(img=img_mask, k=4))
 
     cv2.imwrite("threshold.png", img_threshold)
     cv2.imwrite("mask.png", img_mask)
 
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
