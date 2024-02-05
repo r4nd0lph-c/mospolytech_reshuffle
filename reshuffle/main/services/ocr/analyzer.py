@@ -9,14 +9,16 @@ class Analyzer:
     ...
     """
 
-    __A4_W = 210  # mm
-    __A4_H = 297  # mm
+    __A4_W = 210  # scan width (mm)
+    __A4_H = 297  # scan height (mm)
 
-    __CHECKBOX_W = 20  # px
-    __CHECKBOX_H = 20  # px
+    __CHECKBOX_W = 20  # base checkbox width (px)
+    __CHECKBOX_H = 20  # base checkbox height (px)
 
-    __CHECKBOX_ATOL = 0.2
-    __TOLERANCE_PERCENTAGE = 0.1
+    __CHECKBOX_ATOL = 0.2  # checkbox aspect ratio = __CHECKBOX_W / __CHECKBOX_H +- __CHECKBOX_ATOL
+    __TOLERANCE_PERCENTAGE = 0.1  # same line = line +- (__CHECKBOX_W + __CHECKBOX_H) / 2 * __TOLERANCE_PERCENTAGE
+
+    __CHECKBOX_CORRECTION_LEN = 4  # length of one checkbox correction field
 
     def __init__(self) -> None:
         pass
@@ -123,8 +125,26 @@ class Analyzer:
         y_set = y_set - set(checkboxes_correction[:, 1])
         y_max = max(y_set)
         checkboxes_answers = stats[stats[:, 1] <= y_max]
+        # create fields_correction
+        checkboxes_correction = checkboxes_correction[checkboxes_correction[:, 0].argsort()]
+        fields_correction = []
+        i = 0
+        while i < len(checkboxes_correction):
+            c = checkboxes_correction[i:i + self.__CHECKBOX_CORRECTION_LEN]
+            fields_correction.append([c[0][0], min(c[:, 1]), c[3][0] + c[-1][2] - c[0][0], max(c[:, 3])])
+            i += self.__CHECKBOX_CORRECTION_LEN
+        # create fields_answers
+        # ...
 
-        # debug
+        # debug 1
+        detected = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        for i, (x, y, w, h) in enumerate(fields_correction):
+            cv2.rectangle(detected, (x, y), (x + w, y + h), [(255, 0, 0), (0, 255, 0), (0, 0, 255)][i % 3], 5)
+        cv2.imshow("detected", a.resize(img=detected, k=4))
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+        # debug 2
         detected = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         for i, (x, y, w, h, area) in enumerate(stats):
             # print(f"{(x, y), (x + w, y + h), w / h}\n")
