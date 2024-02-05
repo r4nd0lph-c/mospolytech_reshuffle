@@ -1,7 +1,16 @@
+import os
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
+import django
+
+django.setup()
+
 import json
+from math import ceil
 import numpy as np
 from numpy import ndarray
 import cv2
+from main.models import Part
 
 
 class Analyzer:
@@ -19,6 +28,9 @@ class Analyzer:
     __TOLERANCE_PERCENTAGE = 0.1  # same line = line +- (__CHECKBOX_W + __CHECKBOX_H) / 2 * __TOLERANCE_PERCENTAGE
 
     __CHECKBOX_CORRECTION_LEN = 4  # length of one checkbox correction field
+
+    __ANSWER_TYPE_0_ANSWERS_N = 4  # amount of answers for task with answer_type = 0
+    __ANSWER_TYPE_1_ANSWERS_LEN = 13  # max length of answers for task with answer_type = 1
 
     def __init__(self) -> None:
         pass
@@ -104,7 +116,11 @@ class Analyzer:
         # return result
         return self.threshold(mask, maxval=255)
 
-    def analyze(self, img: ndarray, data: dict) -> None:
+    def check_mark(self, img: ndarray, box: ndarray) -> bool:
+        # TODO: logic
+        return True
+
+    def get_fields(self, img: ndarray, data: dict) -> None:
         # get stats about all rectangles
         mask = self.find_mask(img)
         _, _, stats, _ = cv2.connectedComponentsWithStats(~mask, connectivity=8, ltype=cv2.CV_32S)
@@ -125,16 +141,47 @@ class Analyzer:
         y_set = y_set - set(checkboxes_correction[:, 1])
         y_max = max(y_set)
         checkboxes_answers = stats[stats[:, 1] <= y_max]
-        # create fields_correction
+        # create fields_correction [list]
         checkboxes_correction = checkboxes_correction[checkboxes_correction[:, 0].argsort()]
         fields_correction = []
         i = 0
         while i < len(checkboxes_correction):
             c = checkboxes_correction[i:i + self.__CHECKBOX_CORRECTION_LEN]
-            fields_correction.append([c[0][0], min(c[:, 1]), c[3][0] + c[-1][2] - c[0][0], max(c[:, 3])])
+            fields_correction.append([c[0][0], min(c[:, 1]), c[-1][0] + c[-1][2] - c[0][0], max(c[:, 3])])
             i += self.__CHECKBOX_CORRECTION_LEN
-        # create fields_answers
-        # ...
+        # create fields_answers [dict]
+        fields_answers = {}
+        for part in data["variants"][0]["parts"]:
+            # get part info
+            title = part["info"]["title"]
+            answer_type = part["info"]["answer_type"]
+            task_count = part["info"]["task_count"]
+            # iterate throw parts
+            if answer_type == 0:
+                # if tasks with answer choice [0]
+                part_answers = np.full((self.__ANSWER_TYPE_0_ANSWERS_N, task_count), False)
+                n = ceil(task_count / Part.CAPACITIES[0])
+                y_set = set(checkboxes_answers[:, 1])
+                k = -1
+                for i in range(self.__ANSWER_TYPE_0_ANSWERS_N * n):
+                    y_min = min(y_set)
+                    if i % self.__ANSWER_TYPE_0_ANSWERS_N == 0:
+                        k += 1
+                    checkboxes_answers_row = checkboxes_answers[
+                        np.isclose(checkboxes_answers[:, 1], y_min, atol=tolerance)
+                    ]
+                    for j in range(len(checkboxes_answers_row)):
+                        new_i = i % self.__ANSWER_TYPE_0_ANSWERS_N
+                        new_j = j + k * Part.CAPACITIES[0]
+                        part_answers[new_i][new_j] = self.check_mark(img, checkboxes_answers_row[j])
+                    checkboxes_answers_row = checkboxes_answers_row[checkboxes_answers_row[:, 0].argsort()]
+                    y_set = y_set - set(checkboxes_answers_row[:, 1])
+                part_answers.resize(task_count, self.__ANSWER_TYPE_0_ANSWERS_N)
+                fields_answers[title] = part_answers
+            elif answer_type == 1:
+                # if tasks with short answer writing [1]
+                pass
+        print(fields_answers)
 
         # debug 1
         detected = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
@@ -164,7 +211,7 @@ if __name__ == "__main__":
     img_threshold = a.threshold(img_restore_perspective)
     img_mask = a.find_mask(img_threshold)
 
-    a.analyze(img_threshold, data_base)
+    a.get_fields(img_threshold, data_base)
 
     # cv2.imshow("img_base", a.resize(img=img_base, k=4))
     # cv2.imshow("threshold_invert", a.resize(img=a.invert(img_threshold), k=4))
