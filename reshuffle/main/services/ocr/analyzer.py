@@ -26,6 +26,7 @@ class Analyzer:
 
     __CHECKBOX_ATOL = 0.2  # checkbox aspect ratio = __CHECKBOX_W / __CHECKBOX_H +- __CHECKBOX_ATOL
     __TOLERANCE_PERCENTAGE = 0.1  # same line = line +- (__CHECKBOX_W + __CHECKBOX_H) / 2 * __TOLERANCE_PERCENTAGE
+    __FILLED_PERCENTAGE = 0.5  # if filled area / total area >= __FILLED_PERCENTAGE -> checkbox is marked
 
     __CHECKBOX_CORRECTION_LEN = 4  # length of one checkbox correction field
 
@@ -116,11 +117,16 @@ class Analyzer:
         # return result
         return self.threshold(mask, maxval=255)
 
-    def check_mark(self, img: ndarray, box: ndarray) -> bool:
-        # TODO: logic
-        return True
+    def check_mark(self, img: ndarray, box: ndarray, margin: int = 0) -> bool:
+        x, y, w, h, area = box
+        check_area = img[y - margin:y + h + margin, x - margin:x + w + margin]
+        enhanced = self.dilate(check_area, iterations=2)
+        filled = cv2.countNonZero(enhanced)
+        return filled / area >= self.__FILLED_PERCENTAGE
 
     def get_fields(self, img: ndarray, data: dict) -> None:
+        # invert threshold img
+        img_invert = self.invert(img)
         # get stats about all rectangles
         mask = self.find_mask(img)
         _, _, stats, _ = cv2.connectedComponentsWithStats(~mask, connectivity=8, ltype=cv2.CV_32S)
@@ -133,7 +139,7 @@ class Analyzer:
         )]
         # calc tolerance
         _, _, w, h, _ = stats[0]
-        tolerance = (w + h) / 2 * self.__TOLERANCE_PERCENTAGE
+        tolerance = round((w + h) / 2 * self.__TOLERANCE_PERCENTAGE)
         # categorize checkboxes
         y_set = set(stats[:, 1])
         y_max = max(y_set)
@@ -173,37 +179,28 @@ class Analyzer:
                     for j in range(len(checkboxes_answers_row)):
                         new_i = i % self.__ANSWER_TYPE_0_ANSWERS_N
                         new_j = j + k * Part.CAPACITIES[0]
-                        part_answers[new_i][new_j] = self.check_mark(img, checkboxes_answers_row[j])
+                        part_answers[new_i][new_j] = self.check_mark(img_invert, checkboxes_answers_row[j])
                     checkboxes_answers_row = checkboxes_answers_row[checkboxes_answers_row[:, 0].argsort()]
                     y_set = y_set - set(checkboxes_answers_row[:, 1])
-                part_answers.resize(task_count, self.__ANSWER_TYPE_0_ANSWERS_N)
-                fields_answers[title] = part_answers
+                fields_answers[title] = {"answer_type": answer_type, "material": part_answers.T}
             elif answer_type == 1:
                 # if tasks with short answer writing [1]
                 pass
         print(fields_answers)
 
-        # debug 1
-        detected = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        for i, (x, y, w, h) in enumerate(fields_correction):
-            cv2.rectangle(detected, (x, y), (x + w, y + h), [(255, 0, 0), (0, 255, 0), (0, 0, 255)][i % 3], 5)
-        cv2.imshow("detected", a.resize(img=detected, k=4))
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-
-        # debug 2
+        # debug
         detected = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         for i, (x, y, w, h, area) in enumerate(stats):
             # print(f"{(x, y), (x + w, y + h), w / h}\n")
             cv2.rectangle(detected, (x, y), (x + w, y + h), [(255, 0, 0), (0, 255, 0), (0, 0, 255)][i % 3], 5)
-        cv2.imshow("detected", a.resize(img=detected, k=4))
+        cv2.imshow("detected", self.resize(img=detected, k=4))
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
-    img_base = cv2.imread("test_5.png")
-    with open("data_it.json", "r", encoding="UTF-8") as f:
+    img_base = cv2.imread("test_1.png")
+    with open("data_hs.json", "r", encoding="UTF-8") as f:
         data_base = json.load(f)
     a = Analyzer()
     img_grayscale = a.grayscale(img_base)
