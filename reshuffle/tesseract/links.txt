@@ -1,2 +1,2 @@
 https://github.com/tesseract-ocr/tessdoc?tab=readme-ov-file#source-code
-https://github.com/tesseract-ocr/tessdata/blob/main/rus.traineddata
+https://github.com/tesseract-ocr/tessdata

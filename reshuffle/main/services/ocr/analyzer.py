@@ -36,6 +36,7 @@ class Analyzer:
     __TOLERANCE_PERCENTAGE = 0.1  # same line = line +- (__CHECKBOX_W + __CHECKBOX_H) / 2 * __TOLERANCE_PERCENTAGE
     __FILLED_PERCENTAGE = 0.5  # if filled area / total area >= __FILLED_PERCENTAGE -> checkbox is marked
 
+    __CHECKBOX_CORRECTION_N = 28  # count of checkboxes correction field
     __CHECKBOX_CORRECTION_LEN = 4  # length of one checkbox correction field
 
     __ANSWER_TYPE_0_ANSWERS_N = 4  # amount of answers for task with answer_type = 0
@@ -43,7 +44,7 @@ class Analyzer:
 
     def __init__(self) -> None:
         pytesseract.pytesseract.tesseract_cmd = path.join(TESSERACT_ROOT, "tesseract.exe")
-        self.__pytesseract_config = f"--tessdata-dir '{path.join(TESSERACT_ROOT, 'tessdata')}'"
+        self.__tesseract_cfg = f"--tessdata-dir '{path.join(TESSERACT_ROOT, 'tessdata')}' --oem 3 --psm 6"
 
     def resize(self, img: ndarray, k: float) -> ndarray:
         (h, w) = img.shape[:2]
@@ -149,7 +150,7 @@ class Analyzer:
         unique_key_box = stats[stats[:, 1].argsort()][0]
         # detect text
         x, y, w, h, area = unique_key_box
-        unique_key = pytesseract.image_to_string(img[y:y + h, x:x + w], config=self.__pytesseract_config, lang="eng")
+        unique_key = pytesseract.image_to_string(img[y:y + h, x:x + w], config=self.__tesseract_cfg)
         unique_key = unique_key.split(" ")[-1].strip()
         # check if detected text in data["variants"] & return result
         if unique_key in [item["unique_key"] for item in data["variants"]]:
@@ -182,16 +183,17 @@ class Analyzer:
         y_set = y_set - set(checkboxes_correction[:, 1])
         y_max = max(y_set)
         checkboxes_answers = stats[stats[:, 1] <= y_max]
-        # create fields_correction [list]
-        fields_correction = []
+        # create fields_correction [ndarray]
         checkboxes_correction = checkboxes_correction[checkboxes_correction[:, 0].argsort()]
-        checkboxes_correction_row = []
-        i = 0
-        while i < len(checkboxes_correction):
-            c = checkboxes_correction[i:i + self.__CHECKBOX_CORRECTION_LEN]
-            checkboxes_correction_row.append([c[0][0], min(c[:, 1]), c[-1][0] + c[-1][2] - c[0][0], max(c[:, 3])])
-            i += self.__CHECKBOX_CORRECTION_LEN
-        # ...
+        fields_correction = np.empty((self.__CHECKBOX_CORRECTION_N,), dtype="<U1")
+        for i, (x, y, w, h, _) in enumerate(checkboxes_correction):
+            recognized = pytesseract.image_to_string(img[y:y + h, x:x + w], config=self.__tesseract_cfg)
+            recognized = recognized.strip()
+            fields_correction[i] = recognized if recognized else " "
+        fields_correction = fields_correction.reshape((
+            self.__CHECKBOX_CORRECTION_N // self.__CHECKBOX_CORRECTION_LEN,
+            self.__CHECKBOX_CORRECTION_LEN
+        ))
         # create fields_answers [dict]
         fields_answers = {}
         for part in variant["parts"]:
@@ -225,21 +227,25 @@ class Analyzer:
                 part_answers = np.empty((task_count,), dtype=f"<U{self.__ANSWER_TYPE_1_ANSWERS_LEN}")
                 # ...
                 fields_answers[title] = {"answer_type": answer_type, "material": part_answers}
+
         print(fields_answers)  # debug [!!!]
+        print(fields_correction)  # debug [!!!]
 
         # debug [!!!]
         detected = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        for i, (x, y, w, h, area) in enumerate(stats):
+        for i, (x, y, w, h, _) in enumerate(stats):
             # print(f"{(x, y), (x + w, y + h), w / h}\n")
             cv2.rectangle(detected, (x, y), (x + w, y + h), [(255, 0, 0), (0, 255, 0), (0, 0, 255)][i % 3], 5)
         cv2.imshow("detected", self.resize(img=detected, k=4))
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
+        # add return & type-hint
+
 
 if __name__ == "__main__":
-    img_base = cv2.imread("test_2.png")
-    with open("data_hs.json", "r", encoding="UTF-8") as f:
+    img_base = cv2.imread("test_5.png")
+    with open("data_it.json", "r", encoding="UTF-8") as f:
         data_base = json.load(f)
     a = Analyzer()
     img_grayscale = a.grayscale(img_base)
