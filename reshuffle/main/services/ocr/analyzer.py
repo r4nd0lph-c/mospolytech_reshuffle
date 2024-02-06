@@ -27,6 +27,8 @@ class Analyzer:
     __A4_W_CELL = 38  # scan width (cell)
     __A4_H_CELL = 71  # scan height (cell) (!) cells have different height (px)
 
+    __UNIQUE_KEY_SIMILAR_BOXES_N = 3  # amount of boxes that looks like box for variant unique key
+
     __CHECKBOX_W = 20  # base checkbox width (px)
     __CHECKBOX_H = 20  # base checkbox height (px)
     __CHECKBOX_ATOL = 0.2  # checkbox aspect ratio = __CHECKBOX_W / __CHECKBOX_H +- __CHECKBOX_ATOL
@@ -39,8 +41,6 @@ class Analyzer:
     __ANSWER_TYPE_0_ANSWERS_N = 4  # amount of answers for task with answer_type = 0
     __ANSWER_TYPE_1_ANSWERS_LEN = 13  # max length of answers for task with answer_type = 1
 
-    __UNIQUE_KEY_BOXES_N = 3  # amount of boxes that looks like box for variant unique key
-
     def __init__(self) -> None:
         pytesseract.pytesseract.tesseract_cmd = path.join(TESSERACT_ROOT, "tesseract.exe")
         self.__pytesseract_config = f"--tessdata-dir '{path.join(TESSERACT_ROOT, 'tessdata')}'"
@@ -49,11 +49,11 @@ class Analyzer:
         (h, w) = img.shape[:2]
         return cv2.resize(img, (round(w / k), round(h / k)))
 
-    def grayscale(self, img: ndarray) -> ndarray:
-        return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
     def invert(self, img: ndarray) -> ndarray:
         return 255 - img
+
+    def grayscale(self, img: ndarray) -> ndarray:
+        return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     def blur(self, img: ndarray, kernel: tuple = (5, 5), sigma: float = 1) -> ndarray:
         return cv2.GaussianBlur(img, kernel, sigma)
@@ -109,7 +109,10 @@ class Analyzer:
         # return result
         return restored
 
-    def find_mask(self, img: ndarray, l_1: int = 1, l_2: int = 40) -> ndarray:
+    def find_mask(self, img: ndarray) -> ndarray:
+        # define constants
+        l_1 = 1
+        l_2 = round((img.shape[1] / self.__A4_W_CELL) * 0.75)
         # define vertical and horizontal kernels
         kernel_1_h = np.ones((1, l_1), np.uint8)
         kernel_1_v = np.ones((l_1, 1), np.uint8)
@@ -126,14 +129,6 @@ class Analyzer:
         # return result
         return self.threshold(mask, maxval=255)
 
-    def check_mark(self, img: ndarray, box: ndarray, margin: int = 0) -> bool:
-        x, y, w, h, area = box
-        check_area = img[y - margin:y + h + margin, x - margin:x + w + margin]
-        check_area = self.invert(check_area)
-        enhanced = self.dilate(check_area, iterations=2)
-        filled = cv2.countNonZero(enhanced)
-        return filled / area >= self.__FILLED_PERCENTAGE
-
     def get_stats(self, img: ndarray) -> ndarray:
         mask = self.find_mask(img)
         _, _, stats, _ = cv2.connectedComponentsWithStats(~mask, connectivity=8, ltype=cv2.CV_32S)
@@ -149,7 +144,7 @@ class Analyzer:
         # exclude boxes with large deviation
         stats = stats[stats[:, 2] / stats[:, 3] < w_max / 2]
         # sort by w / h and get only __UNIQUE_KEY_BOXES_N count
-        stats = stats[(stats[:, 2] / stats[:, 3]).argsort()[::-1]][:self.__UNIQUE_KEY_BOXES_N]
+        stats = stats[(stats[:, 2] / stats[:, 3]).argsort()[::-1]][:self.__UNIQUE_KEY_SIMILAR_BOXES_N]
         # sort by y-axis and get first
         unique_key_box = stats[stats[:, 1].argsort()][0]
         # detect text
@@ -161,7 +156,15 @@ class Analyzer:
             return unique_key
         return None
 
-    def get_fields(self, img: ndarray, stats: ndarray, data: dict) -> None:
+    def check_mark(self, img: ndarray, box: ndarray, margin: int = 0) -> bool:
+        x, y, w, h, area = box
+        check_area = img[y - margin:y + h + margin, x - margin:x + w + margin]
+        check_area = self.invert(check_area)
+        enhanced = self.dilate(check_area, iterations=2)
+        filled = cv2.countNonZero(enhanced)
+        return filled / area >= self.__FILLED_PERCENTAGE
+
+    def get_fields(self, img: ndarray, stats: ndarray, variant: dict) -> None:
         # filter stats for checkboxes only
         stats = stats[2:]
         stats = stats[np.isclose(
@@ -180,16 +183,18 @@ class Analyzer:
         y_max = max(y_set)
         checkboxes_answers = stats[stats[:, 1] <= y_max]
         # create fields_correction [list]
-        checkboxes_correction = checkboxes_correction[checkboxes_correction[:, 0].argsort()]
         fields_correction = []
+        checkboxes_correction = checkboxes_correction[checkboxes_correction[:, 0].argsort()]
+        checkboxes_correction_row = []
         i = 0
         while i < len(checkboxes_correction):
             c = checkboxes_correction[i:i + self.__CHECKBOX_CORRECTION_LEN]
-            fields_correction.append([c[0][0], min(c[:, 1]), c[-1][0] + c[-1][2] - c[0][0], max(c[:, 3])])
+            checkboxes_correction_row.append([c[0][0], min(c[:, 1]), c[-1][0] + c[-1][2] - c[0][0], max(c[:, 3])])
             i += self.__CHECKBOX_CORRECTION_LEN
+        # ...
         # create fields_answers [dict]
         fields_answers = {}
-        for part in data["variants"][0]["parts"]:
+        for part in variant["parts"]:
             # get part info
             title = part["info"]["title"]
             answer_type = part["info"]["answer_type"]
@@ -217,10 +222,12 @@ class Analyzer:
                 fields_answers[title] = {"answer_type": answer_type, "material": part_answers.T}
             elif answer_type == 1:
                 # if tasks with short answer writing [1]
-                pass
-        print(fields_answers)
+                part_answers = np.empty((task_count,), dtype=f"<U{self.__ANSWER_TYPE_1_ANSWERS_LEN}")
+                # ...
+                fields_answers[title] = {"answer_type": answer_type, "material": part_answers}
+        print(fields_answers)  # debug [!!!]
 
-        # debug
+        # debug [!!!]
         detected = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         for i, (x, y, w, h, area) in enumerate(stats):
             # print(f"{(x, y), (x + w, y + h), w / h}\n")
@@ -231,7 +238,7 @@ class Analyzer:
 
 
 if __name__ == "__main__":
-    img_base = cv2.imread("test_1.png")
+    img_base = cv2.imread("test_2.png")
     with open("data_hs.json", "r", encoding="UTF-8") as f:
         data_base = json.load(f)
     a = Analyzer()
@@ -240,19 +247,22 @@ if __name__ == "__main__":
     img_threshold = a.threshold(img_restore_perspective)
     img_mask = a.find_mask(img_threshold)
 
+    cv2.imwrite("threshold.png", img_threshold)
+    cv2.imwrite("mask.png", img_mask)
+
     s = a.get_stats(img_threshold)
 
     uk = a.get_unique_key(img_threshold, s, data_base)
     print(uk)
-
-    # a.get_fields(img_threshold, s, data_base)
+    if not uk:
+        uk = "FDOMC8"
+    filtered = list(filter(lambda v: v["unique_key"] == uk, data_base["variants"]))
+    vrnt = filtered[0] if filtered else data_base["variants"][0]
+    a.get_fields(img_threshold, s, vrnt)
 
     # cv2.imshow("img_base", a.resize(img=img_base, k=4))
     # cv2.imshow("threshold_invert", a.resize(img=a.invert(img_threshold), k=4))
     # cv2.imshow("mask", a.resize(img=img_mask, k=4))
-
-    cv2.imwrite("threshold.png", img_threshold)
-    cv2.imwrite("mask.png", img_mask)
 
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
