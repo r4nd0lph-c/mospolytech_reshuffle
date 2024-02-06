@@ -4,6 +4,10 @@
 # virtual environment
 venv/
 
+# tesseract environment
+reshuffle/tesseract/*
+!reshuffle/tesseract/links.txt
+
 # global static & media files
 reshuffle/static/*
 reshuffle/media/*

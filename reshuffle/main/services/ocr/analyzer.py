@@ -5,11 +5,14 @@ import django
 
 django.setup()
 
+from os import path
 import json
 from math import ceil
 import numpy as np
 from numpy import ndarray
 import cv2
+import pytesseract
+from reshuffle.settings import TESSERACT_ROOT
 from main.models import Part
 
 
@@ -21,10 +24,13 @@ class Analyzer:
     __A4_W = 210  # scan width (mm)
     __A4_H = 297  # scan height (mm)
 
+    __A4_W_CELL = 38  # scan width (cell)
+    __A4_H_CELL = 71  # scan height (cell) (!) cells have different height (px)
+
     __CHECKBOX_W = 20  # base checkbox width (px)
     __CHECKBOX_H = 20  # base checkbox height (px)
-
     __CHECKBOX_ATOL = 0.2  # checkbox aspect ratio = __CHECKBOX_W / __CHECKBOX_H +- __CHECKBOX_ATOL
+
     __TOLERANCE_PERCENTAGE = 0.1  # same line = line +- (__CHECKBOX_W + __CHECKBOX_H) / 2 * __TOLERANCE_PERCENTAGE
     __FILLED_PERCENTAGE = 0.5  # if filled area / total area >= __FILLED_PERCENTAGE -> checkbox is marked
 
@@ -33,8 +39,11 @@ class Analyzer:
     __ANSWER_TYPE_0_ANSWERS_N = 4  # amount of answers for task with answer_type = 0
     __ANSWER_TYPE_1_ANSWERS_LEN = 13  # max length of answers for task with answer_type = 1
 
+    __UNIQUE_KEY_BOXES_N = 3  # amount of boxes that looks like box for variant unique key
+
     def __init__(self) -> None:
-        pass
+        pytesseract.pytesseract.tesseract_cmd = path.join(TESSERACT_ROOT, "tesseract.exe")
+        self.__pytesseract_config = f"--tessdata-dir '{path.join(TESSERACT_ROOT, 'tessdata')}'"
 
     def resize(self, img: ndarray, k: float) -> ndarray:
         (h, w) = img.shape[:2]
@@ -125,10 +134,34 @@ class Analyzer:
         filled = cv2.countNonZero(enhanced)
         return filled / area >= self.__FILLED_PERCENTAGE
 
-    def get_fields(self, img: ndarray, data: dict) -> None:
-        # get stats about all rectangles
+    def get_stats(self, img: ndarray) -> ndarray:
         mask = self.find_mask(img)
         _, _, stats, _ = cv2.connectedComponentsWithStats(~mask, connectivity=8, ltype=cv2.CV_32S)
+        return stats
+
+    def get_unique_key(self, img: ndarray, stats: ndarray, data: dict) -> str | None:
+        # calc w_max & tolerance
+        stats = stats[2:]
+        w_max = max(stats[:, 2])
+        tolerance = w_max / self.__A4_W_CELL
+        # get all wide boxes
+        stats = stats[np.isclose(stats[:, 2], w_max, atol=tolerance)]
+        # exclude boxes with large deviation
+        stats = stats[stats[:, 2] / stats[:, 3] < w_max / 2]
+        # sort by w / h and get only __UNIQUE_KEY_BOXES_N count
+        stats = stats[(stats[:, 2] / stats[:, 3]).argsort()[::-1]][:self.__UNIQUE_KEY_BOXES_N]
+        # sort by y-axis and get first
+        unique_key_box = stats[stats[:, 1].argsort()][0]
+        # detect text
+        x, y, w, h, area = unique_key_box
+        unique_key = pytesseract.image_to_string(img[y:y + h, x:x + w], config=self.__pytesseract_config, lang="eng")
+        unique_key = unique_key.split(" ")[-1].strip()
+        # check if detected text in data["variants"] & return result
+        if unique_key in [item["unique_key"] for item in data["variants"]]:
+            return unique_key
+        return None
+
+    def get_fields(self, img: ndarray, stats: ndarray, data: dict) -> None:
         # filter stats for checkboxes only
         stats = stats[2:]
         stats = stats[np.isclose(
@@ -207,7 +240,12 @@ if __name__ == "__main__":
     img_threshold = a.threshold(img_restore_perspective)
     img_mask = a.find_mask(img_threshold)
 
-    a.get_fields(img_threshold, data_base)
+    s = a.get_stats(img_threshold)
+
+    uk = a.get_unique_key(img_threshold, s, data_base)
+    print(uk)
+
+    # a.get_fields(img_threshold, s, data_base)
 
     # cv2.imshow("img_base", a.resize(img=img_base, k=4))
     # cv2.imshow("threshold_invert", a.resize(img=a.invert(img_threshold), k=4))
