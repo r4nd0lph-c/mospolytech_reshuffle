@@ -120,13 +120,12 @@ class Analyzer:
     def check_mark(self, img: ndarray, box: ndarray, margin: int = 0) -> bool:
         x, y, w, h, area = box
         check_area = img[y - margin:y + h + margin, x - margin:x + w + margin]
+        check_area = self.invert(check_area)
         enhanced = self.dilate(check_area, iterations=2)
         filled = cv2.countNonZero(enhanced)
         return filled / area >= self.__FILLED_PERCENTAGE
 
     def get_fields(self, img: ndarray, data: dict) -> None:
-        # invert threshold img
-        img_invert = self.invert(img)
         # get stats about all rectangles
         mask = self.find_mask(img)
         _, _, stats, _ = cv2.connectedComponentsWithStats(~mask, connectivity=8, ltype=cv2.CV_32S)
@@ -179,7 +178,7 @@ class Analyzer:
                     for j in range(len(checkboxes_answers_row)):
                         new_i = i % self.__ANSWER_TYPE_0_ANSWERS_N
                         new_j = j + k * Part.CAPACITIES[0]
-                        part_answers[new_i][new_j] = self.check_mark(img_invert, checkboxes_answers_row[j])
+                        part_answers[new_i][new_j] = self.check_mark(img, checkboxes_answers_row[j])
                     checkboxes_answers_row = checkboxes_answers_row[checkboxes_answers_row[:, 0].argsort()]
                     y_set = y_set - set(checkboxes_answers_row[:, 1])
                 fields_answers[title] = {"answer_type": answer_type, "material": part_answers.T}
