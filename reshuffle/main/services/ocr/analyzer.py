@@ -34,13 +34,15 @@ class Analyzer:
     __CHECKBOX_ATOL = 0.2  # checkbox aspect ratio = __CHECKBOX_W / __CHECKBOX_H +- __CHECKBOX_ATOL
 
     __TOLERANCE_PERCENTAGE = 0.1  # same line = line +- (__CHECKBOX_W + __CHECKBOX_H) / 2 * __TOLERANCE_PERCENTAGE
-    __FILLED_PERCENTAGE = 0.5  # if filled area / total area >= __FILLED_PERCENTAGE -> checkbox is marked
+    __FILLED_PERCENTAGE = 0.3  # if filled area / total area >= __FILLED_PERCENTAGE -> checkbox is marked
 
     __CHECKBOX_CORRECTION_N = 28  # count of checkboxes correction field
     __CHECKBOX_CORRECTION_LEN = 4  # length of one checkbox correction field
 
-    __ANSWER_TYPE_0_ANSWERS_N = 4  # amount of answers for task with answer_type = 0
-    __ANSWER_TYPE_1_ANSWERS_LEN = 13  # max length of answers for task with answer_type = 1
+    __TYPE_0_ANSWERS_N = 4  # amount of answers for task with answer_type = 0
+
+    __TYPE_1_ANSWERS_N = 2  # amount of answers for tasks with answer_type = 1 per one line
+    __TYPE_1_ANSWERS_LEN = 13  # max length of answers for task with answer_type = 1
 
     def __init__(self) -> None:
         pytesseract.pytesseract.tesseract_cmd = path.join(TESSERACT_ROOT, "tesseract.exe")
@@ -130,10 +132,24 @@ class Analyzer:
         # return result
         return self.threshold(mask, maxval=255)
 
-    def get_stats(self, img: ndarray) -> ndarray:
+    def calc_stats(self, img: ndarray) -> ndarray:
         mask = self.find_mask(img)
         _, _, stats, _ = cv2.connectedComponentsWithStats(~mask, connectivity=8, ltype=cv2.CV_32S)
         return stats
+
+    def recognize(self, img: ndarray, box: ndarray | list, m: int = 0) -> str:
+        x, y, w, h, _ = box
+        result = pytesseract.image_to_string(img[y - m:y + h + m, x - m:x + w + m], config=self.__tesseract_cfg)
+        result = result.strip()
+        return result if result else " "
+
+    def check_mark(self, img: ndarray, box: ndarray, m: int = 0) -> bool:
+        x, y, w, h, area = box
+        check_area = img[y - m:y + h + m, x - m:x + w + m]
+        check_area = self.invert(check_area)
+        enhanced = self.dilate(check_area, iterations=2)
+        filled = cv2.countNonZero(enhanced)
+        return filled / area >= self.__FILLED_PERCENTAGE
 
     def get_unique_key(self, img: ndarray, stats: ndarray, data: dict) -> str | None:
         # calc w_max & tolerance
@@ -147,25 +163,17 @@ class Analyzer:
         # sort by w / h and get only __UNIQUE_KEY_BOXES_N count
         stats = stats[(stats[:, 2] / stats[:, 3]).argsort()[::-1]][:self.__UNIQUE_KEY_SIMILAR_BOXES_N]
         # sort by y-axis and get first
-        unique_key_box = stats[stats[:, 1].argsort()][0]
+        box = stats[stats[:, 1].argsort()][0]
         # detect text
-        x, y, w, h, area = unique_key_box
-        unique_key = pytesseract.image_to_string(img[y:y + h, x:x + w], config=self.__tesseract_cfg)
+        x, y, w, h, _ = box
+        unique_key = self.recognize(img, box)
         unique_key = unique_key.split(" ")[-1].strip()
         # check if detected text in data["variants"] & return result
         if unique_key in [item["unique_key"] for item in data["variants"]]:
             return unique_key
         return None
 
-    def check_mark(self, img: ndarray, box: ndarray, margin: int = 0) -> bool:
-        x, y, w, h, area = box
-        check_area = img[y - margin:y + h + margin, x - margin:x + w + margin]
-        check_area = self.invert(check_area)
-        enhanced = self.dilate(check_area, iterations=2)
-        filled = cv2.countNonZero(enhanced)
-        return filled / area >= self.__FILLED_PERCENTAGE
-
-    def get_fields(self, img: ndarray, stats: ndarray, variant: dict) -> None:
+    def get_fields(self, img: ndarray, stats: ndarray, variant: dict) -> tuple[dict, ndarray]:
         # filter stats for checkboxes only
         stats = stats[2:]
         stats = stats[np.isclose(
@@ -187,15 +195,14 @@ class Analyzer:
         checkboxes_correction = checkboxes_correction[checkboxes_correction[:, 0].argsort()]
         fields_correction = np.empty((self.__CHECKBOX_CORRECTION_N,), dtype="<U1")
         for i, (x, y, w, h, _) in enumerate(checkboxes_correction):
-            recognized = pytesseract.image_to_string(img[y:y + h, x:x + w], config=self.__tesseract_cfg)
-            recognized = recognized.strip()
-            fields_correction[i] = recognized if recognized else " "
+            fields_correction[i] = self.recognize(img, [x, y, w, h, _])
         fields_correction = fields_correction.reshape((
             self.__CHECKBOX_CORRECTION_N // self.__CHECKBOX_CORRECTION_LEN,
             self.__CHECKBOX_CORRECTION_LEN
         ))
         # create fields_answers [dict]
         fields_answers = {}
+        y_set = set(checkboxes_answers[:, 1])
         for part in variant["parts"]:
             # get part info
             title = part["info"]["title"]
@@ -204,43 +211,49 @@ class Analyzer:
             # iterate throw parts
             if answer_type == 0:
                 # if tasks with answer choice [0]
-                part_answers = np.full((self.__ANSWER_TYPE_0_ANSWERS_N, task_count), False)
+                part_answers = np.full((self.__TYPE_0_ANSWERS_N, task_count), False)
                 n = ceil(task_count / Part.CAPACITIES[0])
-                y_set = set(checkboxes_answers[:, 1])
                 k = -1
-                for i in range(self.__ANSWER_TYPE_0_ANSWERS_N * n):
+                for i in range(self.__TYPE_0_ANSWERS_N * n):
                     y_min = min(y_set)
-                    if i % self.__ANSWER_TYPE_0_ANSWERS_N == 0:
+                    if i % self.__TYPE_0_ANSWERS_N == 0:
                         k += 1
                     checkboxes_answers_row = checkboxes_answers[
                         np.isclose(checkboxes_answers[:, 1], y_min, atol=tolerance)
                     ]
-                    for j in range(len(checkboxes_answers_row)):
-                        new_i = i % self.__ANSWER_TYPE_0_ANSWERS_N
-                        new_j = j + k * Part.CAPACITIES[0]
-                        part_answers[new_i][new_j] = self.check_mark(img, checkboxes_answers_row[j])
                     checkboxes_answers_row = checkboxes_answers_row[checkboxes_answers_row[:, 0].argsort()]
                     y_set = y_set - set(checkboxes_answers_row[:, 1])
+                    for j in range(len(checkboxes_answers_row)):
+                        new_i = i % self.__TYPE_0_ANSWERS_N
+                        new_j = j + k * Part.CAPACITIES[0]
+                        part_answers[new_i][new_j] = self.check_mark(img, checkboxes_answers_row[j])
                 fields_answers[title] = {"answer_type": answer_type, "material": part_answers.T}
             elif answer_type == 1:
                 # if tasks with short answer writing [1]
-                part_answers = np.empty((task_count,), dtype=f"<U{self.__ANSWER_TYPE_1_ANSWERS_LEN}")
-                # ...
+                part_answers = np.empty((task_count,), dtype=f"<U{self.__TYPE_1_ANSWERS_LEN}")
+                for i in range(ceil(task_count / self.__TYPE_1_ANSWERS_N)):
+                    y_min = min(y_set)
+                    checkboxes_answers_row = checkboxes_answers[
+                        np.isclose(checkboxes_answers[:, 1], y_min, atol=tolerance)
+                    ]
+                    checkboxes_answers_row = checkboxes_answers_row[checkboxes_answers_row[:, 0].argsort()]
+                    y_set = y_set - set(checkboxes_answers_row[:, 1])
+                    splitted_row = checkboxes_answers_row.reshape(
+                        (self.__TYPE_1_ANSWERS_N, self.__TYPE_1_ANSWERS_LEN, 5)
+                    )
+                    m = 1
+                    for j, answer in enumerate(splitted_row):
+                        answer[:, 3] = max(answer[:, 3])
+                        cut_area = np.concatenate(
+                            [img[y - m:y + h + m, x - m:x + w + m] for (x, y, w, h, _) in answer],
+                            axis=1
+                        )
+                        part_answers[i * self.__TYPE_1_ANSWERS_N + j] = self.recognize(
+                            cut_area, [0, 0, cut_area.shape[1], cut_area.shape[0], _], 0
+                        )
                 fields_answers[title] = {"answer_type": answer_type, "material": part_answers}
-
-        print(fields_answers)  # debug [!!!]
-        print(fields_correction)  # debug [!!!]
-
-        # debug [!!!]
-        detected = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        for i, (x, y, w, h, _) in enumerate(stats):
-            # print(f"{(x, y), (x + w, y + h), w / h}\n")
-            cv2.rectangle(detected, (x, y), (x + w, y + h), [(255, 0, 0), (0, 255, 0), (0, 0, 255)][i % 3], 5)
-        cv2.imshow("detected", self.resize(img=detected, k=4))
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-
-        # add return & type-hint
+        # return results
+        return fields_answers, fields_correction
 
 
 if __name__ == "__main__":
@@ -256,19 +269,13 @@ if __name__ == "__main__":
     cv2.imwrite("threshold.png", img_threshold)
     cv2.imwrite("mask.png", img_mask)
 
-    s = a.get_stats(img_threshold)
+    s = a.calc_stats(img_threshold)
 
     uk = a.get_unique_key(img_threshold, s, data_base)
     print(uk)
     if not uk:
         uk = "FDOMC8"
     filtered = list(filter(lambda v: v["unique_key"] == uk, data_base["variants"]))
-    vrnt = filtered[0] if filtered else data_base["variants"][0]
-    a.get_fields(img_threshold, s, vrnt)
-
-    # cv2.imshow("img_base", a.resize(img=img_base, k=4))
-    # cv2.imshow("threshold_invert", a.resize(img=a.invert(img_threshold), k=4))
-    # cv2.imshow("mask", a.resize(img=img_mask, k=4))
-
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+    v = filtered[0] if filtered else data_base["variants"][0]
+    f_answers, f_correction = a.get_fields(img_threshold, s, v)
+    print(f_answers, "\n", f_correction)
