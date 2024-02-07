@@ -7,6 +7,7 @@ django.setup()
 
 from os import path
 import json
+import re
 from math import ceil
 import numpy as np
 from numpy import ndarray
@@ -75,7 +76,8 @@ class Analyzer:
     def erode(self, img: ndarray, kernel: ndarray = np.ones((5, 5)), iterations: int = 1) -> ndarray:
         return cv2.erode(img, kernel, iterations=iterations)
 
-    def restore_perspective(self, img: ndarray) -> ndarray:  # <-- TODO: add detection if rotate-90 / mirror is needed
+    # TODO: add detection if rotate-90 / mirror is needed
+    def restore_perspective(self, img: ndarray) -> ndarray:
         # detect edges
         restored = img.copy()
         img = self.canny(img)
@@ -137,6 +139,7 @@ class Analyzer:
         _, _, stats, _ = cv2.connectedComponentsWithStats(~mask, connectivity=8, ltype=cv2.CV_32S)
         return stats
 
+    # TODO: increase accuracy rate
     def recognize(self, img: ndarray, box: ndarray | list, m: int = 0) -> str:
         x, y, w, h, _ = box
         result = pytesseract.image_to_string(img[y - m:y + h + m, x - m:x + w + m], config=self.__tesseract_cfg)
@@ -252,8 +255,46 @@ class Analyzer:
                             cut_area, [0, 0, cut_area.shape[1], cut_area.shape[0], _], 0
                         )
                 fields_answers[title] = {"answer_type": answer_type, "material": part_answers}
-        # return results
+        # return result
         return fields_answers, fields_correction
+
+    # TODO: add unification logic
+    def unification(self, s: str) -> str:
+        return s
+
+    # TODO: add fuzzy comparison & render info
+    def get_score(self, variant: dict, field_answers: dict, field_correction: ndarray) -> int:
+        # apply corrections
+        for c in field_correction:
+            part_title = self.unification(c[0]).strip()
+            if part_title:
+                task_number = int("".join(c[1:-1]).strip()) - 1
+                new_answer = [False for _ in range(self.__TYPE_0_ANSWERS_N)]
+                new_answer[int(c[-1]) - 1] = True
+                field_answers[part_title]["material"][task_number] = new_answer
+        # init result
+        result = 0
+        # check all parts
+        for part in variant["parts"]:
+            if part["info"]["answer_type"] == 0:
+                # if tasks with answer choice [0]
+                for task in part["material"]:
+                    i = int(task["position"][1:]) - 1
+                    mark_ans = list(field_answers[part["info"]["title"]]["material"][i]).index(True)
+                    correct_ans = [o["is_answer"] for o in task["options"]].index(True)
+                    result += int(mark_ans == correct_ans)
+            elif part["info"]["answer_type"] == 1:
+                # if tasks with short answer writing[1]
+                for task in part["material"]:
+                    i = int(task["position"][1:]) - 1
+                    mark_ans = field_answers[part["info"]["title"]]["material"][i]
+                    correct_ans = [
+                        re.sub(re.compile("<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});"), "", o["content"])
+                        for o in task["options"]
+                    ]
+                    result += int(mark_ans in correct_ans)
+        # return result
+        return result
 
 
 if __name__ == "__main__":
@@ -269,13 +310,16 @@ if __name__ == "__main__":
     cv2.imwrite("threshold.png", img_threshold)
     cv2.imwrite("mask.png", img_mask)
 
-    s = a.calc_stats(img_threshold)
+    st = a.calc_stats(img_threshold)
 
-    uk = a.get_unique_key(img_threshold, s, data_base)
+    uk = a.get_unique_key(img_threshold, st, data_base)
     print(uk)
     if not uk:
-        uk = "FDOMC8"
+        uk = "P548X0"
     filtered = list(filter(lambda v: v["unique_key"] == uk, data_base["variants"]))
     v = filtered[0] if filtered else data_base["variants"][0]
-    f_answers, f_correction = a.get_fields(img_threshold, s, v)
+    f_answers, f_correction = a.get_fields(img_threshold, st, v)
     print(f_answers, "\n", f_correction)
+
+    r = a.get_score(v, f_answers, f_correction)
+    print("RESULT", r)
