@@ -50,7 +50,7 @@ class Analyzer:
 
     def resize(self, img: ndarray, k: float) -> ndarray:
         (h, w) = img.shape[:2]
-        return cv2.resize(img, (round(w / k), round(h / k)))
+        return cv2.resize(img, (round(w * k), round(h * k)))
 
     def invert(self, img: ndarray) -> ndarray:
         return 255 - img
