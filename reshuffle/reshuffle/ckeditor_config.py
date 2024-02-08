@@ -180,6 +180,9 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+for k in CKEDITOR_CONFIGS.keys():
+    CKEDITOR_CONFIGS[k]["versionCheck"] = False
+
 if SHOW_SOURCE:
     for k in CKEDITOR_CONFIGS.keys():
         CKEDITOR_CONFIGS[k]["toolbar_Custom"].insert(0, ["Source"])
