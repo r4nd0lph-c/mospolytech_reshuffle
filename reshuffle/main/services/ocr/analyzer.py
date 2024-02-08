@@ -176,9 +176,7 @@ class Analyzer:
         # filter stats for checkboxes only
         stats = stats[2:]
         stats = stats[np.isclose(
-            stats[:, 2] / stats[:, 3],
-            self.__CHECKBOX_W / self.__CHECKBOX_H,
-            atol=self.__CHECKBOX_ATOL
+            stats[:, 2] / stats[:, 3], self.__CHECKBOX_W / self.__CHECKBOX_H, atol=self.__CHECKBOX_ATOL
         )]
         # calc tolerance
         _, _, w, h, _ = stats[0]
@@ -192,21 +190,23 @@ class Analyzer:
         checkboxes_answers = stats[stats[:, 1] <= y_max]
         # create fields_correction [ndarray]
         checkboxes_correction = checkboxes_correction[checkboxes_correction[:, 0].argsort()]
-        fields_correction = np.empty((self.__CHECKBOX_CORRECTION_N,), dtype="<U1")
-        for i, (x, y, w, h, _) in enumerate(checkboxes_correction):
-            allowlist = "0123456789"
-            if not (i % self.__CHECKBOX_CORRECTION_LEN):
-                allowlist = "".join([str(t) for t in list(Part.TITLES.values())])
-            # TODO : increase accuracy rate
-            fields_correction[i] = self.recognize(
-                img=img,
-                box=[x, y, w, h, _],
-                allowlist=allowlist
+        checkboxes_correction[:, 3] = max(checkboxes_correction[:, 3])
+        checkboxes_correction = checkboxes_correction.reshape(
+            (self.__CHECKBOX_CORRECTION_N // self.__CHECKBOX_CORRECTION_LEN, self.__CHECKBOX_CORRECTION_LEN, 5)
+        )
+        fields_correction = np.empty(
+            (self.__CHECKBOX_CORRECTION_N // self.__CHECKBOX_CORRECTION_LEN,),
+            dtype=f"<U{self.__CHECKBOX_CORRECTION_LEN}"
+        )
+        m = 1
+        allowlist = "0123456789" + "".join([str(t) for t in list(Part.TITLES.values())])
+        for i, box in enumerate(checkboxes_correction):
+            cut_area = np.concatenate(
+                [img[y - m:y + h + m, x - m:x + w + m] for (x, y, w, h, _) in box], axis=1
             )
-        fields_correction = fields_correction.reshape((
-            self.__CHECKBOX_CORRECTION_N // self.__CHECKBOX_CORRECTION_LEN,
-            self.__CHECKBOX_CORRECTION_LEN
-        ))
+            fields_correction[i] = self.recognize(
+                img=cut_area, box=[0, 0, cut_area.shape[1], cut_area.shape[0], _], allowlist=allowlist
+            )
         # create fields_answers [dict]
         fields_answers = {}
         y_set = set(checkboxes_answers[:, 1])
@@ -252,8 +252,7 @@ class Analyzer:
                     for j, answer in enumerate(splitted_row):
                         answer[:, 3] = max(answer[:, 3])
                         cut_area = np.concatenate(
-                            [img[y - m:y + h + m, x - m:x + w + m] for (x, y, w, h, _) in answer],
-                            axis=1
+                            [img[y - m:y + h + m, x - m:x + w + m] for (x, y, w, h, _) in answer], axis=1
                         )
                         allowlist = ""
                         if len(part["material"]) > i * self.__TYPE_1_ANSWERS_N + j:
