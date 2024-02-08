@@ -22,7 +22,7 @@ class Analyzer:
     """
 
     __A4_W = 210  # scan width (mm)
-    __A4_H = 297  # scan height (mm)
+    __A4_H = 214  # scan height (mm): base = 297, cut = 214
 
     __A4_W_CELL = 38  # scan width (cell)
     __A4_H_CELL = 71  # scan height (cell) (!) cells have different height (px)
@@ -158,7 +158,7 @@ class Analyzer:
         # get all wide boxes
         stats = stats[np.isclose(stats[:, 2], w_max, atol=tolerance)]
         # exclude boxes with large deviation
-        stats = stats[stats[:, 2] / stats[:, 3] < w_max / 2]
+        stats = stats[stats[:, 3] > tolerance / 2]
         # sort by w / h and get only __UNIQUE_KEY_BOXES_N count
         stats = stats[(stats[:, 2] / stats[:, 3]).argsort()[::-1]][:self.__UNIQUE_KEY_SIMILAR_BOXES_N]
         # sort by y-axis and get first
@@ -264,7 +264,7 @@ class Analyzer:
                         part_answers[i * self.__TYPE_1_ANSWERS_N + j] = self.recognize(
                             img=cut_area,
                             box=[0, 0, cut_area.shape[1], cut_area.shape[0], _],
-                            allowlist=allowlist if allowlist else None
+                            allowlist=allowlist if allowlist else None  # <-- TODO: create more complex allowlist(s)
                         )
                 fields_answers[title] = {"answer_type": answer_type, "material": part_answers}
         # return result
@@ -272,8 +272,8 @@ class Analyzer:
 
 
 if __name__ == "__main__":
-    img_base = cv2.imread("test_5.png")
-    with open("data_it.json", "r", encoding="UTF-8") as f:
+    img_base = cv2.imread("test_GDEHFS.png")
+    with open("data_GDEHFS.json", "r", encoding="UTF-8") as f:
         data_base = json.load(f)
     a = Analyzer()
     img_grayscale = a.grayscale(img_base)
@@ -288,8 +288,7 @@ if __name__ == "__main__":
 
     uk = a.get_unique_key(img_threshold, st, data_base)
     print(uk)
-    if not uk:
-        uk = "FDOMC8"  # FDOMC8 P548X0
+
     filtered = list(filter(lambda v: v["unique_key"] == uk, data_base["variants"]))
     v = filtered[0] if filtered else data_base["variants"][0]
     f_answers, f_correction = a.get_fields(img_threshold, st, v)
