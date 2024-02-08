@@ -140,10 +140,6 @@ MINIO_ACCESS_KEY = config("MINIO_ACCESS_KEY")
 MINIO_SECRET_KEY = config("MINIO_SECRET_KEY")
 MINIO_BUCKET_NAME = config("MINIO_BUCKET_NAME")
 
-# Tesseract files
-
-TESSERACT_ROOT = Path(BASE_DIR, "tesseract")
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

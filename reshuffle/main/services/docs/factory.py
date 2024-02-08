@@ -20,13 +20,13 @@ class UniqueKey:
     ...
     """
 
-    __BASE26 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    BASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"  # 26
 
     def __init__(self, length: int) -> None:
         self.length = length
 
     def create(self) -> str:
-        return "".join(choices(self.__BASE26, k=self.length))
+        return "".join(choices(self.BASE, k=self.length))
 
 
 class GeneratorJSON:

@@ -5,16 +5,15 @@ import django
 
 django.setup()
 
-from os import path
 import json
 import re
 from math import ceil
 import numpy as np
 from numpy import ndarray
 import cv2
-import pytesseract
-from reshuffle.settings import TESSERACT_ROOT
+import easyocr
 from main.models import Part
+from main.services.docs.factory import UniqueKey
 
 
 class Analyzer:
@@ -46,8 +45,7 @@ class Analyzer:
     __TYPE_1_ANSWERS_LEN = 13  # max length of answers for task with answer_type = 1
 
     def __init__(self) -> None:
-        pytesseract.pytesseract.tesseract_cmd = path.join(TESSERACT_ROOT, "tesseract.exe")
-        self.__tesseract_cfg = f"--tessdata-dir '{path.join(TESSERACT_ROOT, 'tessdata')}' --oem 3 --psm 6"
+        self.__reader = easyocr.Reader(["en", "ru"])
 
     def resize(self, img: ndarray, k: float) -> ndarray:
         (h, w) = img.shape[:2]
@@ -139,12 +137,10 @@ class Analyzer:
         _, _, stats, _ = cv2.connectedComponentsWithStats(~mask, connectivity=8, ltype=cv2.CV_32S)
         return stats
 
-    # TODO: increase accuracy rate
-    def recognize(self, img: ndarray, box: ndarray | list, m: int = 0) -> str:
+    def recognize(self, img: ndarray, box: ndarray | list, m: int = 0, allowlist: str = None) -> str:
         x, y, w, h, _ = box
-        result = pytesseract.image_to_string(img[y - m:y + h + m, x - m:x + w + m], config=self.__tesseract_cfg)
-        result = result.strip()
-        return result if result else " "
+        result = self.__reader.readtext(img[y - m:y + h + m, x - m:x + w + m], detail=0, allowlist=allowlist)
+        return " ".join(result)
 
     def check_mark(self, img: ndarray, box: ndarray, m: int = 0) -> bool:
         x, y, w, h, area = box
@@ -169,7 +165,7 @@ class Analyzer:
         box = stats[stats[:, 1].argsort()][0]
         # detect text
         x, y, w, h, _ = box
-        unique_key = self.recognize(img, box)
+        unique_key = self.recognize(img=img, box=box, allowlist=UniqueKey.BASE)
         unique_key = unique_key.split(" ")[-1].strip()
         # check if detected text in data["variants"] & return result
         if unique_key in [item["unique_key"] for item in data["variants"]]:
@@ -198,7 +194,15 @@ class Analyzer:
         checkboxes_correction = checkboxes_correction[checkboxes_correction[:, 0].argsort()]
         fields_correction = np.empty((self.__CHECKBOX_CORRECTION_N,), dtype="<U1")
         for i, (x, y, w, h, _) in enumerate(checkboxes_correction):
-            fields_correction[i] = self.recognize(img, [x, y, w, h, _])
+            allowlist = "0123456789"
+            if not (i % self.__CHECKBOX_CORRECTION_LEN):
+                allowlist = "".join([str(t) for t in list(Part.TITLES.values())])
+            # TODO : increase accuracy rate
+            fields_correction[i] = self.recognize(
+                img=img,
+                box=[x, y, w, h, _],
+                allowlist=allowlist
+            )
         fields_correction = fields_correction.reshape((
             self.__CHECKBOX_CORRECTION_N // self.__CHECKBOX_CORRECTION_LEN,
             self.__CHECKBOX_CORRECTION_LEN
@@ -251,50 +255,21 @@ class Analyzer:
                             [img[y - m:y + h + m, x - m:x + w + m] for (x, y, w, h, _) in answer],
                             axis=1
                         )
+                        allowlist = ""
+                        if len(part["material"]) > i * self.__TYPE_1_ANSWERS_N + j:
+                            for o in part["material"][i * self.__TYPE_1_ANSWERS_N + j]["options"]:
+                                clean = re.sub(
+                                    re.compile("<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});"), "", o["content"]
+                                )
+                                allowlist += "".join({*clean})
                         part_answers[i * self.__TYPE_1_ANSWERS_N + j] = self.recognize(
-                            cut_area, [0, 0, cut_area.shape[1], cut_area.shape[0], _], 0
+                            img=cut_area,
+                            box=[0, 0, cut_area.shape[1], cut_area.shape[0], _],
+                            allowlist=allowlist if allowlist else None
                         )
                 fields_answers[title] = {"answer_type": answer_type, "material": part_answers}
         # return result
         return fields_answers, fields_correction
-
-    # TODO: add unification logic
-    def unification(self, s: str) -> str:
-        return s
-
-    # TODO: add fuzzy comparison & render info
-    def get_score(self, variant: dict, field_answers: dict, field_correction: ndarray) -> int:
-        # apply corrections
-        for c in field_correction:
-            part_title = self.unification(c[0]).strip()
-            if part_title:
-                task_number = int("".join(c[1:-1]).strip()) - 1
-                new_answer = [False for _ in range(self.__TYPE_0_ANSWERS_N)]
-                new_answer[int(c[-1]) - 1] = True
-                field_answers[part_title]["material"][task_number] = new_answer
-        # init result
-        result = 0
-        # check all parts
-        for part in variant["parts"]:
-            if part["info"]["answer_type"] == 0:
-                # if tasks with answer choice [0]
-                for task in part["material"]:
-                    i = int(task["position"][1:]) - 1
-                    mark_ans = list(field_answers[part["info"]["title"]]["material"][i]).index(True)
-                    correct_ans = [o["is_answer"] for o in task["options"]].index(True)
-                    result += int(mark_ans == correct_ans)
-            elif part["info"]["answer_type"] == 1:
-                # if tasks with short answer writing[1]
-                for task in part["material"]:
-                    i = int(task["position"][1:]) - 1
-                    mark_ans = field_answers[part["info"]["title"]]["material"][i]
-                    correct_ans = [
-                        re.sub(re.compile("<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});"), "", o["content"])
-                        for o in task["options"]
-                    ]
-                    result += int(mark_ans in correct_ans)
-        # return result
-        return result
 
 
 if __name__ == "__main__":
@@ -315,11 +290,8 @@ if __name__ == "__main__":
     uk = a.get_unique_key(img_threshold, st, data_base)
     print(uk)
     if not uk:
-        uk = "P548X0"
+        uk = "FDOMC8"  # FDOMC8 P548X0
     filtered = list(filter(lambda v: v["unique_key"] == uk, data_base["variants"]))
     v = filtered[0] if filtered else data_base["variants"][0]
     f_answers, f_correction = a.get_fields(img_threshold, st, v)
     print(f_answers, "\n", f_correction)
-
-    r = a.get_score(v, f_answers, f_correction)
-    print("RESULT", r)
