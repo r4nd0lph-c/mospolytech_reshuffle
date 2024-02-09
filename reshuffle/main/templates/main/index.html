@@ -13,8 +13,52 @@
 
     <!-- main START -->
     <main class="content">
-        <div class="inner">
-
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-4 mb-3 d-flex align-items-stretch">
+                    <!-- card #1 START -->
+                    <div class="card index_card">
+                        <div class="card-body">
+                            <h5 class="card-title">{% trans "Creation & Download" %}</h5>
+                            <p class="bi bi-file-earmark-arrow-down icon mb-2"></p>
+                            <p class="card-text">{% trans "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis pharetra est sed sodales. In blandit diam ut magna imperdiet, quis varius turpis imperdiet. Vestibulum a ornare ipsum." %}</p>
+                            <a href="{% url 'creation' %}" class="btn btn-primary">{% trans "Go to" %}</a>
+                        </div>
+                    </div>
+                    <!-- card #1 END -->
+                </div>
+                <div class="col-lg-4 mb-3 d-flex align-items-stretch">
+                    <!-- card #2 START -->
+                    <div class="card index_card">
+                        <div class="card-body">
+                            <h5 class="card-title">{% trans "Verification of works" %}</h5>
+                            <p class="bi bi-clipboard2-check icon mb-2"></p>
+                            <p class="card-text">{% trans "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis pharetra est sed sodales. In blandit diam ut magna imperdiet, quis varius turpis imperdiet. Vestibulum a ornare ipsum." %}</p>
+                            <a href="{% url 'index' %}" class="btn btn-primary">{% trans "Go to" %}</a>
+                        </div>
+                    </div>
+                    <!-- card #2 END -->
+                </div>
+                <div class="col-lg-4 mb-3 d-flex align-items-stretch">
+                    <!-- card #3 START -->
+                    <div class="card index_card">
+                        <div class="card-body">
+                            <h5 class="card-title">{% trans "System administration" %}</h5>
+                            <p class="bi bi-database-lock icon mb-2"></p>
+                            <p class="card-text">{% trans "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis pharetra est sed sodales. In blandit diam ut magna imperdiet, quis varius turpis imperdiet. Vestibulum a ornare ipsum." %}</p>
+                            {% if user.is_superuser %}
+                                <a href="/admin" class="btn btn-primary">{% trans "Go to" %}</a>
+                            {% else %}
+                                <div data-bs-toggle="tooltip" data-bs-placement="top"
+                                     data-bs-title="{% trans 'Not enough rights' %}">
+                                    <button class="btn btn-primary" disabled>{% trans "Go to" %} </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- card #3 END -->
+                </div>
+            </div>
         </div>
     </main>
     <!-- main END -->
@@ -35,5 +79,9 @@
     <script>
         // add "custom-container" & "text-center" classes to body
         document.body.classList.add("custom-container", "text-center");
+
+        // init tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
 {% endblock %}

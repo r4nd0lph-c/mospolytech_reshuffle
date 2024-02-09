@@ -6,7 +6,7 @@
 {% block body %}
     <!-- header START -->
     <header>
-        <span class="display-1 fw-bold" style="color: var(--primary)"> {{ project_name }} </span>
+        <a href="{% url 'index' %}" class="display-1 fw-bold"> {{ project_name }} </a>
         <p class="display-6"> {{ subtitle }} </p>
     </header>
     <!-- header END -->

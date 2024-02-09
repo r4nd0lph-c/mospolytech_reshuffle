@@ -162,6 +162,22 @@ header .display-6 {
 }
 
 
+/* INDEX PAGE */
+
+.index_card {
+    min-width: 300px;
+}
+
+.index_card .btn {
+    min-width: 152px;
+}
+
+.index_card .icon {
+    font-size: 48px;
+    color: var(--text-secondary);
+}
+
+
 /* CREATION PAGE */
 
 .form-creation {
