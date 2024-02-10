@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-01 01:21+0300\n"
-"PO-Revision-Date: 2024-02-01 01:21+0300\n"
+"POT-Creation-Date: 2024-02-10 18:53+0300\n"
+"PO-Revision-Date: 2024-02-10 18:53+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -546,12 +546,51 @@ msgstr ", если хотите создать больше архивов."
 msgid "You haven't created any archives."
 msgstr "Вы не создали ни одного архива."
 
-#: .\main\templates\main\index.html:26
+#: .\main\templates\main\index.html:22
+msgid "Creation & Download"
+msgstr "Создание и скачивание"
+
+#: .\main\templates\main\index.html:24
+msgid ""
+"In this section, you can create new and download previously created sets of "
+"unique exam materials."
+msgstr "В данном разделе вы можете создавать новые и скачивать ранее созданные комплекты уникальных экзаменационных материалов."
+
+#: .\main\templates\main\index.html:25 .\main\templates\main\index.html:37
+#: .\main\templates\main\index.html:50 .\main\templates\main\index.html:54
+msgid "Go to"
+msgstr "Перейти"
+
+#: .\main\templates\main\index.html:34
+msgid "Verification of works"
+msgstr "Проверка работ"
+
+#: .\main\templates\main\index.html:36
+msgid ""
+"In this section you can scan and check in semi-automatic mode sets of "
+"applicants' exam works."
+msgstr "В данном разделе вы можете сканировать и проверять в полуавтоматическом режиме комплекты экзаменационных работ абитуриентов."
+
+#: .\main\templates\main\index.html:46
+msgid "System administration"
+msgstr "Администрирование системы"
+
+#: .\main\templates\main\index.html:48
+msgid ""
+"In this section you can manage the system (if you have certain rights), as "
+"well as create, read, update and delete exam materials."
+msgstr "В данном разделе вы можете управлять системой (при наличии определённых прав), а также добавлять, просматривать, изменять и удалять экзаменационные материалы."
+
+#: .\main\templates\main\index.html:53
+msgid "Not enough rights"
+msgstr "Недостаточно прав"
+
+#: .\main\templates\main\index.html:70
 #, python-format
 msgid "You are logged in as <b>%(user_full_name)s</b>"
 msgstr "Вы вошли как <b>%(user_full_name)s</b>"
 
-#: .\main\templates\main\index.html:29
+#: .\main\templates\main\index.html:73
 msgid "Log out"
 msgstr "Выйти"
 

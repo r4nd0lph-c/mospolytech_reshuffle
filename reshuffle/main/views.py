@@ -106,15 +106,8 @@ class Creation(ObjectStorageListView, FormView):
             kwargs["subject_choices"] = qs.filter(id__in=accesses)
         return kwargs
 
-    def form_valid(self, form):
-        dp = DocumentPackager()
-        prefix = dp.pack(
-            user_id=self.request.user.id,
-            sbj_id=form.cleaned_data["subject"].id,
-            count=form.cleaned_data["amount"],
-            date=form.cleaned_data["date"].strftime("%d.%m.%Y")
-        )
-        return redirect(reverse_lazy("download"))
+    def get_success_url(self):
+        return reverse_lazy("download")
 
 
 class Download(ObjectStorageListView):

@@ -169,12 +169,16 @@ header .display-6 {
 }
 
 .index_card .btn {
-    min-width: 152px;
+    width: 152px;
 }
 
 .index_card .icon {
     font-size: 48px;
     color: var(--text-secondary);
+}
+
+.index_card .card-body {
+    align-items: center;
 }
 
 

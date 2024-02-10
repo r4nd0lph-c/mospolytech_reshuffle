@@ -18,11 +18,11 @@
                 <div class="col-lg-4 mb-3 d-flex align-items-stretch">
                     <!-- card #1 START -->
                     <div class="card index_card">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-center">
                             <h5 class="card-title">{% trans "Creation & Download" %}</h5>
                             <p class="bi bi-file-earmark-arrow-down icon mb-2"></p>
-                            <p class="card-text">{% trans "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis pharetra est sed sodales. In blandit diam ut magna imperdiet, quis varius turpis imperdiet. Vestibulum a ornare ipsum." %}</p>
-                            <a href="{% url 'creation' %}" class="btn btn-primary">{% trans "Go to" %}</a>
+                            <p class="card-text">{% trans "In this section, you can create new and download previously created sets of unique exam materials." %}</p>
+                            <a href="{% url 'creation' %}" class="btn btn-primary mt-auto">{% trans "Go to" %}</a>
                         </div>
                     </div>
                     <!-- card #1 END -->
@@ -30,11 +30,11 @@
                 <div class="col-lg-4 mb-3 d-flex align-items-stretch">
                     <!-- card #2 START -->
                     <div class="card index_card">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-center">
                             <h5 class="card-title">{% trans "Verification of works" %}</h5>
                             <p class="bi bi-clipboard2-check icon mb-2"></p>
-                            <p class="card-text">{% trans "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis pharetra est sed sodales. In blandit diam ut magna imperdiet, quis varius turpis imperdiet. Vestibulum a ornare ipsum." %}</p>
-                            <a href="{% url 'index' %}" class="btn btn-primary">{% trans "Go to" %}</a>
+                            <p class="card-text">{% trans "In this section you can scan and check in semi-automatic mode sets of applicants' exam works." %}</p>
+                            <a href="{% url 'index' %}" class="btn btn-primary mt-auto">{% trans "Go to" %}</a>
                         </div>
                     </div>
                     <!-- card #2 END -->
@@ -42,16 +42,16 @@
                 <div class="col-lg-4 mb-3 d-flex align-items-stretch">
                     <!-- card #3 START -->
                     <div class="card index_card">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-center">
                             <h5 class="card-title">{% trans "System administration" %}</h5>
                             <p class="bi bi-database-lock icon mb-2"></p>
-                            <p class="card-text">{% trans "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis pharetra est sed sodales. In blandit diam ut magna imperdiet, quis varius turpis imperdiet. Vestibulum a ornare ipsum." %}</p>
+                            <p class="card-text">{% trans "In this section you can manage the system (if you have certain rights), as well as create, read, update and delete exam materials." %}</p>
                             {% if user.is_superuser %}
                                 <a href="/admin" class="btn btn-primary">{% trans "Go to" %}</a>
                             {% else %}
                                 <div data-bs-toggle="tooltip" data-bs-placement="top"
                                      data-bs-title="{% trans 'Not enough rights' %}">
-                                    <button class="btn btn-primary" disabled>{% trans "Go to" %} </button>
+                                    <button class="btn btn-primary mt-auto" disabled>{% trans "Go to" %} </button>
                                 </div>
                             {% endif %}
                         </div>
