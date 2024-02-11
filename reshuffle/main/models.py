@@ -218,7 +218,7 @@ class Task(AbstractDatestamp):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"ID: {self.id} ({self.part}, {Part.TYPES[self.part.answer_type]}, {self.position})"
+        return f"ID: {self.id}, {self.part}, {Part.TYPES[self.part.answer_type]}, {self.position}"
 
     class Meta:
         verbose_name = _("Task")
@@ -277,7 +277,7 @@ class DocHeader(AbstractDatestamp):
 
     def __str__(self):
         state = _("Active") if self.is_active else _("Inactive")
-        return f"ID: {self.id} ({state})"
+        return f"ID: {self.id}, {state}"
 
     class Meta:
         verbose_name = _("Document header")
@@ -320,7 +320,7 @@ class ObjectStorageEntry(AbstractDatestamp):
         super().delete(*args, **kwargs)
 
     def __str__(self):
-        return f"ID: {self.id} ({self.subject}, {self.amount}, {self.date})"
+        return f"ID: {self.id}, {self.subject}, {self.amount}, {self.date}"
 
     class Meta:
         app_label = "admin"
@@ -360,7 +360,7 @@ class VerifiedWorkEntry(AbstractDatestamp):
     )
 
     def __str__(self):
-        return f"ID: {self.id} ({self.archive.prefix}, {self.unique_key})"
+        return f"ID: {self.id}, {self.unique_key}, {self.archive.prefix}"
 
     class Meta:
         app_label = "admin"
