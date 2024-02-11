@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-10 18:53+0300\n"
-"PO-Revision-Date: 2024-02-10 18:53+0300\n"
+"POT-Creation-Date: 2024-02-11 12:49+0300\n"
+"PO-Revision-Date: 2024-02-11 12:49+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -62,12 +62,12 @@ msgid "The search is performed by task ID"
 msgstr "Поиск осуществляется по ID задания"
 
 #: .\main\admin.py:273 .\main\templates\main\download.html:19
-#: .\main\templates\main\download.html:28 .\main\views.py:69
-#: .\main\views.py:125
+#: .\main\templates\main\download.html:28 .\main\views.py:71
+#: .\main\views.py:120
 msgid "Download"
 msgstr "Скачать"
 
-#: .\main\apps.py:8 .\main\views.py:48
+#: .\main\apps.py:8 .\main\views.py:50
 msgid "Main"
 msgstr "Главная"
 
@@ -374,8 +374,8 @@ msgid "User who created the archive"
 msgstr "Пользователь, который создал архив"
 
 #: .\main\models.py:319
-msgid "User"
-msgstr "Пользователь"
+msgid "Creator"
+msgstr "Создатель"
 
 #: .\main\models.py:324
 msgid "Subject for which the archive was created"
@@ -469,7 +469,7 @@ msgstr "Содержание"
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:202
+#: .\main\templates\main\404.html:17 .\main\views.py:220
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -484,6 +484,7 @@ msgstr ""
 
 #: .\main\templates\main\404.html:23
 #: .\main\templates\main\object_storage.html:98
+#: .\main\templates\main\verification.html:22
 msgid "To main page"
 msgstr "На главную"
 
@@ -511,7 +512,7 @@ msgstr "Войти"
 msgid "Having problems?"
 msgstr "Возникли проблемы?"
 
-#: .\main\templates\main\creation.html:21 .\main\views.py:90
+#: .\main\templates\main\creation.html:21 .\main\views.py:92
 msgid "Creation"
 msgstr "Создание"
 
@@ -554,7 +555,9 @@ msgstr "Создание и скачивание"
 msgid ""
 "In this section, you can create new and download previously created sets of "
 "unique exam materials."
-msgstr "В данном разделе вы можете создавать новые и скачивать ранее созданные комплекты уникальных экзаменационных материалов."
+msgstr ""
+"В данном разделе вы можете создавать новые и скачивать ранее созданные "
+"комплекты уникальных экзаменационных материалов."
 
 #: .\main\templates\main\index.html:25 .\main\templates\main\index.html:37
 #: .\main\templates\main\index.html:50 .\main\templates\main\index.html:54
@@ -569,7 +572,9 @@ msgstr "Проверка работ"
 msgid ""
 "In this section you can scan and check in semi-automatic mode sets of "
 "applicants' exam works."
-msgstr "В данном разделе вы можете сканировать и проверять в полуавтоматическом режиме комплекты экзаменационных работ абитуриентов."
+msgstr ""
+"В данном разделе вы можете сканировать и проверять в полуавтоматическом "
+"режиме комплекты экзаменационных работ абитуриентов."
 
 #: .\main\templates\main\index.html:46
 msgid "System administration"
@@ -579,7 +584,10 @@ msgstr "Администрирование системы"
 msgid ""
 "In this section you can manage the system (if you have certain rights), as "
 "well as create, read, update and delete exam materials."
-msgstr "В данном разделе вы можете управлять системой (при наличии определённых прав), а также добавлять, просматривать, изменять и удалять экзаменационные материалы."
+msgstr ""
+"В данном разделе вы можете управлять системой (при наличии определённых "
+"прав), а также добавлять, просматривать, изменять и удалять экзаменационные "
+"материалы."
 
 #: .\main\templates\main\index.html:53
 msgid "Not enough rights"
@@ -624,25 +632,33 @@ msgstr ""
 "В будущем здесь появится информация об архивах, которые вам доступны для "
 "скачивания. В настоящий момент таких нет."
 
-#: .\main\views.py:25
+#: .\main\views.py:27
 msgid "Auth"
 msgstr "Авторизация"
 
-#: .\main\views.py:26
+#: .\main\views.py:28
 msgid "Entrance exam processing system"
 msgstr "Система обработки экзаменов"
 
-#: .\main\views.py:49
+#: .\main\views.py:51
 msgid "Select an activity"
 msgstr "Выберите действие"
 
-#: .\main\views.py:91
+#: .\main\views.py:93
 msgid "Create a set of entrance exams"
 msgstr "Создайте набор экзаменов"
 
-#: .\main\views.py:126
+#: .\main\views.py:121
 msgid "Download a set of entrance exams"
 msgstr "Скачайте набор экзаменов"
+
+#: .\main\views.py:146
+msgid "Verification"
+msgstr "Проверка"
+
+#: .\main\views.py:147
+msgid "Verify works of applicants"
+msgstr "Проверьте работы абитуриентов"
 
 #: .\templates\admin\base_site.html:23
 msgid "Django site admin"

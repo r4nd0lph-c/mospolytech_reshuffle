@@ -316,7 +316,7 @@ class ObjectStorageEntry(AbstractDatestamp):
         User,
         on_delete=models.CASCADE,
         help_text=_("User who created the archive"),
-        verbose_name=_("User")
+        verbose_name=_("Creator")
     )
     subject = models.ForeignKey(
         Subject,

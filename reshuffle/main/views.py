@@ -13,6 +13,8 @@ from main.models import *
 from main.services.docs.minio_client import MinioClient
 from main.services.docs.factory import DocumentPackager
 
+PAGINATION_N = 10
+
 
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
 class Auth(LoginView):
@@ -55,7 +57,7 @@ class ObjectStorageListView(LoginRequiredMixin, ListView):
     """ Parent for Creation CBV & Download CBV """
 
     login_url = reverse_lazy("auth")
-    paginate_by = 10
+    paginate_by = PAGINATION_N
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -131,6 +133,29 @@ def download_archive(request, prefix: str = None):
                 return redirect(mc.get_object_url(f"{prefix}.{DocumentPackager.ARCHIVE_FORMAT}"))
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
+
+
+class Verification(LoginRequiredMixin, ListView):
+    login_url = reverse_lazy("auth")
+    paginate_by = PAGINATION_N
+    template_name = "main/verification.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["project_name"] = PROJECT_NAME.upper()
+        context["title"] = _("Verification") + " | " + PROJECT_NAME
+        context["subtitle"] = _("Verify works of applicants")
+        return context
+
+    def get_queryset(self):
+        qs = ObjectStorageEntry.objects.all().order_by("-created")
+        groups = self.request.user.groups.all()
+        if self.request.user.is_superuser or not groups.exists():
+            return qs
+        accesses = []
+        for g in groups:
+            accesses += [a.subject.id for a in Access.objects.filter(group=g)]
+        return qs.filter(subject__id__in=accesses)
 
 
 def logout_user(request):
