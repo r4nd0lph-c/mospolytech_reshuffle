@@ -27,7 +27,7 @@ class AbstractDatestamp(models.Model):
         abstract = True
 
 
-# TESTING MATERIALS -------------------------------------------------------------------------------------------------- #
+# MAIN --------------------------------------------------------------------------------------------------------------- #
 class Subject(AbstractDatestamp):
     STR_LENGTH = 64
 
@@ -251,7 +251,6 @@ class Option(AbstractDatestamp):
         verbose_name_plural = " " * 1 + _("Options")
 
 
-# DOCS INFO ---------------------------------------------------------------------------------------------------------- #
 class DocHeader(AbstractDatestamp):
     content = RichTextField(
         config_name="config_1",
@@ -285,30 +284,7 @@ class DocHeader(AbstractDatestamp):
         verbose_name_plural = " " * 5 + _("Document headers")
 
 
-# MODERATION --------------------------------------------------------------------------------------------------------- #
-class Access(AbstractDatestamp):
-    group = models.ForeignKey(
-        Group,
-        on_delete=models.CASCADE,
-        help_text=_("Group for which access to subjects is granted"),
-        verbose_name=_("Group")
-    )
-    subject = models.ForeignKey(
-        Subject,
-        on_delete=models.CASCADE,
-        help_text=_("One of the subjects that will be available for interaction by the selected group"),
-        verbose_name=_("Subject")
-    )
-
-    def __str__(self):
-        return f"ID: {self.id} ({self.group})"
-
-    class Meta:
-        app_label = "auth"
-        verbose_name = _("Access")
-        verbose_name_plural = _("Accesses")
-
-
+# ADMINISTRATION ----------------------------------------------------------------------------------------------------- #
 class ObjectStorageEntry(AbstractDatestamp):
     STR_LENGTH = 64
 
@@ -347,6 +323,30 @@ class ObjectStorageEntry(AbstractDatestamp):
         return f"ID: {self.id} ({self.subject}, {self.amount}, {self.date})"
 
     class Meta:
-        app_label = "auth"
+        app_label = "admin"
         verbose_name = _("Object storage entry")
         verbose_name_plural = _("Object storage entries")
+
+
+# AUTHENTICATION AND AUTHORIZATION ----------------------------------------------------------------------------------- #
+class Access(AbstractDatestamp):
+    group = models.ForeignKey(
+        Group,
+        on_delete=models.CASCADE,
+        help_text=_("Group for which access to subjects is granted"),
+        verbose_name=_("Group")
+    )
+    subject = models.ForeignKey(
+        Subject,
+        on_delete=models.CASCADE,
+        help_text=_("One of the subjects that will be available for interaction by the selected group"),
+        verbose_name=_("Subject")
+    )
+
+    def __str__(self):
+        return f"ID: {self.id} ({self.group})"
+
+    class Meta:
+        app_label = "auth"
+        verbose_name = _("Access")
+        verbose_name_plural = _("Accesses")

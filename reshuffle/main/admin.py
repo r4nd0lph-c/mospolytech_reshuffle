@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.urls import reverse_lazy
 from django.contrib import admin
+from django.contrib.admin.models import LogEntry
 from django.db.models import Q
 from reshuffle.settings import PROJECT_NAME
 from main.views import Auth, logout_user
@@ -45,7 +46,7 @@ class InstAvailableFilter(admin.SimpleListFilter):
             return queryset.filter(inst_content__exact="")
 
 
-# TESTING MATERIALS -------------------------------------------------------------------------------------------------- #
+# MAIN --------------------------------------------------------------------------------------------------------------- #
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -212,7 +213,6 @@ class OptionAdmin(admin.ModelAdmin):
         js = ("admin/js/ckeditor_modification.js",)
 
 
-# DOCS INFO ---------------------------------------------------------------------------------------------------------- #
 @admin.register(DocHeader)
 class DocHeaderAdmin(admin.ModelAdmin):
     list_display = ("id", "pretty_content", "is_active", "created", "updated",)
@@ -240,19 +240,12 @@ class DocHeaderAdmin(admin.ModelAdmin):
         js = ("admin/js/ckeditor_modification.js",)
 
 
-# MODERATION --------------------------------------------------------------------------------------------------------- #
-@admin.register(Access)
-class AccessAdmin(admin.ModelAdmin):
-    list_display = ("id", "group", "subject", "created", "updated",)
-    list_display_links = ("id",)
-    ordering = ("group", "subject",)
-    list_filter = (("group", admin.RelatedOnlyFieldListFilter), ("subject", admin.RelatedOnlyFieldListFilter),)
-
-
+# ADMINISTRATION ----------------------------------------------------------------------------------------------------- #
 @admin.register(ObjectStorageEntry)
 class ObjectStorageEntryAdmin(admin.ModelAdmin):
     list_display = ("id", "subject", "amount", "date", "username", "created", "download_button",)
     list_display_links = ("id",)
+    date_hierarchy = "created"
     ordering = ("-created",)
     list_filter = (("subject", admin.RelatedOnlyFieldListFilter), ("user", admin.RelatedOnlyFieldListFilter),)
 
@@ -283,3 +276,38 @@ class ObjectStorageEntryAdmin(admin.ModelAdmin):
         for obj in qs:
             mc.delete_object(obj.prefix)
         qs.delete()
+
+
+@admin.register(LogEntry)
+class LogEntryAdmin(admin.ModelAdmin):
+    readonly_fields = ("action_time",)
+    list_display = ("id", "__str__", "content_type", "username", "action_time",)
+    list_display_links = ("id",)
+    date_hierarchy = "action_time"
+    list_filter = (("user", admin.RelatedOnlyFieldListFilter), ("content_type", admin.RelatedOnlyFieldListFilter),)
+    search_fields = ("object_repr",)
+    search_help_text = _("The search is performed by object representation")
+
+    def username(self, obj: "LogEntry"):
+        return obj.user.get_full_name() if obj.user.get_full_name() else obj.user.username
+
+    username.short_description = LogEntry._meta.get_field("user").verbose_name
+
+    # keep only view permission
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+# AUTHENTICATION AND AUTHORIZATION ----------------------------------------------------------------------------------- #
+@admin.register(Access)
+class AccessAdmin(admin.ModelAdmin):
+    list_display = ("id", "group", "subject", "created", "updated",)
+    list_display_links = ("id",)
+    ordering = ("group", "subject",)
+    list_filter = (("group", admin.RelatedOnlyFieldListFilter), ("subject", admin.RelatedOnlyFieldListFilter),)
