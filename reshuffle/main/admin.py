@@ -270,7 +270,7 @@ class LogEntryAdmin(AdministrationEntry):
 
 @admin.register(ObjectStorageEntry)
 class ObjectStorageEntryAdmin(AdministrationEntry):
-    list_display = ("id", "subject", "amount", "date", "username", "created", "download_button",)
+    list_display = ("id", "subject", "date", "amount", "username", "created", "download_button",)
     list_display_links = ("id",)
     date_hierarchy = "created"
     ordering = ("-created",)
