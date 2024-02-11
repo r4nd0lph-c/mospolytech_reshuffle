@@ -21,6 +21,14 @@ admin.site.login = Auth.as_view()
 admin.site.logout = logout_user
 
 
+class AdministrationEntry(admin.ModelAdmin):
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
 def get_accesses(groups):
     accesses = []
     for g in groups:
@@ -241,13 +249,34 @@ class DocHeaderAdmin(admin.ModelAdmin):
 
 
 # ADMINISTRATION ----------------------------------------------------------------------------------------------------- #
+@admin.register(LogEntry)
+class LogEntryAdmin(AdministrationEntry):
+    readonly_fields = ("action_time",)
+    list_display = ("id", "__str__", "content_type", "username", "action_time",)
+    list_display_links = ("id",)
+    date_hierarchy = "action_time"
+    list_filter = (("user", admin.RelatedOnlyFieldListFilter), ("content_type", admin.RelatedOnlyFieldListFilter),)
+    search_fields = ("object_repr",)
+    search_help_text = _("The search is performed by object representation")
+
+    def username(self, obj: "LogEntry"):
+        return obj.user.get_full_name() if obj.user.get_full_name() else obj.user.username
+
+    username.short_description = LogEntry._meta.get_field("user").verbose_name
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 @admin.register(ObjectStorageEntry)
-class ObjectStorageEntryAdmin(admin.ModelAdmin):
+class ObjectStorageEntryAdmin(AdministrationEntry):
     list_display = ("id", "subject", "amount", "date", "username", "created", "download_button",)
     list_display_links = ("id",)
     date_hierarchy = "created"
     ordering = ("-created",)
     list_filter = (("subject", admin.RelatedOnlyFieldListFilter), ("user", admin.RelatedOnlyFieldListFilter),)
+    search_fields = ("prefix",)
+    search_help_text = _("The search is performed by prefix")
 
     def username(self, obj: "ObjectStorageEntry"):
         return obj.user.get_full_name() if obj.user.get_full_name() else obj.user.username
@@ -265,12 +294,6 @@ class ObjectStorageEntryAdmin(admin.ModelAdmin):
 
     download_button.short_description = _("Download")
 
-    def has_add_permission(self, request):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
     def delete_queryset(self, request, qs):
         mc = MinioClient()
         for obj in qs:
@@ -278,30 +301,20 @@ class ObjectStorageEntryAdmin(admin.ModelAdmin):
         qs.delete()
 
 
-@admin.register(LogEntry)
-class LogEntryAdmin(admin.ModelAdmin):
-    readonly_fields = ("action_time",)
-    list_display = ("id", "__str__", "content_type", "username", "action_time",)
+@admin.register(VerifiedWorkEntry)
+class VerifiedWorkEntryAdmin(AdministrationEntry):
+    list_display = ("id", "archive", "unique_key", "score", "username", "created",)
     list_display_links = ("id",)
-    date_hierarchy = "action_time"
-    list_filter = (("user", admin.RelatedOnlyFieldListFilter), ("content_type", admin.RelatedOnlyFieldListFilter),)
-    search_fields = ("object_repr",)
-    search_help_text = _("The search is performed by object representation")
+    date_hierarchy = "created"
+    ordering = ("-created",)
+    list_filter = (("archive", admin.RelatedOnlyFieldListFilter), ("user", admin.RelatedOnlyFieldListFilter),)
+    search_fields = ("unique_key",)
+    search_help_text = _("The search is performed by unique key")
 
-    def username(self, obj: "LogEntry"):
+    def username(self, obj: "ObjectStorageEntry"):
         return obj.user.get_full_name() if obj.user.get_full_name() else obj.user.username
 
-    username.short_description = LogEntry._meta.get_field("user").verbose_name
-
-    # keep only view permission
-    def has_add_permission(self, request):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
+    username.short_description = ObjectStorageEntry._meta.get_field("user").verbose_name
 
 
 # AUTHENTICATION AND AUTHORIZATION ----------------------------------------------------------------------------------- #

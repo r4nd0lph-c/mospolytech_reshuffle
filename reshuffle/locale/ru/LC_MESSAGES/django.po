@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-11 14:30+0300\n"
-"PO-Revision-Date: 2024-02-11 14:30+0300\n"
+"POT-Creation-Date: 2024-02-11 15:24+0300\n"
+"PO-Revision-Date: 2024-02-11 15:24+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -24,52 +24,61 @@ msgstr ""
 msgid "Administration"
 msgstr "Администрация"
 
-#: .\main\admin.py:33
+#: .\main\admin.py:41
 msgid "Instruction available"
 msgstr "Наличие инструкции"
 
-#: .\main\admin.py:38
+#: .\main\admin.py:46
 msgid "Yes"
 msgstr "Да"
 
-#: .\main\admin.py:39
+#: .\main\admin.py:47
 msgid "No"
 msgstr "Нет"
 
-#: .\main\admin.py:53 .\main\admin.py:87 .\main\models.py:62
-#: .\main\models.py:98 .\main\models.py:301 .\main\models.py:343
+#: .\main\admin.py:61 .\main\admin.py:95 .\main\models.py:62
+#: .\main\models.py:98 .\main\models.py:301 .\main\models.py:383
 msgid "Subject"
 msgstr "Предмет"
 
-#: .\main\admin.py:56
+#: .\main\admin.py:64
 msgid "Additional options"
 msgstr "Дополнительные опции"
 
-#: .\main\admin.py:60 .\main\admin.py:75 .\main\admin.py:93 .\main\admin.py:116
+#: .\main\admin.py:68 .\main\admin.py:83 .\main\admin.py:101
+#: .\main\admin.py:124
 msgid "Instruction"
 msgstr "Инструкция"
 
-#: .\main\admin.py:90
+#: .\main\admin.py:98
 msgid "Main options"
 msgstr "Основные опции"
 
-#: .\main\admin.py:108
+#: .\main\admin.py:116
 msgid "Cells"
 msgstr "Ячейки"
 
-#: .\main\admin.py:149 .\main\admin.py:188
+#: .\main\admin.py:157 .\main\admin.py:196
 msgid "The search is performed by task ID"
 msgstr "Поиск осуществляется по ID задания"
 
-#: .\main\admin.py:266 .\main\templates\main\download.html:19
+#: .\main\admin.py:260
+msgid "The search is performed by object representation"
+msgstr "Поиск осуществляется по Представлению объекта"
+
+#: .\main\admin.py:279
+msgid "The search is performed by prefix"
+msgstr "Поиск осуществляется по префиксу"
+
+#: .\main\admin.py:295 .\main\templates\main\download.html:19
 #: .\main\templates\main\download.html:28 .\main\views.py:71
 #: .\main\views.py:127
 msgid "Download"
 msgstr "Скачать"
 
-#: .\main\admin.py:289
-msgid "The search is performed by object representation"
-msgstr "Поиск осуществляется по Представлению объекта"
+#: .\main\admin.py:312
+msgid "The search is performed by unique key"
+msgstr "Поиск осуществляется по уникальному ключу"
 
 #: .\main\apps.py:8 .\main\views.py:50
 msgid "Main"
@@ -382,7 +391,7 @@ msgstr "Уникальное имя архива"
 msgid "Prefix"
 msgstr "Префикс"
 
-#: .\main\models.py:327
+#: .\main\models.py:327 .\main\models.py:345
 msgid "Object storage entry"
 msgstr "Запись объектного хранилища"
 
@@ -390,26 +399,70 @@ msgstr "Запись объектного хранилища"
 msgid "Object storage entries"
 msgstr "Записи объектного хранилища"
 
-#: .\main\models.py:336
+#: .\main\models.py:338
+msgid "User who verified the work"
+msgstr "Пользователь, который проверил работу"
+
+#: .\main\models.py:339
+msgid "Verifying"
+msgstr "Проверяющий"
+
+#: .\main\models.py:344
+msgid "Archive to which the work relates"
+msgstr "Архив, к которому относится работа"
+
+#: .\main\models.py:349
+msgid "Work variant number from the archive"
+msgstr "Номер варианта работы из архива"
+
+#: .\main\models.py:350
+msgid "Unique key"
+msgstr "Уникальный ключ"
+
+#: .\main\models.py:353
+msgid "Number of points scored (primary system)"
+msgstr "Количество набранных баллов ( первичная система)"
+
+#: .\main\models.py:354
+msgid "Score"
+msgstr "Баллы"
+
+#: .\main\models.py:358
+msgid "Image of scanned and verified work from object storage"
+msgstr "Изображение отсканированной и проверенной работы из объектного хранилища"
+
+#: .\main\models.py:359
+msgid "Scan of the work"
+msgstr "Скан работы"
+
+#: .\main\models.py:367
+msgid "Verified work entry"
+msgstr "Запись проверенной работы"
+
+#: .\main\models.py:368
+msgid "Verified work entries"
+msgstr "Записи проверенной работы"
+
+#: .\main\models.py:376
 msgid "Group for which access to subjects is granted"
 msgstr "Группа, для которой предоставляется доступ к предметам"
 
-#: .\main\models.py:337
+#: .\main\models.py:377
 msgid "Group"
 msgstr "Группа"
 
-#: .\main\models.py:342
+#: .\main\models.py:382
 msgid ""
 "One of the subjects that will be available for interaction by the selected "
 "group"
 msgstr ""
 "Один из предметов, который будет доступен для взаимодействия выбранной группе"
 
-#: .\main\models.py:351
+#: .\main\models.py:391
 msgid "Access"
 msgstr "Право доступа"
 
-#: .\main\models.py:352
+#: .\main\models.py:392
 msgid "Accesses"
 msgstr "Права доступа"
 

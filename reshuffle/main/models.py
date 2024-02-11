@@ -328,6 +328,46 @@ class ObjectStorageEntry(AbstractDatestamp):
         verbose_name_plural = _("Object storage entries")
 
 
+class VerifiedWorkEntry(AbstractDatestamp):
+    UK_LENGTH = 64
+    URL_LENGTH = 256
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        help_text=_("User who verified the work"),
+        verbose_name=_("Verifying")
+    )
+    archive = models.ForeignKey(
+        ObjectStorageEntry,
+        on_delete=models.CASCADE,
+        help_text=_("Archive to which the work relates"),
+        verbose_name=_("Object storage entry")
+    )
+    unique_key = models.CharField(
+        max_length=UK_LENGTH,
+        help_text=_("Work variant number from the archive"),
+        verbose_name=_("Unique key")
+    )
+    score = models.PositiveSmallIntegerField(
+        help_text=_("Number of points scored (primary system)"),
+        verbose_name=_("Score")
+    )
+    scan = models.URLField(
+        max_length=URL_LENGTH,
+        help_text=_("Image of scanned and verified work from object storage"),
+        verbose_name=_("Scan of the work")
+    )
+
+    def __str__(self):
+        return f"ID: {self.id} ({self.archive.prefix}, {self.unique_key})"
+
+    class Meta:
+        app_label = "admin"
+        verbose_name = _("Verified work entry")
+        verbose_name_plural = _("Verified work entries")
+
+
 # AUTHENTICATION AND AUTHORIZATION ----------------------------------------------------------------------------------- #
 class Access(AbstractDatestamp):
     group = models.ForeignKey(
