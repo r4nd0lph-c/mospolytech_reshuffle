@@ -46,7 +46,7 @@
                             <h5 class="card-title">{% trans "System administration" %}</h5>
                             <p class="bi bi-database-lock icon mb-2"></p>
                             <p class="card-text">{% trans "In this section you can manage the system (if you have certain rights), as well as create, read, update and delete exam materials." %}</p>
-                            {% if user.is_superuser %}
+                            {% if user.is_staff %}
                                 <a href="/admin" class="btn btn-primary">{% trans "Go to" %}</a>
                             {% else %}
                                 <div data-bs-toggle="tooltip" data-bs-placement="top"
