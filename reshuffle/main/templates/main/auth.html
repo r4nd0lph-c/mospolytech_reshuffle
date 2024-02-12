@@ -33,9 +33,9 @@
             <!-- catch form errors END -->
 
             <!-- auth form START -->
-            <form method="post" class="form-login">
+            <form method="post" class="form-login" data-aos="fade-up" data-aos-duration="300">
                 {% csrf_token %}
-                <h3 class="fw-normal mb-3"> {% trans "Authorization" %} </h3>
+                <h3 class="fw-normal mb-3" data-aos="fade-up" data-aos-duration="300"> {% trans "Authorization" %} </h3>
                 <div class="form-floating mb-2">
                     {{ form.username }}
                     <label for="{{ form.username.id_for_label }}"> {{ form.username.label }} </label>

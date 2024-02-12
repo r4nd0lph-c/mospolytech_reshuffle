@@ -16,9 +16,9 @@
     <!-- catch form errors END -->
 
     <!-- creation form START -->
-    <form method="post" class="form-creation mb-4">
+    <form method="post" class="form-creation mb-4" data-aos="fade-up" data-aos-duration="300">
         {% csrf_token %}
-        <h3 class="fw-normal mb-3"> {% trans "Creation" %} </h3>
+        <h3 class="fw-normal mb-3" data-aos="fade-up" data-aos-duration="300"> {% trans "Creation" %} </h3>
         <div class="mb-2"> {{ form.subject }} </div>
         <div class="mb-2"> {{ form.date }} </div>
         <div class="mb-4"> {{ form.amount }} </div>

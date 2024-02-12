@@ -34,8 +34,10 @@
 
         <!-- object storage table START -->
         {% if page_obj %}
-            <div class="mt-5">
-                <h3 class="fw-normal mb-3"> {% trans "Table of archives" %} </h3>
+            <div class="mt-5" data-aos="fade-up" data-aos-duration="600">
+                <h3 class="fw-normal mb-3" data-aos="fade-up" data-aos-duration="300">
+                    {% trans "Table of archives" %}
+                </h3>
                 <div class="table-container mb-2">
                     <table id="object_storage_table" class="table" style="margin: 0;">
                         <thead>
@@ -83,7 +85,7 @@
                 </div>
             </div>
         {% else %}
-            <div class="alert-container mt-4 mb-2">
+            <div class="alert-container mt-4 mb-2" data-aos="fade-up" data-aos-duration="600">
                 <div class="alert alert-primary" role="alert">
                     {% trans "In the future there will be information here about archives you can download. At the moment they are not available." %}
                 </div>
