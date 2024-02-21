@@ -311,10 +311,10 @@ class VerifiedWorkEntryAdmin(AdministrationEntry):
     search_fields = ("unique_key",)
     search_help_text = _("The search is performed by unique key")
 
-    def username(self, obj: "ObjectStorageEntry"):
+    def username(self, obj: "VerifiedWorkEntry"):
         return obj.user.get_full_name() if obj.user.get_full_name() else obj.user.username
 
-    username.short_description = ObjectStorageEntry._meta.get_field("user").verbose_name
+    username.short_description = VerifiedWorkEntry._meta.get_field("user").verbose_name
 
 
 # AUTHENTICATION AND AUTHORIZATION ----------------------------------------------------------------------------------- #
