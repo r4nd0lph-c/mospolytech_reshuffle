@@ -165,6 +165,16 @@ class Verification(LoginRequiredMixin, ListView):
         return qs.filter(subject__id__in=accesses)
 
 
+class Capture(LoginRequiredMixin, TemplateView):
+    template_name = "main/capture.html"
+    login_url = reverse_lazy("auth")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = _("Capture") + " | " + PROJECT_NAME
+        return context
+
+
 def logout_user(request):
     logout(request)
     return redirect("auth")

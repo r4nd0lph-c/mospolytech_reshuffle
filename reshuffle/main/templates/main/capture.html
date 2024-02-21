@@ -1,0 +1,57 @@
+{% extends "main/base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block body %}
+    <!-- header START -->
+    <header>
+
+    </header>
+    <!-- header END -->
+
+    <!-- main START -->
+    <main class="content">
+        <canvas id="canvas_block" style="display: none;"></canvas>
+        <video id="video_block" autoplay></video>
+    </main>
+    <!-- main END -->
+
+    <!--footer START -->
+    <footer>
+
+    </footer>
+    <!--footer END -->
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        let canvas_block = document.getElementById("canvas_block");
+        let video_block = document.getElementById("video_block");
+        let stream;
+
+        async function webcam_start() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: {ideal: 3840},
+                        height: {ideal: 2160}
+                    },
+                });
+                video_block.srcObject = stream;
+            } catch (error) {
+                console.error("Error accessing webcam:", error);
+            }
+        }
+
+        webcam_start();
+
+        function capture() {
+            canvas_block.width = stream.getVideoTracks()[0].getSettings().width;
+            canvas_block.height = stream.getVideoTracks()[0].getSettings().height;
+            canvas_block.getContext("2d").drawImage(video_block, 0, 0);
+            let captured = canvas_block.toDataURL("image/jpeg");
+            console.log(captured);
+        }
+    </script>
+{% endblock %}
