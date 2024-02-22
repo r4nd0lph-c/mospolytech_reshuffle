@@ -12,8 +12,24 @@
 
     <!-- main START -->
     <main class="content">
-        <canvas id="canvas_block" style="display: none;"></canvas>
-        <video id="video_block" autoplay></video>
+        <div class="btn-group dropdown-center">
+            <button type="button" class="btn btn-primary">
+                <i class="bi bi-camera"></i>
+                {% trans "Capture" %}
+            </button>
+            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+                <h6 class="dropdown-header">{% trans "Select a video source" %}</h6>
+                <hr class="dropdown-divider">
+                <ul id="video_sources" style="list-style-type: none; margin: 0; padding: 0;"></ul>
+            </div>
+        </div>
+        <button type="button" class="btn btn-light">
+            <i class="bi bi-upload"></i>
+            {% trans "Upload image" %}
+        </button>
     </main>
     <!-- main END -->
 
@@ -26,32 +42,115 @@
 
 {% block extra_js %}
     <script>
-        let canvas_block = document.getElementById("canvas_block");
-        let video_block = document.getElementById("video_block");
-        let stream;
-
-        async function webcam_start() {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        width: {ideal: 3840},
-                        height: {ideal: 2160}
-                    },
+        // function for loading a list of video sources
+        function load_video_sources() {
+            const ls_key = "active_video_source";
+            let list = document.getElementById("video_sources");
+            navigator.mediaDevices.enumerateDevices().then(devices => {
+                let video_sources = devices.filter(device => device.kind === "videoinput");
+                let active_video_source = localStorage.getItem(ls_key);
+                video_sources.forEach((src) => {
+                    let li = document.createElement("li");
+                    let button = document.createElement("button");
+                    button.className = `dropdown-item${active_video_source === src.deviceId ? " active" : ""}`;
+                    button.type = "button";
+                    button.id = src.deviceId;
+                    button.innerHTML = src.label;
+                    button.onclick = function () {
+                        for (let li of list.children)
+                            li.firstElementChild.className = "dropdown-item";
+                        this.classList.add("active");
+                        localStorage.setItem(ls_key, this.id);
+                    };
+                    li.append(button);
+                    list.appendChild(li);
                 });
-                video_block.srcObject = stream;
-            } catch (error) {
-                console.error("Error accessing webcam:", error);
-            }
+                if (list.children.length && active_video_source == null) {
+                    let button = list.firstElementChild.firstElementChild;
+                    button.classList.add("active");
+                    localStorage.setItem(ls_key, button.id);
+                }
+            }).catch(e => {
+                console.error("Error getting video sources:", e);
+            });
         }
 
-        webcam_start();
+        load_video_sources();
 
-        function capture() {
-            canvas_block.width = stream.getVideoTracks()[0].getSettings().width;
-            canvas_block.height = stream.getVideoTracks()[0].getSettings().height;
-            canvas_block.getContext("2d").drawImage(video_block, 0, 0);
-            let captured = canvas_block.toDataURL("image/jpeg");
-            console.log(captured);
-        }
+
+        {#let canvas_block = document.getElementById("canvas_block");#}
+        {#let video_block = document.getElementById("video_block");#}
+        {#let stream;#}
+        {##}
+        {#async function webcam_start() {#}
+        {#    try {#}
+        {#        stream = await navigator.mediaDevices.getUserMedia({#}
+        {#            video: {#}
+        {#                width: {ideal: 3840},#}
+        {#                height: {ideal: 2160}#}
+        {#            },#}
+        {#        });#}
+        {#        video_block.srcObject = stream;#}
+        {#    } catch (error) {#}
+        {#        console.error("Error accessing webcam:", error);#}
+        {#    }#}
+        // }
+        {##}
+        {#webcam_start();#}
+        {##}
+        {#function capture() {#}
+        {#    canvas_block.width = stream.getVideoTracks()[0].getSettings().width;#}
+        {#    canvas_block.height = stream.getVideoTracks()[0].getSettings().height;#}
+        {#    canvas_block.getContext("2d").drawImage(video_block, 0, 0);#}
+        {#    let captured = canvas_block.toDataURL("image/jpeg");#}
+        {#    console.log(captured);#}
+        // }
+        {##}
+        {#// ----------#}
+        {#// Функция для получения списка доступных веб-камер#}
+        {#function getCameraList() {#}
+        {#    navigator.mediaDevices.enumerateDevices()#}
+        {#        .then(devices => {#}
+        {#            const cameras = devices.filter(device => device.kind === 'videoinput');#}
+        {##}
+        {#            cameras.forEach((camera, index) => {#}
+        {#                console.log(`Camera ${index + 1}: ${camera.label}`);#}
+        {#            });#}
+        {##}
+        {#            // Переключение между камерами#}
+        {#            if (cameras.length > 1) {#}
+        {#                let currentCameraIndex = 0;#}
+        {##}
+        {#                function switchCamera() {#}
+        {#                    currentCameraIndex = (currentCameraIndex + 1) % cameras.length;#}
+        {#                    startCamera(cameras[currentCameraIndex].deviceId);#}
+        {#                }#}
+        {##}
+        {#                document.getElementById('switchCameraButton').addEventListener('click', switchCamera);#}
+        {#            }#}
+        {#        })#}
+        {#        .catch(err => {#}
+        {#            console.error('Error getting camera list: ', err);#}
+        {#        });#}
+        // }
+        {##}
+        {#// Функция для запуска выбранной камеры#}
+        {#function startCamera(deviceId) {#}
+        {#    const constraints = {#}
+        {#        video: {deviceId: deviceId}#}
+        {#    };#}
+        {##}
+        {#    navigator.mediaDevices.getUserMedia(constraints)#}
+        {#        .then(stream => {#}
+        {#            const videoElement = document.getElementById('videoElement');#}
+        {#            videoElement.srcObject = stream;#}
+        {#        })#}
+        {#        .catch(err => {#}
+        {#            console.error('Error starting camera: ', err);#}
+        {#        });#}
+        // }
+        {##}
+        {#// Вызываем функцию для получения списка камер при загрузке страницы#}
+        {#getCameraList();#}
     </script>
 {% endblock %}
