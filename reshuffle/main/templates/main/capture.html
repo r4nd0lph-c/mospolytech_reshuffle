@@ -71,8 +71,15 @@
     <!-- header END -->
 
     <!-- main START -->
-    <main class="content">
-        ...
+    <main class="content text-center">
+        <div id="camera_issue" class="inner" style="max-width: 435px !important;">
+            <div data-aos="fade-up" data-aos-duration="300">
+                <h3 class="fw-normal mb-2" data-aos="fade-up" data-aos-duration="300"> {% trans "Camera issue" %} </h3>
+                <p class="bi bi-camera-video-off" style="font-size: 94px; color: var(--text-secondary)"></p>
+                <p class="mb-4">{% trans "The application cannot access the web-camera. Make sure you have granted access in the browser settings and try reloading the page. If these actions did not help, you can use the option to upload the image from your computer." %}</p>
+                <a href="#" class="btn btn-primary" style="min-width: 152px;">{% trans "Refresh page" %}</a>
+            </div>
+        </div>
     </main>
     <!-- main END -->
 
@@ -102,7 +109,7 @@
 
 {% block extra_js %}
     <script>
-        // add "custom-container" & "text-center" classes to body
+        // add "custom-container" class to body
         document.body.classList.add("custom-container");
 
         // function for loading a list of video sources
