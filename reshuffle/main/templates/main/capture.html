@@ -117,7 +117,7 @@
             const ls_key = "active_video_source";
             let list = document.getElementById("video_sources");
             navigator.mediaDevices.enumerateDevices().then(devices => {
-                let video_sources = devices.filter(device => device.kind === "videoinput");
+                let video_sources = devices.filter(device => device.kind === "videoinput" && device.deviceId !== "");
                 let active_video_source = localStorage.getItem(ls_key);
                 video_sources.forEach((src) => {
                     let li = document.createElement("li");
