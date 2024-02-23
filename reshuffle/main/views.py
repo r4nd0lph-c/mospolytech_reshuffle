@@ -171,7 +171,9 @@ class Capture(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Capture") + " | " + PROJECT_NAME
+        context["subtitle"] = _("Select the materials to be verified")
         return context
 
 

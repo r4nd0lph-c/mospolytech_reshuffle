@@ -14,7 +14,7 @@ from main.models import *
 
 # UTILS -------------------------------------------------------------------------------------------------------------- #
 admin.site.site_title = PROJECT_NAME
-admin.site.site_header = PROJECT_NAME
+admin.site.site_header = PROJECT_NAME.upper()
 admin.site.index_title = _("Administration")
 
 admin.site.login = Auth.as_view()

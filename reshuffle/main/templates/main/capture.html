@@ -5,14 +5,80 @@
 
 {% block body %}
     <!-- header START -->
-    <header>
+    <header style="margin: 0 !important; background: var(--white);">
+        <!-- navbar menu START -->
+        <nav class="container-fluid border-bottom">
+            <div class="row align-items-center" style="min-height: 52px;">
+                <div class="col-auto">
+                    <span class="fw-semibold" style="font-size: 24px;">{{ project_name }}</span>
+                </div>
+                <div class="col-lg">
+                    <span class="nav-subtitle" style="color: var(--text-secondary);">{{ subtitle }}</span>
+                </div>
+                <div class="col-auto">
+                    <span>{% trans "Archive" %}: <b>xxx-xxx-xxx-xxx</b></span>
+                    <span class="nav-item-divider"> / </span>
+                    <span>{% trans "Works checked" %}: <b>xx (xx)</b></span>
+                    <span class="nav-item-divider"> / </span>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#info_modal">{% trans "Info" %}</a>
+                    <span class="nav-item-divider"> / </span>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#exit_modal">{% trans "End session" %}</a>
+                </div>
+            </div>
+        </nav>
+        <!-- navbar menu END -->
 
+        <!-- info modal START -->
+        <div class="modal fade" id="info_modal" tabindex="-1" aria-labelledby="info_modal_label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="info_modal_label">{% trans "Info" %}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {# TODO: add dynamic info #}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- info modal END -->
+
+        <!-- exit modal START -->
+        <div class="modal fade" id="exit_modal" tabindex="-1" aria-labelledby="exit_modal_label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exit_modal_label">{% trans "End session" %}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {% trans "Do you really want to end the session? All unsaved data will be lost." %}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light"
+                                data-bs-dismiss="modal">{% trans "Continue" %}
+                        </button>
+                        <a href="{% url 'index' %}" type="button" class="btn btn-danger">{% trans "End" %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- exit modal END -->
     </header>
     <!-- header END -->
 
     <!-- main START -->
     <main class="content">
-        <div class="btn-group dropdown-center">
+        ...
+    </main>
+    <!-- main END -->
+
+    <!--footer START -->
+    <footer class="text-center">
+        <div class="btn-group dropdown-center" style="min-width: 152px; margin-right: 12px;">
             <button type="button" class="btn btn-primary">
                 <i class="bi bi-camera"></i>
                 {% trans "Capture" %}
@@ -26,22 +92,19 @@
                 <ul id="video_sources" style="list-style-type: none; margin: 0; padding: 0;"></ul>
             </div>
         </div>
-        <button type="button" class="btn btn-light">
+        <button type="button" class="btn btn-light" style="min-width: 152px;">
             <i class="bi bi-upload"></i>
             {% trans "Upload image" %}
         </button>
-    </main>
-    <!-- main END -->
-
-    <!--footer START -->
-    <footer>
-
     </footer>
     <!--footer END -->
 {% endblock %}
 
 {% block extra_js %}
     <script>
+        // add "custom-container" & "text-center" classes to body
+        document.body.classList.add("custom-container");
+
         // function for loading a list of video sources
         function load_video_sources() {
             const ls_key = "active_video_source";

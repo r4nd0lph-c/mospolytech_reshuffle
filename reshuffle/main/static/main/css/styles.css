@@ -251,3 +251,10 @@ header .display-6 {
 .div-download p {
     margin: 0;
 }
+
+
+/* CAPTURE PAGE */
+
+.nav-item-divider {
+    margin: 0 8px;
+}
