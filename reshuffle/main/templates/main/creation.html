@@ -4,6 +4,18 @@
 {% load static %}
 
 {% block inner_content %}
+    <!-- overlay loading START -->
+    <div id="overlay" style="display: none;">
+        <div class="content">
+            <i class="spinner-border text-primary m-3" style="width: 3rem; height: 3rem;"></i>
+            <p class="fs-4"> {% trans "Materials are being prepared" %}… </p>
+            <p class="fs-4">
+                {% blocktranslate %}Approximate waiting time: <b id="waiting_time"></b> min.{% endblocktranslate %}
+            </p>
+        </div>
+    </div>
+    <!-- overlay loading END -->
+
     <!-- catch form errors START -->
     {% for error in form.non_field_errors %}
         <div class="alert alert-warning" data-aos="zoom-in" data-aos-duration="300"> {{ error }} </div>
