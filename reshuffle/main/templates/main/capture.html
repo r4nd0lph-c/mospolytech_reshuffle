@@ -44,7 +44,7 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                TODO: add dynamic stats info
+                                {# TODO: add dynamic stats info#}
                             </div>
                         </div>
                     </div>
@@ -68,9 +68,8 @@
             <!-- main END -->
 
             <!--footer START -->
-            <footer class="text-center">
-                <div id="button_capture" class="btn-group dropdown-center"
-                     style="min-width: 152px; margin-right: 12px; display: none;">
+            <footer class="text-center" style="margin-left: 10px; margin-right: 10px;">
+                <div id="button_capture" class="btn-group dropdown-center" style="min-width: 169px; display: none;">
                     <button type="button" class="btn btn-primary">
                         <i class="bi bi-camera"></i>
                         {% trans "Capture" %}
@@ -84,7 +83,7 @@
                         <ul id="video_sources" style="list-style-type: none; margin: 0; padding: 0;"></ul>
                     </div>
                 </div>
-                <button type="button" class="btn btn-light" style="min-width: 152px;">
+                <button id="button_upload" type="button" class="btn btn-light" style="min-width: 169px;">
                     <i class="bi bi-upload"></i>
                     {% trans "Upload image" %}
                 </button>

@@ -291,3 +291,17 @@ header .display-6 {
 .nav-item-divider {
     margin: 0 8px;
 }
+
+#button_capture {
+    margin: 0 6px;
+}
+
+#button_upload {
+    margin: 0 6px;
+}
+
+@media (width < 386px) {
+    #button_capture {
+        margin-bottom: 12px;
+    }
+}

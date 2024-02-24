@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-11 15:24+0300\n"
-"PO-Revision-Date: 2024-02-11 15:24+0300\n"
+"POT-Creation-Date: 2024-02-24 18:14+0300\n"
+"PO-Revision-Date: 2024-02-24 18:14+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -429,7 +429,8 @@ msgstr "Баллы"
 
 #: .\main\models.py:358
 msgid "Image of scanned and verified work from object storage"
-msgstr "Изображение отсканированной и проверенной работы из объектного хранилища"
+msgstr ""
+"Изображение отсканированной и проверенной работы из объектного хранилища"
 
 #: .\main\models.py:359
 msgid "Scan of the work"
@@ -526,7 +527,7 @@ msgstr "Содержание"
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:227
+#: .\main\templates\main\404.html:17 .\main\views.py:239
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -540,7 +541,7 @@ msgstr ""
 "временно недоступна."
 
 #: .\main\templates\main\404.html:23
-#: .\main\templates\main\object_storage.html:98
+#: .\main\templates\main\object_storage.html:88
 #: .\main\templates\main\verification.html:22
 msgid "To main page"
 msgstr "На главную"
@@ -569,17 +570,66 @@ msgstr "Войти"
 msgid "Having problems?"
 msgstr "Возникли проблемы?"
 
-#: .\main\templates\main\creation.html:21 .\main\views.py:92
+#: .\main\templates\main\capture.html:24 .\main\templates\main\download.html:9
+msgid "Archive"
+msgstr "Архив"
+
+#: .\main\templates\main\capture.html:26
+msgid "Works checked"
+msgstr "Проверенных работ"
+
+#: .\main\templates\main\capture.html:28 .\main\templates\main\capture.html:42
+msgid "Stats"
+msgstr "Статистика"
+
+#: .\main\templates\main\capture.html:30
+msgid "End session"
+msgstr "Завершить сессию"
+
+#: .\main\templates\main\capture.html:60
+msgid "Trying to access the web-camera"
+msgstr "Попытка получить доступ к веб-камере"
+
+#: .\main\templates\main\capture.html:63
+msgid "Video issue"
+msgstr "Проблемы с видео"
+
+#: .\main\templates\main\capture.html:65
+msgid ""
+"The application cannot access the web-camera. Make sure you have allowed "
+"access in your browser settings, check if your antivirus is blocking the "
+"stream or if another application is using the camera. Then, try reloading "
+"the page. If these actions didn't help, you can use the option to upload the "
+"image from your computer."
+msgstr "Приложение не может получить доступ к веб-камере. Убедитесь, что вы разрешили доступ в настройках браузера, проверьте, не блокирует ли ваш антивирус поток или не использует ли камеру другое приложение. Затем попробуйте перезагрузить страницу. Если эти действия не помогли, вы можете воспользоваться опцией загрузки изображения с компьютера."
+
+#: .\main\templates\main\capture.html:76 .\main\views.py:175
+msgid "Capture"
+msgstr "Сканировать"
+
+#: .\main\templates\main\capture.html:82
+msgid "Select a video source"
+msgstr "Выберите источник видео"
+
+#: .\main\templates\main\capture.html:89
+msgid "Upload image"
+msgstr "Загрузить скан"
+
+#: .\main\templates\main\creation.html:11
+msgid "Materials are being prepared"
+msgstr "Материалы подготавливаются"
+
+#: .\main\templates\main\creation.html:13
+msgid "Approximate waiting time: <b id=\"waiting_time\"></b> min."
+msgstr "Примерное время ожидания: <b id=\"waiting_time\"></b> мин."
+
+#: .\main\templates\main\creation.html:33 .\main\views.py:92
 msgid "Creation"
 msgstr "Создание"
 
-#: .\main\templates\main\creation.html:26
+#: .\main\templates\main\creation.html:38
 msgid "Create"
 msgstr "Создать"
-
-#: .\main\templates\main\download.html:9
-msgid "Archive"
-msgstr "Архив"
 
 #: .\main\templates\main\download.html:12
 msgid "Your archive is ready to download."
@@ -605,39 +655,10 @@ msgid "You haven't created any archives."
 msgstr "Вы не создали ни одного архива."
 
 #: .\main\templates\main\index.html:22
-msgid "Creation & Download"
-msgstr "Создание и скачивание"
-
-#: .\main\templates\main\index.html:24
-msgid ""
-"In this section, you can create new and download previously created sets of "
-"unique exam materials."
-msgstr ""
-"В данном разделе вы можете создавать новые и скачивать ранее созданные "
-"комплекты уникальных экзаменационных материалов."
-
-#: .\main\templates\main\index.html:25 .\main\templates\main\index.html:37
-#: .\main\templates\main\index.html:50 .\main\templates\main\index.html:54
-msgid "Go to"
-msgstr "Перейти"
-
-#: .\main\templates\main\index.html:34
-msgid "Verification of works"
-msgstr "Проверка работ"
-
-#: .\main\templates\main\index.html:36
-msgid ""
-"In this section you can scan and check in semi-automatic mode sets of "
-"applicants' exam works."
-msgstr ""
-"В данном разделе вы можете сканировать и проверять в полуавтоматическом "
-"режиме комплекты экзаменационных работ абитуриентов."
-
-#: .\main\templates\main\index.html:46
 msgid "System administration"
 msgstr "Администрирование системы"
 
-#: .\main\templates\main\index.html:48
+#: .\main\templates\main\index.html:24
 msgid ""
 "In this section you can manage the system (if you have certain rights), as "
 "well as create, read, update and delete exam materials."
@@ -646,9 +667,38 @@ msgstr ""
 "прав), а также добавлять, просматривать, изменять и удалять экзаменационные "
 "материалы."
 
-#: .\main\templates\main\index.html:53
+#: .\main\templates\main\index.html:26 .\main\templates\main\index.html:30
+#: .\main\templates\main\index.html:44 .\main\templates\main\index.html:56
+msgid "Go to"
+msgstr "Перейти"
+
+#: .\main\templates\main\index.html:29
 msgid "Not enough rights"
 msgstr "Недостаточно прав"
+
+#: .\main\templates\main\index.html:41
+msgid "Creation & Download"
+msgstr "Создание и скачивание"
+
+#: .\main\templates\main\index.html:43
+msgid ""
+"In this section, you can create new and download previously created sets of "
+"unique exam materials."
+msgstr ""
+"В данном разделе вы можете создавать новые и скачивать ранее созданные "
+"комплекты уникальных экзаменационных материалов."
+
+#: .\main\templates\main\index.html:53
+msgid "Verification of works"
+msgstr "Проверка работ"
+
+#: .\main\templates\main\index.html:55
+msgid ""
+"In this section you can scan and check in semi-automatic mode sets of "
+"applicants' exam works."
+msgstr ""
+"В данном разделе вы можете сканировать и проверять в полуавтоматическом "
+"режиме комплекты экзаменационных работ абитуриентов."
 
 #: .\main\templates\main\index.html:70
 #, python-format
@@ -659,29 +709,21 @@ msgstr "Вы вошли как <b>%(user_full_name)s</b>"
 msgid "Log out"
 msgstr "Выйти"
 
-#: .\main\templates\main\object_storage.html:18
-msgid "Materials are being prepared"
-msgstr "Материалы подготавливаются"
-
-#: .\main\templates\main\object_storage.html:20
-msgid "Approximate waiting time: <b id=\"waiting_time\"></b> min."
-msgstr "Примерное время ожидания: <b id=\"waiting_time\"></b> мин."
-
-#: .\main\templates\main\object_storage.html:38
+#: .\main\templates\main\object_storage.html:27
 msgid "Table of archives"
 msgstr "Таблица архивов"
 
-#: .\main\templates\main\object_storage.html:67
-#: .\main\templates\main\object_storage.html:70
+#: .\main\templates\main\object_storage.html:57
+#: .\main\templates\main\object_storage.html:60
 msgid "First"
 msgstr "Начало"
 
-#: .\main\templates\main\object_storage.html:77
-#: .\main\templates\main\object_storage.html:80
+#: .\main\templates\main\object_storage.html:67
+#: .\main\templates\main\object_storage.html:70
 msgid "Last"
 msgstr "Конец"
 
-#: .\main\templates\main\object_storage.html:88
+#: .\main\templates\main\object_storage.html:78
 msgid ""
 "In the future there will be information here about archives you can "
 "download. At the moment they are not available."
@@ -716,6 +758,10 @@ msgstr "Проверка"
 #: .\main\views.py:154
 msgid "Verify works of applicants"
 msgstr "Проверьте работы абитуриентов"
+
+#: .\main\views.py:176
+msgid "Select the materials to be verified"
+msgstr "Выберите материалы для проверки"
 
 #: .\templates\admin\base_site.html:23
 msgid "Django site admin"
