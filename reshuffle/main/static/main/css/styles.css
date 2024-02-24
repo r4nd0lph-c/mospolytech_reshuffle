@@ -53,6 +53,40 @@ header .display-6 {
 }
 
 
+/* CUSTOM CONTAINER */
+
+.custom-container {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.custom-container header {
+    flex: 0 1 auto;
+    margin-top: 16px;
+    margin-bottom: 32px;
+}
+
+.custom-container main {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.custom-container main .inner {
+    align-self: center;
+    max-width: 500px;
+    padding: 0 16px 0 16px;
+}
+
+.custom-container footer {
+    flex: 0 1 auto;
+    margin-top: 32px;
+    padding-bottom: 16px;
+}
+
+
 /* DATEPICKER */
 
 .datepicker-container {
@@ -111,40 +145,6 @@ header .display-6 {
 .datepicker-panel > ul > li.muted:hover {
     color: var(--primary);
     background-color: transparent;
-}
-
-
-/* CUSTOM CONTAINER */
-
-.custom-container {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-}
-
-.custom-container header {
-    flex: 0 1 auto;
-    margin-top: 16px;
-    margin-bottom: 32px;
-}
-
-.custom-container main {
-    flex: 1 1 auto;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.custom-container main .inner {
-    align-self: center;
-    max-width: 500px;
-    padding: 0 16px 0 16px;
-}
-
-.custom-container footer {
-    flex: 0 1 auto;
-    margin-top: 32px;
-    padding-bottom: 16px;
 }
 
 
@@ -254,6 +254,39 @@ header .display-6 {
 
 
 /* CAPTURE PAGE */
+
+#background {
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    position: relative;
+    padding: 0;
+}
+
+#background .bg-vid-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#background .bg-vid-container:before {
+    content: "";
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 85%, rgba(0, 0, 0, 0.6) 100%);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#background .bg-vid {
+    width: 100%;
+    min-width: 180vh;
+    height: auto;
+}
 
 .nav-item-divider {
     margin: 0 8px;

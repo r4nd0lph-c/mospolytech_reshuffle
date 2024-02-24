@@ -4,99 +4,108 @@
 {% load static %}
 
 {% block body %}
-    <!-- header START -->
-    <header style="margin: 0 !important; background: var(--white);">
-        <!-- navbar menu START -->
-        <nav class="container-fluid border-bottom">
-            <div class="row align-items-center" style="min-height: 52px;">
-                <div class="col-auto">
-                    <span class="fw-semibold" style="font-size: 24px;">{{ project_name }}</span>
-                </div>
-                <div class="col-lg">
-                    <span class="nav-subtitle" style="color: var(--text-secondary);">{{ subtitle }}</span>
-                </div>
-                <div class="col-auto">
-                    <span>{% trans "Archive" %}: <b>xxx-xxx-xxx-xxx</b></span>
-                    <span class="nav-item-divider"> / </span>
-                    <span>{% trans "Works checked" %}: <b>xx (xx)</b></span>
-                    <span class="nav-item-divider"> / </span>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#stats_modal">{% trans "Stats" %}</a>
-                    <span class="nav-item-divider"> / </span>
-                    <a href="{% url 'index' %}">{% trans "End session" %}</a>
-                </div>
-            </div>
-        </nav>
-        <!-- navbar menu END -->
-
-        <!-- stats modal START -->
-        <div class="modal fade" id="stats_modal" tabindex="-1" aria-labelledby="stats_modal_label" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="stats_modal_label">{% trans "Stats" %}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <section id="background">
+        <div class="bg-vid-container">
+            <video id="video_stream" class="bg-vid" autoplay></video>
+        </div>
+        <div class="custom-container" style="position: absolute; bottom: 0; top: 0; left: 0; right: 0;">
+            <!-- header START -->
+            <header style="margin: 0 !important; background: var(--white);">
+                <!-- navbar menu START -->
+                <nav class="container-fluid border-bottom">
+                    <div class="row align-items-center" style="min-height: 52px;">
+                        <div class="col-auto">
+                            <span class="fw-semibold" style="font-size: 24px;">{{ project_name }}</span>
+                        </div>
+                        <div class="col-lg">
+                            <span class="nav-subtitle" style="color: var(--text-secondary);">{{ subtitle }}</span>
+                        </div>
+                        <div class="col-auto">
+                            <span>{% trans "Archive" %}: <b>xxx-xxx-xxx-xxx</b></span>
+                            <span class="nav-item-divider"> / </span>
+                            <span>{% trans "Works checked" %}: <b>xx (xx)</b></span>
+                            <span class="nav-item-divider"> / </span>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#stats_modal">{% trans "Stats" %}</a>
+                            <span class="nav-item-divider"> / </span>
+                            <a href="{% url 'index' %}">{% trans "End session" %}</a>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        {# TODO: add dynamic stats info #}
+                </nav>
+                <!-- navbar menu END -->
+
+                <!-- stats modal START -->
+                <div class="modal fade" id="stats_modal" tabindex="-1" aria-labelledby="stats_modal_label"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="stats_modal_label">{% trans "Stats" %}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                TODO: add dynamic stats info
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- stats modal END -->
-    </header>
-    <!-- header END -->
+                <!-- stats modal END -->
+            </header>
+            <!-- header END -->
 
-    <!-- main START -->
-    <main class="content text-center">
-        <div id="camera_issue" class="inner" style="max-width: 435px !important;">
-            <div data-aos="fade-up" data-aos-duration="300">
-                <h3 class="fw-normal mb-2" data-aos="fade-up" data-aos-duration="300"> {% trans "Camera issue" %} </h3>
-                <p class="bi bi-camera-video-off" style="font-size: 94px; color: var(--text-secondary)"></p>
-                <p class="mb-4">{% trans "The application cannot access the web-camera. Make sure you have granted access in the browser settings and try reloading the page. If these actions did not help, you can use the option to upload the image from your computer." %}</p>
-                <a href="#" class="btn btn-primary" style="min-width: 152px;">{% trans "Refresh page" %}</a>
-            </div>
-        </div>
-    </main>
-    <!-- main END -->
+            <!-- main START -->
+            <main class="content text-center">
+                <div id="video_issue" class="inner" style="max-width: 435px !important;">
+                    <div data-aos="fade-up" data-aos-duration="300">
+                        <h3 class="fw-normal mb-2" data-aos="fade-up"
+                            data-aos-duration="300"> {% trans "Video issue" %} </h3>
+                        <p class="bi bi-camera-video-off" style="font-size: 94px; color: var(--text-secondary)"></p>
+                        <p class="mb-4">{% trans "The application cannot access the web-camera. Make sure you have granted access in the browser settings and try reloading the page. If these actions did not help, you can use the option to upload the image from your computer." %}</p>
+                        <a href="#" class="btn btn-primary" style="min-width: 152px;">{% trans "Refresh page" %}</a>
+                    </div>
+                </div>
+            </main>
+            <!-- main END -->
 
-    <!--footer START -->
-    <footer class="text-center">
-        <div class="btn-group dropdown-center" style="min-width: 152px; margin-right: 12px;">
-            <button type="button" class="btn btn-primary">
-                <i class="bi bi-camera"></i>
-                {% trans "Capture" %}
-            </button>
-            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-            </button>
-            <div class="dropdown-menu">
-                <h6 class="dropdown-header">{% trans "Select a video source" %}</h6>
-                <hr class="dropdown-divider">
-                <ul id="video_sources" style="list-style-type: none; margin: 0; padding: 0;"></ul>
-            </div>
+            <!--footer START -->
+            <footer class="text-center">
+                <div class="btn-group dropdown-center" style="min-width: 152px; margin-right: 12px;">
+                    <button type="button" class="btn btn-primary">
+                        <i class="bi bi-camera"></i>
+                        {% trans "Capture" %}
+                    </button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                    </button>
+                    <div class="dropdown-menu">
+                        <h6 class="dropdown-header">{% trans "Select a video source" %}</h6>
+                        <hr class="dropdown-divider">
+                        <ul id="video_sources" style="list-style-type: none; margin: 0; padding: 0;"></ul>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-light" style="min-width: 152px;">
+                    <i class="bi bi-upload"></i>
+                    {% trans "Upload image" %}
+                </button>
+            </footer>
+            <!--footer END -->
         </div>
-        <button type="button" class="btn btn-light" style="min-width: 152px;">
-            <i class="bi bi-upload"></i>
-            {% trans "Upload image" %}
-        </button>
-    </footer>
-    <!--footer END -->
+    </section>
 {% endblock %}
 
 {% block extra_js %}
     <script>
-        // add "custom-container" class to body
-        document.body.classList.add("custom-container");
-
         // add confirmation before reloading / closing
         window.addEventListener("beforeunload", function (e) {
             e.preventDefault();
             e.returnValue = "";
         });
 
+        // local storage key for storing the deviceId of the active web-camera
+        const ls_key = "active_video_source";
+
         // function for loading a list of video sources
         function load_video_sources() {
-            const ls_key = "active_video_source";
             let list = document.getElementById("video_sources");
             navigator.mediaDevices.enumerateDevices().then(devices => {
                 let video_sources = devices.filter(device => device.kind === "videoinput" && device.deviceId !== "");
@@ -123,11 +132,29 @@
                     localStorage.setItem(ls_key, button.id);
                 }
             }).catch(e => {
-                console.error("Error getting video sources:", e);
+                console.error("Error loading video sources:", e);
+            });
+        }
+
+        // function for starting a video stream from the web-camera
+        function start_video_stream(device_id) {
+            const constraints = {
+                video: {
+                    deviceId: device_id,
+                    width: {ideal: 3840},
+                    height: {ideal: 2160}
+                }
+            };
+            navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+                const video_stream_block = document.getElementById("video_stream");
+                video_stream_block.srcObject = stream;
+            }).catch(e => {
+                console.error("Error starting video stream:", e);
             });
         }
 
         load_video_sources();
+        start_video_stream(localStorage.getItem(ls_key));
 
 
         {#let canvas_block = document.getElementById("canvas_block");#}
