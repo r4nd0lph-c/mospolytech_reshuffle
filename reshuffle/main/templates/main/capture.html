@@ -155,6 +155,7 @@
                 video_stream_block.parentElement.style.display = "flex";
             }).catch(e => {
                 console.error("Error starting video stream:", e);
+                document.getElementById("video_stream").parentElement.style.display = "none";
                 document.getElementById("video_load").style.display = "none";
                 document.getElementById("video_issue").style.display = "block";
             });
