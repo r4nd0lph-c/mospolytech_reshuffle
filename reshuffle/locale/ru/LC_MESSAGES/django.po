@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-24 18:14+0300\n"
-"PO-Revision-Date: 2024-02-24 18:14+0300\n"
+"POT-Creation-Date: 2024-02-25 16:47+0300\n"
+"PO-Revision-Date: 2024-02-25 16:47+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -72,7 +72,7 @@ msgstr "Поиск осуществляется по префиксу"
 
 #: .\main\admin.py:295 .\main\templates\main\download.html:19
 #: .\main\templates\main\download.html:28 .\main\views.py:71
-#: .\main\views.py:127
+#: .\main\views.py:127 .\main\views.py:161
 msgid "Download"
 msgstr "Скачать"
 
@@ -527,7 +527,7 @@ msgstr "Содержание"
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:239
+#: .\main\templates\main\404.html:17 .\main\views.py:249
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -542,7 +542,7 @@ msgstr ""
 
 #: .\main\templates\main\404.html:23
 #: .\main\templates\main\object_storage.html:88
-#: .\main\templates\main\verification.html:22
+#: .\main\templates\main\verification.html:96
 msgid "To main page"
 msgstr "На главную"
 
@@ -601,17 +601,22 @@ msgid ""
 "stream or if another application is using the camera. Then, try reloading "
 "the page. If these actions didn't help, you can use the option to upload the "
 "image from your computer."
-msgstr "Приложение не может получить доступ к веб-камере. Убедитесь, что вы разрешили доступ в настройках браузера, проверьте, не блокирует ли ваш антивирус поток или не использует ли камеру другое приложение. Затем попробуйте перезагрузить страницу. Если эти действия не помогли, вы можете воспользоваться опцией загрузки изображения с компьютера."
+msgstr ""
+"Приложение не может получить доступ к веб-камере. Убедитесь, что вы "
+"разрешили доступ в настройках браузера, проверьте, не блокирует ли ваш "
+"антивирус поток или не использует ли камеру другое приложение. Затем "
+"попробуйте перезагрузить страницу. Если эти действия не помогли, вы можете "
+"воспользоваться опцией загрузки изображения с компьютера."
 
-#: .\main\templates\main\capture.html:76 .\main\views.py:175
+#: .\main\templates\main\capture.html:75 .\main\views.py:185
 msgid "Capture"
 msgstr "Сканировать"
 
-#: .\main\templates\main\capture.html:82
+#: .\main\templates\main\capture.html:81
 msgid "Select a video source"
 msgstr "Выберите источник видео"
 
-#: .\main\templates\main\capture.html:89
+#: .\main\templates\main\capture.html:88
 msgid "Upload image"
 msgstr "Загрузить скан"
 
@@ -715,11 +720,15 @@ msgstr "Таблица архивов"
 
 #: .\main\templates\main\object_storage.html:57
 #: .\main\templates\main\object_storage.html:60
+#: .\main\templates\main\verification.html:65
+#: .\main\templates\main\verification.html:68
 msgid "First"
 msgstr "Начало"
 
 #: .\main\templates\main\object_storage.html:67
 #: .\main\templates\main\object_storage.html:70
+#: .\main\templates\main\verification.html:75
+#: .\main\templates\main\verification.html:78
 msgid "Last"
 msgstr "Конец"
 
@@ -730,6 +739,35 @@ msgid ""
 msgstr ""
 "В будущем здесь появится информация об архивах, которые вам доступны для "
 "скачивания. В настоящий момент таких нет."
+
+#: .\main\templates\main\verification.html:18
+msgid "Information"
+msgstr "Информация"
+
+#: .\main\templates\main\verification.html:19
+msgid ""
+"The archives are checked semi-automatically using a web-camera. In case the "
+"web-camera is not available, you can use uploading scanned files from the "
+"device. To start checking the archive, click on the cell in the first column "
+"of the table. The verification report can be downloaded only for those "
+"archives that are fully verified."
+msgstr "Архивы проверяются полуавтоматически с помощью веб-камеры. В случае, если веб-камера недоступна, вы можете воспользоваться загрузкой отсканированных файлов с устройства. Чтобы начать проверку архива, нажмите на ячейку в первом столбце таблицы. Отчёт о проверке можно скачать только для тех архивов, которые прошли полную проверку."
+
+#: .\main\templates\main\verification.html:27
+msgid "Table of verification"
+msgstr "Таблица проверки"
+
+#: .\main\templates\main\verification.html:53
+msgid "To download the report, the archive must be fully verified."
+msgstr "Чтобы скачать отчёт, архив должен быть полностью проверен."
+
+#: .\main\templates\main\verification.html:86
+msgid ""
+"In the future there will be information here about archives you can verify. "
+"At the moment they are not available."
+msgstr ""
+"В будущем здесь появится информация об архивах, которые вам доступны для "
+"проверки. В настоящий момент таких нет."
 
 #: .\main\views.py:27
 msgid "Auth"
@@ -759,7 +797,11 @@ msgstr "Проверка"
 msgid "Verify works of applicants"
 msgstr "Проверьте работы абитуриентов"
 
-#: .\main\views.py:176
+#: .\main\views.py:158
+msgid "Verified"
+msgstr "Проверено"
+
+#: .\main\views.py:186
 msgid "Select the materials to be verified"
 msgstr "Выберите материалы для проверки"
 

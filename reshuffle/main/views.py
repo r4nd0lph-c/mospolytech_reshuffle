@@ -152,10 +152,20 @@ class Verification(LoginRequiredMixin, ListView):
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Verification") + " | " + PROJECT_NAME
         context["subtitle"] = _("Verify works of applicants")
+        context["table_head"] = [
+            ObjectStorageEntry._meta.get_field("subject").verbose_name,
+            ObjectStorageEntry._meta.get_field("date").verbose_name,
+            _("Verified") + f" ({ObjectStorageEntry._meta.get_field("amount").verbose_name})",
+            ObjectStorageEntry._meta.get_field("user").verbose_name,
+            ObjectStorageEntry._meta.get_field("created").verbose_name,
+            _("Download")
+        ]
         return context
 
     def get_queryset(self):
         qs = ObjectStorageEntry.objects.all().order_by("-created")
+        for obj in qs:
+            obj.verified_count = VerifiedWorkEntry.objects.filter(archive=obj).count()
         groups = self.request.user.groups.all()
         if self.request.user.is_superuser or not groups.exists():
             return qs
