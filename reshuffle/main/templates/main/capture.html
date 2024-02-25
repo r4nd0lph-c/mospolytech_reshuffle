@@ -21,9 +21,9 @@
                             <span class="nav-subtitle" style="color: var(--text-secondary);">{{ subtitle }}</span>
                         </div>
                         <div class="col-auto">
-                            <span>{% trans "Archive" %}: <b>xxx-xxx-xxx-xxx</b></span>
+                            <span>{% trans "Archive" %}: <b>{{ prefix }}</b></span>
                             <span class="nav-item-divider"> / </span>
-                            <span>{% trans "Works checked" %}: <b>xx (xx)</b></span>
+                            <span>{% trans "Works checked" %}: <b>{{ verified_count }} ({{ amount }})</b></span>
                             <span class="nav-item-divider"> / </span>
                             <a href="#" data-bs-toggle="modal" data-bs-target="#stats_modal">{% trans "Stats" %}</a>
                             <span class="nav-item-divider"> / </span>

@@ -179,11 +179,26 @@ class Capture(LoginRequiredMixin, TemplateView):
     template_name = "main/capture.html"
     login_url = reverse_lazy("auth")
 
+    def get(self, request, *args, **kwargs):
+        qs = ObjectStorageEntry.objects.filter(prefix=kwargs["prefix"])
+        groups = self.request.user.groups.all()
+        if not self.request.user.is_superuser and groups.exists():
+            accesses = []
+            for g in groups:
+                accesses += [a.subject.id for a in Access.objects.filter(group=g)]
+                qs = qs.filter(subject__id__in=accesses)
+        if qs.first():
+            return super().get(request, *args, **kwargs)
+        return redirect(reverse_lazy("verification"))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Capture") + " | " + PROJECT_NAME
         context["subtitle"] = _("Select the materials to be verified")
+        obj = ObjectStorageEntry.objects.get(prefix=kwargs["prefix"])
+        context["verified_count"] = VerifiedWorkEntry.objects.filter(archive=obj).count()
+        context["amount"] = obj.amount
         return context
 
 
