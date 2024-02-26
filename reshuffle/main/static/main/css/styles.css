@@ -3,6 +3,7 @@
 :root {
     --white: #FFFFFF;
     --light: #F5F5F5;
+    --light-hover: #FCFCFC;
     --bs-border-color: #DEE2E6;
     --secondary: #CED4DA;
     --text-secondary: #6C757D;
@@ -41,7 +42,7 @@ header .display-6 {
 }
 
 .btn-light:hover {
-    background-color: #FCFCFC;
+    background-color: var(--light-hover);
 }
 
 .btn-light:active {
@@ -163,6 +164,10 @@ header .display-6 {
         overflow-x: auto;
         white-space: nowrap;
     }
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    --bs-table-bg-state: var(--light);
 }
 
 .pagination {
