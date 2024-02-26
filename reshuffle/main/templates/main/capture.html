@@ -23,7 +23,7 @@
                         <div class="col-auto">
                             <span>{% trans "Archive" %}: <b>{{ prefix }}</b></span>
                             <span class="nav-item-divider"> / </span>
-                            <span>{% trans "Works checked" %}: <b>{{ verified_count }} ({{ amount }})</b></span>
+                            <span>{% trans "Works verified" %}: <b>{{ verified_count }} ({{ amount }})</b></span>
                             <span class="nav-item-divider"> / </span>
                             <a href="#" data-bs-toggle="modal" data-bs-target="#stats_modal">{% trans "Stats" %}</a>
                             <span class="nav-item-divider"> / </span>
@@ -36,15 +36,95 @@
                 <!-- stats modal START -->
                 <div class="modal fade" id="stats_modal" tabindex="-1" aria-labelledby="stats_modal_label"
                      aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="stats_modal_label">{% trans "Stats" %}</h5>
+                                <h5 class="modal-title" id="stats_modal_label">
+                                    {% trans "Stats" %}
+                                    ({% trans "Completed" %}: {{ percentage }}%)
+                                </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                {# TODO: add dynamic stats info#}
+                                <!-- stats accordion START -->
+                                <div class="accordion" id="stats_accordion">
+                                    <!-- #1 START -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                {% trans "Unverified works" %}
+                                                &nbsp;
+                                                <b>({{ unverified_count }})</b>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show"
+                                             data-bs-parent="#stats_accordion">
+                                            <div class="accordion-body">
+                                                <table id="verified_table" class="table table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        {% for th in table_head %}
+                                                            <th scope="col">{{ th }}</th>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for uk in unverified_table_body %}
+                                                        <tr>
+                                                            <td>{{ uk }}</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- #1 END -->
+                                    <!-- #2 START -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                    aria-expanded="false" aria-controls="collapseTwo">
+                                                {% trans "Verified works" %}
+                                                &nbsp;
+                                                <b>({{ verified_count }})</b>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse"
+                                             data-bs-parent="#stats_accordion">
+                                            <div class="accordion-body">
+                                                <table id="verified_table" class="table table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        {% for th in table_head %}
+                                                            <th scope="col">{{ th }}</th>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for obj in verified_table_body %}
+                                                        <tr>
+                                                            <td>{{ obj.unique_key }}</td>
+                                                            <td>{{ obj.score }}</td>
+                                                            <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
+                                                            <td>{{ obj.created }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- #2 END -->
+                                </div>
+                                <!-- stats accordion END -->
                             </div>
                         </div>
                     </div>

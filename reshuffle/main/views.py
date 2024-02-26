@@ -1,3 +1,5 @@
+import json
+
 from decouple import config
 from django.utils.translation import gettext_lazy as _
 from django.http import JsonResponse
@@ -11,7 +13,7 @@ from reshuffle.settings import PROJECT_NAME, LANGUAGE_CODE
 from main.forms import *
 from main.models import *
 from main.services.docs.minio_client import MinioClient
-from main.services.docs.factory import DocumentPackager
+from main.services.docs.factory import DocumentPackager, GeneratorJSON
 
 PAGINATION_N = 10
 
@@ -123,10 +125,10 @@ class Download(ObjectStorageListView):
     template_name = "main/download.html"
 
     def get_context_data(self, **kwargs):
+        qs = ObjectStorageEntry.objects.filter(user=self.request.user).order_by("-created")
         context = super().get_context_data(**kwargs)
         context["title"] = _("Download") + " | " + PROJECT_NAME
         context["subtitle"] = _("Download a set of entrance exams")
-        qs = ObjectStorageEntry.objects.filter(user=self.request.user).order_by("-created")
         context["prefix_created"] = qs[0].prefix if qs else None
         return context
 
@@ -192,13 +194,27 @@ class Capture(LoginRequiredMixin, TemplateView):
         return redirect(reverse_lazy("verification"))
 
     def get_context_data(self, **kwargs):
+        archive = ObjectStorageEntry.objects.get(prefix=kwargs["prefix"])
+        data = json.loads(MinioClient().get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}"))
+        qs_verified = VerifiedWorkEntry.objects.filter(archive=archive)
+        uk_verified = qs_verified.values_list("unique_key", flat=True)
+        uk_unverified = [v["unique_key"] for v in data["variants"] if v["unique_key"] not in uk_verified]
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Capture") + " | " + PROJECT_NAME
         context["subtitle"] = _("Select the materials to be verified")
-        obj = ObjectStorageEntry.objects.get(prefix=kwargs["prefix"])
-        context["verified_count"] = VerifiedWorkEntry.objects.filter(archive=obj).count()
-        context["amount"] = obj.amount
+        context["table_head"] = [
+            VerifiedWorkEntry._meta.get_field("unique_key").verbose_name,
+            VerifiedWorkEntry._meta.get_field("score").verbose_name,
+            VerifiedWorkEntry._meta.get_field("user").verbose_name,
+            _("Date verified")
+        ]
+        context["verified_table_body"] = qs_verified
+        context["unverified_table_body"] = uk_unverified
+        context["verified_count"] = qs_verified.count()
+        context["unverified_count"] = archive.amount - context["verified_count"]
+        context["amount"] = archive.amount
+        context["percentage"] = round(context["verified_count"] / archive.amount * 100)
         return context
 
 

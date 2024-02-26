@@ -39,6 +39,12 @@ class MinioClient:
             alias = file.split("\\")[-1]
         self.__client.fput_object(bucket_name=self.__bucket_name, object_name=alias, file_path=file)
 
+    def get_object_content(self, alias: str) -> str:
+        return self.__client.get_object(
+            bucket_name=self.__bucket_name,
+            object_name=alias,
+        ).data.decode()
+
     def get_object_url(self, alias: str) -> str:
         return self.__client.get_presigned_url(
             method="GET",

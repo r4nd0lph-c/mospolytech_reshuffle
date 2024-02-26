@@ -35,7 +35,7 @@ class GeneratorJSON:
     """
 
     __UNIQUE_KEY_LENGTH = 6
-    __OUTPUT_JSON = "data.json"
+    OUTPUT_JSON = "data.json"
 
     def __init__(self, sbj_id: int, date: str) -> None:
         self.__data = {
@@ -120,7 +120,7 @@ class GeneratorJSON:
         return self.__data
 
     def save(self, path: str) -> None:
-        with open(os.path.join(path, self.__OUTPUT_JSON), "w", encoding="UTF-8") as f:
+        with open(os.path.join(path, self.OUTPUT_JSON), "w", encoding="UTF-8") as f:
             json.dump(self.__data, f, ensure_ascii=False, indent=2)
 
 
@@ -131,7 +131,7 @@ class GeneratorXLSX:
 
     __BASE_PATH = os.path.join(MEDIA_ROOT, "base", "sheets.xlsx")
     __WS_NAME = "blank"
-    __OUTPUT_XLSX = "sheets.xlsx"
+    OUTPUT_XLSX = "sheets.xlsx"
 
     __BORDER_THIN = Border(
         left=Side(style="thin"),
@@ -248,7 +248,7 @@ class GeneratorXLSX:
                 self.__reproduce(variant["unique_key"])
 
     def save(self, path: str) -> None:
-        path = os.path.join(path, self.__OUTPUT_XLSX)
+        path = os.path.join(path, self.OUTPUT_XLSX)
         if path != self.__wb_path:
             self.__wb.save(path)
         else:
@@ -265,8 +265,8 @@ class GeneratorPDF:
 
     __TEMPLATE_TASKS_PATH = "docs/template_tasks.html"
     __TEMPLATE_ANSWERS_PATH = "docs/template_answers.html"
-    __OUTPUT_TASKS_HTML = "tasks.html"
-    __OUTPUT_ANSWERS_HTML = "answers.html"
+    OUTPUT_TASKS_HTML = "tasks.html"
+    OUTPUT_ANSWERS_HTML = "answers.html"
 
     def __init__(self) -> None:
         self.__html_tasks = ""
@@ -282,7 +282,7 @@ class GeneratorPDF:
         self.__html_answers = render_to_string(template_name=self.__TEMPLATE_ANSWERS_PATH, context=data)
 
     def save(self, path: str) -> None:
-        save_list = [(self.__html_tasks, self.__OUTPUT_TASKS_HTML), (self.__html_answers, self.__OUTPUT_ANSWERS_HTML)]
+        save_list = [(self.__html_tasks, self.OUTPUT_TASKS_HTML), (self.__html_answers, self.OUTPUT_ANSWERS_HTML)]
         for content, output in save_list:
             with open(os.path.join(path, output), "w", encoding="UTF-8") as f:
                 f.write(content)
