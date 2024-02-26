@@ -63,25 +63,31 @@
                                         <div id="collapseOne" class="accordion-collapse collapse show"
                                              data-bs-parent="#stats_accordion">
                                             <div class="accordion-body">
-                                                <table id="verified_table" class="table table-hover">
-                                                    <thead>
-                                                    <tr>
-                                                        {% for th in table_head %}
-                                                            <th scope="col">{{ th }}</th>
-                                                        {% endfor %}
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {% for uk in unverified_table_body %}
+                                                {% if unverified_table_body %}
+                                                    <table class="table table-hover">
+                                                        <thead>
                                                         <tr>
-                                                            <td>{{ uk }}</td>
-                                                            <td>-</td>
-                                                            <td>-</td>
-                                                            <td>-</td>
+                                                            {% for th in table_head %}
+                                                                <th scope="col">{{ th }}</th>
+                                                            {% endfor %}
                                                         </tr>
-                                                    {% endfor %}
-                                                    </tbody>
-                                                </table>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for uk in unverified_table_body %}
+                                                            <tr>
+                                                                <td>{{ uk }}</td>
+                                                                <td>-</td>
+                                                                <td>-</td>
+                                                                <td>-</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                {% else %}
+                                                    <div class="text-center">
+                                                        <span>{% trans "In the archive all works are verified. But you can recheck them if necessary." %}</span>
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -100,25 +106,31 @@
                                         <div id="collapseTwo" class="accordion-collapse collapse"
                                              data-bs-parent="#stats_accordion">
                                             <div class="accordion-body">
-                                                <table id="verified_table" class="table table-hover">
-                                                    <thead>
-                                                    <tr>
-                                                        {% for th in table_head %}
-                                                            <th scope="col">{{ th }}</th>
-                                                        {% endfor %}
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {% for obj in verified_table_body %}
+                                                {% if verified_table_body %}
+                                                    <table class="table table-hover">
+                                                        <thead>
                                                         <tr>
-                                                            <td>{{ obj.unique_key }}</td>
-                                                            <td>{{ obj.score }}</td>
-                                                            <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
-                                                            <td>{{ obj.created }}</td>
+                                                            {% for th in table_head %}
+                                                                <th scope="col">{{ th }}</th>
+                                                            {% endfor %}
                                                         </tr>
-                                                    {% endfor %}
-                                                    </tbody>
-                                                </table>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for obj in verified_table_body %}
+                                                            <tr>
+                                                                <td>{{ obj.unique_key }}</td>
+                                                                <td>{{ obj.score }}</td>
+                                                                <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
+                                                                <td>{{ obj.created }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                {% else %}
+                                                    <div class="text-center">
+                                                        <span>{% trans "A list of verified works from the archive will appear here. There are none at the moment." %}</span>
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>

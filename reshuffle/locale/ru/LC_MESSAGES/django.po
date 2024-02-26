@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-25 16:47+0300\n"
-"PO-Revision-Date: 2024-02-25 16:47+0300\n"
+"POT-Creation-Date: 2024-02-26 22:10+0300\n"
+"PO-Revision-Date: 2024-02-26 22:10+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -71,8 +71,8 @@ msgid "The search is performed by prefix"
 msgstr "Поиск осуществляется по префиксу"
 
 #: .\main\admin.py:295 .\main\templates\main\download.html:19
-#: .\main\templates\main\download.html:28 .\main\views.py:71
-#: .\main\views.py:127 .\main\views.py:161
+#: .\main\templates\main\download.html:28 .\main\views.py:73
+#: .\main\views.py:130 .\main\views.py:163
 msgid "Download"
 msgstr "Скачать"
 
@@ -80,7 +80,7 @@ msgstr "Скачать"
 msgid "The search is performed by unique key"
 msgstr "Поиск осуществляется по уникальному ключу"
 
-#: .\main\apps.py:8 .\main\views.py:50
+#: .\main\apps.py:8 .\main\views.py:52
 msgid "Main"
 msgstr "Главная"
 
@@ -527,7 +527,7 @@ msgstr "Содержание"
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:249
+#: .\main\templates\main\404.html:17 .\main\views.py:281
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -575,10 +575,10 @@ msgid "Archive"
 msgstr "Архив"
 
 #: .\main\templates\main\capture.html:26
-msgid "Works checked"
+msgid "Works verified"
 msgstr "Проверенных работ"
 
-#: .\main\templates\main\capture.html:28 .\main\templates\main\capture.html:42
+#: .\main\templates\main\capture.html:28 .\main\templates\main\capture.html:43
 msgid "Stats"
 msgstr "Статистика"
 
@@ -586,15 +586,38 @@ msgstr "Статистика"
 msgid "End session"
 msgstr "Завершить сессию"
 
-#: .\main\templates\main\capture.html:60
+#: .\main\templates\main\capture.html:44
+msgid "Completed"
+msgstr "Завершено"
+
+#: .\main\templates\main\capture.html:58
+msgid "Unverified works"
+msgstr "Непроверенные работы"
+
+#: .\main\templates\main\capture.html:88
+msgid ""
+"In the archive all works are verified. But you can recheck them if necessary."
+msgstr "В архиве все работы проверены. Но при необходимости вы можете перепроверить их."
+
+#: .\main\templates\main\capture.html:101
+msgid "Verified works"
+msgstr "Проверенные работы"
+
+#: .\main\templates\main\capture.html:131
+msgid ""
+"A list of verified works from the archive will appear here. There are none "
+"at the moment."
+msgstr "Здесь появится список проверенных работ из архива. На данный момент их нет."
+
+#: .\main\templates\main\capture.html:152
 msgid "Trying to access the web-camera"
 msgstr "Попытка получить доступ к веб-камере"
 
-#: .\main\templates\main\capture.html:63
+#: .\main\templates\main\capture.html:155
 msgid "Video issue"
 msgstr "Проблемы с видео"
 
-#: .\main\templates\main\capture.html:65
+#: .\main\templates\main\capture.html:157
 msgid ""
 "The application cannot access the web-camera. Make sure you have allowed "
 "access in your browser settings, check if your antivirus is blocking the "
@@ -608,15 +631,15 @@ msgstr ""
 "попробуйте перезагрузить страницу. Если эти действия не помогли, вы можете "
 "воспользоваться опцией загрузки изображения с компьютера."
 
-#: .\main\templates\main\capture.html:75 .\main\views.py:185
+#: .\main\templates\main\capture.html:167 .\main\views.py:205
 msgid "Capture"
 msgstr "Сканировать"
 
-#: .\main\templates\main\capture.html:81
+#: .\main\templates\main\capture.html:173
 msgid "Select a video source"
 msgstr "Выберите источник видео"
 
-#: .\main\templates\main\capture.html:88
+#: .\main\templates\main\capture.html:180
 msgid "Upload image"
 msgstr "Загрузить скан"
 
@@ -628,7 +651,7 @@ msgstr "Материалы подготавливаются"
 msgid "Approximate waiting time: <b id=\"waiting_time\"></b> min."
 msgstr "Примерное время ожидания: <b id=\"waiting_time\"></b> мин."
 
-#: .\main\templates\main\creation.html:33 .\main\views.py:92
+#: .\main\templates\main\creation.html:33 .\main\views.py:94
 msgid "Creation"
 msgstr "Создание"
 
@@ -751,7 +774,12 @@ msgid ""
 "device. To start checking the archive, click on the cell in the first column "
 "of the table. The verification report can be downloaded only for those "
 "archives that are fully verified."
-msgstr "Архивы проверяются полуавтоматически с помощью веб-камеры. В случае, если веб-камера недоступна, вы можете воспользоваться загрузкой отсканированных файлов с устройства. Чтобы начать проверку архива, нажмите на ячейку в первом столбце таблицы. Отчёт о проверке можно скачать только для тех архивов, которые прошли полную проверку."
+msgstr ""
+"Архивы проверяются полуавтоматически с помощью веб-камеры. В случае, если "
+"веб-камера недоступна, вы можете воспользоваться загрузкой отсканированных "
+"файлов с устройства. Чтобы начать проверку архива, нажмите на ячейку в "
+"первом столбце таблицы. Отчёт о проверке можно скачать только для тех "
+"архивов, которые прошли полную проверку."
 
 #: .\main\templates\main\verification.html:27
 msgid "Table of verification"
@@ -769,41 +797,45 @@ msgstr ""
 "В будущем здесь появится информация об архивах, которые вам доступны для "
 "проверки. В настоящий момент таких нет."
 
-#: .\main\views.py:27
+#: .\main\views.py:29
 msgid "Auth"
 msgstr "Авторизация"
 
-#: .\main\views.py:28
+#: .\main\views.py:30
 msgid "Entrance exam processing system"
 msgstr "Система обработки экзаменов"
 
-#: .\main\views.py:51
+#: .\main\views.py:53
 msgid "Select an activity"
 msgstr "Выберите действие"
 
-#: .\main\views.py:93
+#: .\main\views.py:95
 msgid "Create a set of entrance exams"
 msgstr "Создайте набор экзаменов"
 
-#: .\main\views.py:128
+#: .\main\views.py:131
 msgid "Download a set of entrance exams"
 msgstr "Скачайте набор экзаменов"
 
-#: .\main\views.py:153
+#: .\main\views.py:155
 msgid "Verification"
 msgstr "Проверка"
 
-#: .\main\views.py:154
+#: .\main\views.py:156
 msgid "Verify works of applicants"
 msgstr "Проверьте работы абитуриентов"
 
-#: .\main\views.py:158
+#: .\main\views.py:160
 msgid "Verified"
 msgstr "Проверено"
 
-#: .\main\views.py:186
+#: .\main\views.py:206
 msgid "Select the materials to be verified"
 msgstr "Выберите материалы для проверки"
+
+#: .\main\views.py:211
+msgid "Date verified"
+msgstr "Дата проверки"
 
 #: .\templates\admin\base_site.html:23
 msgid "Django site admin"
