@@ -162,7 +162,7 @@
             <!--footer START -->
             <footer class="text-center" style="margin-left: 10px; margin-right: 10px;">
                 <div id="button_capture" class="btn-group dropdown-center" style="min-width: 169px; display: none;">
-                    <button type="button" class="btn btn-primary">
+                    <button id="button_capture_main" type="button" class="btn btn-primary">
                         <i class="bi bi-camera"></i>
                         {% trans "Capture" %}
                     </button>
@@ -193,6 +193,10 @@
             e.preventDefault();
             e.returnValue = "";
         });
+
+        // init stream object & video_stream_block element
+        let stream;
+        let video_stream_block = document.getElementById("video_stream");
 
         // local storage key for storing the deviceId of the active web-camera
         const ls_key = "active_video_source";
@@ -231,7 +235,7 @@
         }
 
         // start a video stream from the web-camera
-        function start_video_stream(device_id) {
+        async function start_video_stream(device_id) {
             const constraints = {
                 video: {
                     deviceId: device_id,
@@ -239,20 +243,29 @@
                     height: {ideal: 2160}
                 }
             };
-            navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-                const video_stream_block = document.getElementById("video_stream");
+            try {
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
                 video_stream_block.srcObject = stream;
                 document.getElementById("video_load").style.display = "none";
                 document.getElementById("video_issue").style.display = "none";
                 document.getElementById("button_capture").style.display = "inline-flex";
                 video_stream_block.parentElement.style.display = "flex";
-            }).catch(e => {
+            } catch (e) {
                 console.error("Error starting video stream:", e);
                 document.getElementById("video_stream").parentElement.style.display = "none";
                 document.getElementById("video_load").style.display = "none";
                 document.getElementById("button_capture").style.display = "none";
                 document.getElementById("video_issue").style.display = "block";
-            });
+            }
+        }
+
+        // capture image from video stream
+        function capture() {
+            let canvas = document.createElement("canvas");
+            canvas.width = stream.getVideoTracks()[0].getSettings().width;
+            canvas.height = stream.getVideoTracks()[0].getSettings().height;
+            canvas.getContext("2d").drawImage(video_stream_block, 0, 0);
+            return canvas
         }
 
         load_video_sources();
@@ -267,7 +280,6 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    // TODO: handler
                     console.log(data);
                 },
                 error: function () {
@@ -296,6 +308,19 @@
         });
 
         // add send event to button "capture"
-        // TODO: event
+        let button_capture_main = document.getElementById("button_capture_main");
+
+        button_capture_main.addEventListener("click", () => {
+            let format = "jpeg";
+            let quality = 1;
+            let canvas = capture();
+            canvas.toBlob(function (blob) {
+                let form_data = new FormData();
+                form_data.append("csrfmiddlewaretoken", CSRF_TOKEN);
+                form_data.append("prefix", "{{ prefix }}");
+                form_data.append("image", blob, `captured.${format}`);
+                recognize(form_data);
+            }, `image/${format}`, quality);
+        });
     </script>
 {% endblock %}
