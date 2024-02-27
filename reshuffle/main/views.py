@@ -218,6 +218,21 @@ class Capture(LoginRequiredMixin, TemplateView):
         return context
 
 
+def recognize(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            # get data from request
+            # TODO: parsing
+            # recognize the unique key of the uploaded work
+            # TODO: recognition
+            # generate JSON response (correct)
+            return JsonResponse({
+                "status": "success"
+            })
+    # generate JSON response (error)
+    return JsonResponse({"error": "you don't have enough permissions"})
+
+
 def logout_user(request):
     logout(request)
     return redirect("auth")

@@ -179,6 +179,7 @@
                     <i class="bi bi-upload"></i>
                     {% trans "Upload image" %}
                 </button>
+                <input id="file_upload" type="file" accept="image/*" style="display: none"/>
             </footer>
             <!--footer END -->
         </div>
@@ -188,7 +189,7 @@
 {% block extra_js %}
     <script>
         // add confirmation before reloading / closing
-        window.addEventListener("beforeunload", function (e) {
+        window.addEventListener("beforeunload", (e) => {
             e.preventDefault();
             e.returnValue = "";
         });
@@ -196,7 +197,7 @@
         // local storage key for storing the deviceId of the active web-camera
         const ls_key = "active_video_source";
 
-        // function for loading a list of video sources
+        // load a list of video sources
         function load_video_sources() {
             let list = document.getElementById("video_sources");
             navigator.mediaDevices.enumerateDevices().then(devices => {
@@ -229,7 +230,7 @@
             });
         }
 
-        // function for starting a video stream from the web-camera
+        // start a video stream from the web-camera
         function start_video_stream(device_id) {
             const constraints = {
                 video: {
@@ -256,5 +257,45 @@
 
         load_video_sources();
         start_video_stream(localStorage.getItem(ls_key));
+
+        // send an AJAX request to recognize the unique key of the uploaded work
+        function recognize(form_data) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'recognize' %}",
+                data: form_data,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    // TODO: handler
+                    console.log(data);
+                },
+                error: function () {
+                    console.log("validation_part() error");
+                }
+            });
+        }
+
+        // add send event to button "upload"
+        let button_upload = document.getElementById("button_upload");
+        let file_upload = document.getElementById("file_upload");
+
+        button_upload.addEventListener("click", () => {
+            file_upload.click();
+        });
+
+        file_upload.addEventListener("change", () => {
+            if (file_upload.files.length !== 0) {
+                let file = file_upload.files[0];
+                let form_data = new FormData();
+                form_data.append("csrfmiddlewaretoken", CSRF_TOKEN);
+                form_data.append("prefix", "{{ prefix }}");
+                form_data.append("image", file);
+                recognize(form_data);
+            }
+        });
+
+        // add send event to button "capture"
+        // TODO: event
     </script>
 {% endblock %}

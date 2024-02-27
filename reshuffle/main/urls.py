@@ -12,6 +12,7 @@ urlpatterns = [
     path("download_archive/<str:prefix>", download_archive, name="download_archive"),
     path("verification/", Verification.as_view(), name="verification"),
     path("verification/capture/<str:prefix>", Capture.as_view(), name="capture"),
+    path("verification/recognize", recognize, name="recognize"),
     path("logout/", logout_user, name="logout"),
     path("validation_part/", validation_part, name="validation_part"),
     path("validation_task/", validation_task, name="validation_task"),
