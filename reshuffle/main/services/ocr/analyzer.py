@@ -1,9 +1,9 @@
-import os
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
-import django
-
-django.setup()
+# import os
+#
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
+# import django
+#
+# django.setup()
 
 import json
 import re

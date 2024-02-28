@@ -1,5 +1,5 @@
 import json
-
+import cv2
 from decouple import config
 from django.utils.translation import gettext_lazy as _
 from django.http import JsonResponse
@@ -14,6 +14,7 @@ from main.forms import *
 from main.models import *
 from main.services.docs.minio_client import MinioClient
 from main.services.docs.factory import DocumentPackager, GeneratorJSON
+from main.services.ocr.analyzer import Analyzer
 
 PAGINATION_N = 10
 
@@ -138,8 +139,7 @@ def download_archive(request, prefix: str = None):
         if request.user.is_authenticated:
             if prefix:
                 # redirect to generated tmp link
-                mc = MinioClient()
-                return redirect(mc.get_object_url(f"{prefix}.{DocumentPackager.ARCHIVE_FORMAT}"))
+                return redirect(MinioClient().get_object_url(f"{prefix}.{DocumentPackager.ARCHIVE_FORMAT}"))
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
 
@@ -222,12 +222,21 @@ def recognize(request):
     if request.method == "POST":
         if request.user.is_authenticated:
             # get data from request
-            # TODO: parsing
-            # recognize the unique key of the uploaded work
-            # TODO: recognition
+            prefix = request.POST.get("prefix")
+            img_path = request.FILES.get("image").temporary_file_path()
+            # recognize the unique key of the uploaded work <-- TODO: detect error (if not works were sent), fix re-init
+            a = Analyzer()
+            img_base = cv2.imread(img_path)
+            img_grayscale = a.grayscale(img_base)
+            img_restore_perspective = a.restore_perspective(img_grayscale)
+            img_threshold = a.threshold(img_restore_perspective)
+            st = a.calc_stats(img_threshold)
+            data = json.loads(MinioClient().get_object_content(f"{prefix}/{GeneratorJSON.OUTPUT_JSON}"))
+            uk = a.get_unique_key(img_threshold, st, data)
+            print(uk)
             # generate JSON response (correct)
             return JsonResponse({
-                "status": "success"
+                "unique_key": uk
             })
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
