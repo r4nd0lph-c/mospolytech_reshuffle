@@ -310,3 +310,7 @@ header .display-6 {
         margin-bottom: 12px;
     }
 }
+
+.td_uk {
+    font-family: Consolas, monospace, serif;
+}

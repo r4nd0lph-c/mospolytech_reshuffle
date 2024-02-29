@@ -75,7 +75,7 @@
                                                         <tbody>
                                                         {% for uk in unverified_table_body %}
                                                             <tr>
-                                                                <td>{{ uk }}</td>
+                                                                <td class="td_uk">{{ uk }}</td>
                                                                 <td>-</td>
                                                                 <td>-</td>
                                                                 <td>-</td>
@@ -118,7 +118,7 @@
                                                         <tbody>
                                                         {% for obj in verified_table_body %}
                                                             <tr>
-                                                                <td>{{ obj.unique_key }}</td>
+                                                                <td class="td_uk">{{ obj.unique_key }}</td>
                                                                 <td>{{ obj.score }}</td>
                                                                 <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
                                                                 <td>{{ obj.created }}</td>
