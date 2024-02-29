@@ -149,7 +149,7 @@ header .display-6 {
 }
 
 
-/* TABLE & ALERT */
+/* TABLE & ALERT & MODAL */
 
 .table-container {
     margin: 0 16px;
@@ -177,6 +177,10 @@ header .display-6 {
 
 .alert-container {
     margin: 0 16px;
+}
+
+.modal-backdrop {
+    --bs-backdrop-opacity: 0.8 !important;
 }
 
 

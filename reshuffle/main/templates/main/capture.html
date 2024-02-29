@@ -9,9 +9,178 @@
             <video id="video_stream" class="bg-vid" autoplay></video>
         </div>
         <div class="custom-container" style="position: absolute; bottom: 0; top: 0; left: 0; right: 0;">
+            <!-- stats modal START -->
+            <div class="modal fade" id="stats_modal" tabindex="-1" aria-labelledby="stats_modal_label"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="stats_modal_label">
+                                {% trans "Stats" %}
+                                ({% trans "Completed" %}: {{ percentage }}%)
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    data-bs-target="#stats_modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- stats accordion START -->
+                            <div class="accordion" id="stats_accordion">
+                                <!-- #1 START -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                            {% trans "Unverified works" %}
+                                            &nbsp;
+                                            <b>({{ unverified_count }})</b>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show"
+                                         data-bs-parent="#stats_accordion">
+                                        <div class="accordion-body">
+                                            {% if unverified_table_body %}
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        {% for th in table_head %}
+                                                            <th scope="col">{{ th }}</th>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for uk in unverified_table_body %}
+                                                        <tr>
+                                                            <td class="td_uk">{{ uk }}</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            {% else %}
+                                                <div class="text-center">
+                                                    <span>{% trans "In the archive all works are verified. But you can recheck them if necessary." %}</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- #1 END -->
+
+                                <!-- #2 START -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                aria-expanded="false" aria-controls="collapseTwo">
+                                            {% trans "Verified works" %}
+                                            &nbsp;
+                                            <b>({{ verified_count }})</b>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse"
+                                         data-bs-parent="#stats_accordion">
+                                        <div class="accordion-body">
+                                            {% if verified_table_body %}
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        {% for th in table_head %}
+                                                            <th scope="col">{{ th }}</th>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for obj in verified_table_body %}
+                                                        <tr>
+                                                            <td class="td_uk">{{ obj.unique_key }}</td>
+                                                            <td>{{ obj.score }}</td>
+                                                            <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
+                                                            <td>{{ obj.created }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            {% else %}
+                                                <div class="text-center">
+                                                    <span>{% trans "A list of verified works from the archive will appear here. There are none at the moment." %}</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- #2 END -->
+                            </div>
+                            <!-- stats accordion END -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- stats modal END -->
+
+            <!-- recognized modal START -->
+            <button id="recognized_modal_trigger" data-bs-toggle="modal" data-bs-target="#recognized_modal"
+                    style="display: none;"></button>
+            <div class="modal" id="recognized_modal" tabindex="-1" aria-labelledby="recognized_modal_label"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="recognized_modal_label">{% trans "Recognized" %}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    data-bs-target="#recognized_modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>{% trans "The system detected the applicant's work in the image, but did not correctly recognize the unique key." %}</p>
+                            <p>{% trans "Make sure that the work being checked belongs to the appropriate archive and try again. Or you can specify the unique key manually" %}:</p>
+                            <div class="form-floating mb-2">
+                                <input id="unique_key_input" type="text" class="form-control" placeholder="------">
+                                <label for="unique_key_input">{% trans "Unique key" %}</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                    data-bs-target="#recognized_modal">
+                                {% trans "Try again" %}
+                            </button>
+                            <button type="button" class="btn btn-primary" disabled>{% trans "Continue" %}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- recognized modal END -->
+
+            <!-- unrecognized modal START -->
+            <button id="unrecognized_modal_trigger" data-bs-toggle="modal" data-bs-target="#unrecognized_modal"
+                    style="display: none;"></button>
+            <div class="modal" id="unrecognized_modal" tabindex="-1" aria-labelledby="unrecognized_modal_label"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="unrecognized_modal_label">{% trans "Unrecognized" %}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    data-bs-target="#unrecognized_modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>{% trans "The system failed to detect the applicant's work in the image." %}</p>
+                            <p>{% trans "Make sure" %}:</p>
+                            <ol>
+                                <li>{% trans "the image has a good enough resolution;" %}</li>
+                                <li>{% trans "there is enough contrast in the image;" %}</li>
+                                <li>{% trans "the work is completely in the image;" %}</li>
+                                <li>{% trans "there is nothing unnecessary in the image." %}</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- unrecognized modal END -->
+
             <!-- header START -->
             <header style="margin: 0 !important; background: var(--white);">
-                <!-- navbar menu START -->
                 <nav class="container-fluid border-bottom">
                     <div class="row align-items-center" style="min-height: 52px;">
                         <div class="col-auto">
@@ -31,125 +200,22 @@
                         </div>
                     </div>
                 </nav>
-                <!-- navbar menu END -->
-
-                <!-- stats modal START -->
-                <div class="modal fade" id="stats_modal" tabindex="-1" aria-labelledby="stats_modal_label"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="stats_modal_label">
-                                    {% trans "Stats" %}
-                                    ({% trans "Completed" %}: {{ percentage }}%)
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- stats accordion START -->
-                                <div class="accordion" id="stats_accordion">
-                                    <!-- #1 START -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                    data-bs-target="#collapseOne" aria-expanded="true"
-                                                    aria-controls="collapseOne">
-                                                {% trans "Unverified works" %}
-                                                &nbsp;
-                                                <b>({{ unverified_count }})</b>
-                                            </button>
-                                        </h2>
-                                        <div id="collapseOne" class="accordion-collapse collapse show"
-                                             data-bs-parent="#stats_accordion">
-                                            <div class="accordion-body">
-                                                {% if unverified_table_body %}
-                                                    <table class="table table-hover">
-                                                        <thead>
-                                                        <tr>
-                                                            {% for th in table_head %}
-                                                                <th scope="col">{{ th }}</th>
-                                                            {% endfor %}
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {% for uk in unverified_table_body %}
-                                                            <tr>
-                                                                <td class="td_uk">{{ uk }}</td>
-                                                                <td>-</td>
-                                                                <td>-</td>
-                                                                <td>-</td>
-                                                            </tr>
-                                                        {% endfor %}
-                                                        </tbody>
-                                                    </table>
-                                                {% else %}
-                                                    <div class="text-center">
-                                                        <span>{% trans "In the archive all works are verified. But you can recheck them if necessary." %}</span>
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- #1 END -->
-                                    <!-- #2 START -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                                                    aria-expanded="false" aria-controls="collapseTwo">
-                                                {% trans "Verified works" %}
-                                                &nbsp;
-                                                <b>({{ verified_count }})</b>
-                                            </button>
-                                        </h2>
-                                        <div id="collapseTwo" class="accordion-collapse collapse"
-                                             data-bs-parent="#stats_accordion">
-                                            <div class="accordion-body">
-                                                {% if verified_table_body %}
-                                                    <table class="table table-hover">
-                                                        <thead>
-                                                        <tr>
-                                                            {% for th in table_head %}
-                                                                <th scope="col">{{ th }}</th>
-                                                            {% endfor %}
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {% for obj in verified_table_body %}
-                                                            <tr>
-                                                                <td class="td_uk">{{ obj.unique_key }}</td>
-                                                                <td>{{ obj.score }}</td>
-                                                                <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
-                                                                <td>{{ obj.created }}</td>
-                                                            </tr>
-                                                        {% endfor %}
-                                                        </tbody>
-                                                    </table>
-                                                {% else %}
-                                                    <div class="text-center">
-                                                        <span>{% trans "A list of verified works from the archive will appear here. There are none at the moment." %}</span>
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- #2 END -->
-                                </div>
-                                <!-- stats accordion END -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- stats modal END -->
             </header>
             <!-- header END -->
 
             <!-- main START -->
             <main class="content text-center">
+                <!-- overlay loading START -->
+                <div id="overlay" style="display: none;">
+                    <div class="content">
+                        <i class="spinner-border text-primary m-3" style="width: 3rem; height: 3rem;"></i>
+                        <p class="fs-4"> {% trans "Image Scanning" %}… </p>
+                    </div>
+                </div>
+                <!-- overlay loading END -->
                 <div id="video_load" class="inner">
                     <i class="spinner-border text-primary m-3" style="width: 3rem; height: 3rem;"></i>
-                    <h3 class="fw-normal mb-2"> {% trans "Trying to access the web-camera" %}… </h3>
+                    <p class="fs-4"> {% trans "Trying to access the web-camera" %}… </p>
                 </div>
                 <div id="video_issue" class="inner" style="display: none;">
                     <h3 class="fw-normal mb-2"> {% trans "Video issue" %} </h3>
@@ -194,9 +260,12 @@
             e.returnValue = "";
         });
 
-        // init stream object & video_stream_block element
+        // init global vals
         let stream;
         let video_stream_block = document.getElementById("video_stream");
+        let overlay = document.getElementById("overlay");
+        let recognized_modal_trigger = document.getElementById("recognized_modal_trigger");
+        let unrecognized_modal_trigger = document.getElementById("unrecognized_modal_trigger");
 
         // local storage key for storing the deviceId of the active web-camera
         const ls_key = "active_video_source";
@@ -273,6 +342,7 @@
 
         // send an AJAX request to recognize the unique key of the uploaded work
         function recognize(form_data) {
+            overlay.style.display = "block";
             $.ajax({
                 type: "POST",
                 url: "{% url 'recognize' %}",
@@ -281,8 +351,19 @@
                 contentType: false,
                 success: function (data) {
                     console.log(data);
+                    overlay.style.display = "none";
+                    if (data["recognized"]) {
+                        if (data["unique_key"]) {
+                            // TODO: redirect to score page
+                        } else {
+                            recognized_modal_trigger.click();
+                        }
+                    } else {
+                        unrecognized_modal_trigger.click();
+                    }
                 },
                 error: function () {
+                    overlay.style.display = "none";
                     console.log("validation_part() error");
                 }
             });
@@ -303,6 +384,7 @@
                 form_data.append("csrfmiddlewaretoken", CSRF_TOKEN);
                 form_data.append("prefix", "{{ prefix }}");
                 form_data.append("image", file);
+                file_upload.value = "";
                 recognize(form_data);
             }
         });

@@ -16,7 +16,11 @@ from main.services.docs.minio_client import MinioClient
 from main.services.docs.factory import DocumentPackager, GeneratorJSON
 from main.services.ocr.analyzer import Analyzer
 
+# UTILS -------------------------------------------------------------------------------------------------------------- #
 PAGINATION_N = 10
+
+minio_client = MinioClient()
+analyzer = Analyzer()
 
 
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
@@ -139,7 +143,7 @@ def download_archive(request, prefix: str = None):
         if request.user.is_authenticated:
             if prefix:
                 # redirect to generated tmp link
-                return redirect(MinioClient().get_object_url(f"{prefix}.{DocumentPackager.ARCHIVE_FORMAT}"))
+                return redirect(minio_client.get_object_url(f"{prefix}.{DocumentPackager.ARCHIVE_FORMAT}"))
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
 
@@ -195,7 +199,7 @@ class Capture(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         archive = ObjectStorageEntry.objects.get(prefix=kwargs["prefix"])
-        data = json.loads(MinioClient().get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}"))
+        data = json.loads(minio_client.get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}"))
         qs_verified = VerifiedWorkEntry.objects.filter(archive=archive)
         uk_verified = qs_verified.values_list("unique_key", flat=True)
         uk_unverified = [v["unique_key"] for v in data["variants"] if v["unique_key"] not in uk_verified]
@@ -224,20 +228,26 @@ def recognize(request):
             # get data from request
             prefix = request.POST.get("prefix")
             img_path = request.FILES.get("image").temporary_file_path()
-            # recognize the unique key of the uploaded work <-- TODO: detect error (if not works were sent), fix re-init
-            a = Analyzer()
-            img_base = cv2.imread(img_path)
-            img_grayscale = a.grayscale(img_base)
-            img_restore_perspective = a.restore_perspective(img_grayscale)
-            img_threshold = a.threshold(img_restore_perspective)
-            st = a.calc_stats(img_threshold)
-            data = json.loads(MinioClient().get_object_content(f"{prefix}/{GeneratorJSON.OUTPUT_JSON}"))
-            uk = a.get_unique_key(img_threshold, st, data)
-            print(uk)
-            # generate JSON response (correct)
-            return JsonResponse({
-                "unique_key": uk
-            })
+            # recognize the unique key of the uploaded work
+            try:
+                img_base = cv2.imread(img_path)
+                img_grayscale = analyzer.grayscale(img_base)
+                img_restore_perspective = analyzer.restore_perspective(img_grayscale)
+                img_threshold = analyzer.threshold(img_restore_perspective)
+                stats = analyzer.calc_stats(img_threshold)
+                data = json.loads(minio_client.get_object_content(f"{prefix}/{GeneratorJSON.OUTPUT_JSON}"))
+                uk = analyzer.get_unique_key(img_threshold, stats, data)
+                # generate JSON response (correct)
+                return JsonResponse({
+                    "recognized": True,
+                    "unique_key": uk
+                })
+            except Exception:
+                # generate JSON response (incorrect)
+                return JsonResponse({
+                    "recognized": False,
+                    "unique_key": None
+                })
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
 
