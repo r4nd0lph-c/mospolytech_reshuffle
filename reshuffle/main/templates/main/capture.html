@@ -125,7 +125,7 @@
                     style="display: none;"></button>
             <div class="modal" id="recognized_modal" tabindex="-1" aria-labelledby="recognized_modal_label"
                  aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="recognized_modal_label">{% trans "Recognized" %}</h5>
@@ -157,7 +157,7 @@
                     style="display: none;"></button>
             <div class="modal" id="unrecognized_modal" tabindex="-1" aria-labelledby="unrecognized_modal_label"
                  aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="unrecognized_modal_label">{% trans "Unrecognized" %}</h5>
@@ -168,10 +168,10 @@
                             <p>{% trans "The system failed to detect the applicant's work in the image." %}</p>
                             <p>{% trans "Make sure" %}:</p>
                             <ol>
-                                <li>{% trans "the image has a good enough resolution;" %}</li>
-                                <li>{% trans "there is enough contrast in the image;" %}</li>
-                                <li>{% trans "the work is completely in the image;" %}</li>
-                                <li>{% trans "there is nothing unnecessary in the image." %}</li>
+                                <li>{% trans "the image has a good enough resolution" %};</li>
+                                <li>{% trans "there is enough contrast in the image" %};</li>
+                                <li>{% trans "the work is completely in the image" %};</li>
+                                <li>{% trans "there is nothing unnecessary in the image" %}.</li>
                             </ol>
                         </div>
                     </div>
