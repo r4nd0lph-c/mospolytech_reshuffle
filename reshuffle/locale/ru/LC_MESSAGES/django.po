@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-29 21:39+0300\n"
-"PO-Revision-Date: 2024-02-29 21:39+0300\n"
+"POT-Creation-Date: 2024-03-01 18:00+0300\n"
+"PO-Revision-Date: 2024-03-01 18:00+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -71,7 +71,7 @@ msgid "The search is performed by prefix"
 msgstr "Поиск осуществляется по префиксу"
 
 #: .\main\admin.py:295 .\main\templates\main\download.html:19
-#: .\main\templates\main\download.html:28 .\main\views.py:78
+#: .\main\templates\main\download.html:28 .\main\views.py:41
 #: .\main\views.py:135 .\main\views.py:167
 msgid "Download"
 msgstr "Скачать"
@@ -80,7 +80,7 @@ msgstr "Скачать"
 msgid "The search is performed by unique key"
 msgstr "Поиск осуществляется по уникальному ключу"
 
-#: .\main\apps.py:8 .\main\views.py:57
+#: .\main\apps.py:8 .\main\views.py:87
 msgid "Main"
 msgstr "Главная"
 
@@ -423,9 +423,9 @@ msgstr "Уникальный ключ"
 msgid "Number of points scored (primary system)"
 msgstr "Количество набранных баллов ( первичная система)"
 
-#: .\main\models.py:354
+#: .\main\models.py:354 .\main\views.py:262
 msgid "Score"
-msgstr "Баллы"
+msgstr "Оценка"
 
 #: .\main\models.py:358
 msgid "Image of scanned and verified work from object storage"
@@ -527,7 +527,7 @@ msgstr "Содержание"
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:314
+#: .\main\templates\main\404.html:17 .\main\views.py:326
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -542,6 +542,7 @@ msgstr ""
 
 #: .\main\templates\main\404.html:23
 #: .\main\templates\main\object_storage.html:88
+#: .\main\templates\main\score.html:22
 #: .\main\templates\main\verification.html:96
 msgid "To main page"
 msgstr "На главную"
@@ -608,13 +609,17 @@ msgstr "Работа распознана"
 msgid ""
 "The system detected the applicant's work in the image, but did not correctly "
 "recognize the unique key."
-msgstr "Система обнаружила на изображении работу абитуриента, но не смогла правильно определить уникальный ключ."
+msgstr ""
+"Система обнаружила на изображении работу абитуриента, но не смогла правильно "
+"определить уникальный ключ."
 
 #: .\main\templates\main\capture.html:137
 msgid ""
 "Make sure that the work being checked belongs to the appropriate archive and "
 "try again. Or you can specify the unique key manually"
-msgstr "Убедитесь, что проверяемая работа принадлежит соответствующему архиву, и повторите попытку. Также вы можете указать уникальный ключ вручную"
+msgstr ""
+"Убедитесь, что проверяемая работа принадлежит соответствующему архиву, и "
+"повторите попытку. Также вы можете указать уникальный ключ вручную"
 
 #: .\main\templates\main\capture.html:146
 msgid "Try again"
@@ -692,7 +697,7 @@ msgstr ""
 
 #: .\main\templates\main\capture.html:233 .\main\views.py:208
 msgid "Capture"
-msgstr "Сканировать"
+msgstr "Сканирование"
 
 #: .\main\templates\main\capture.html:239
 msgid "Select a video source"
@@ -856,15 +861,15 @@ msgstr ""
 "В будущем здесь появится информация об архивах, которые вам доступны для "
 "проверки. В настоящий момент таких нет."
 
-#: .\main\views.py:34
+#: .\main\views.py:64
 msgid "Auth"
 msgstr "Авторизация"
 
-#: .\main\views.py:35
+#: .\main\views.py:65
 msgid "Entrance exam processing system"
 msgstr "Система обработки экзаменов"
 
-#: .\main\views.py:58
+#: .\main\views.py:88
 msgid "Select an activity"
 msgstr "Выберите действие"
 
@@ -889,12 +894,16 @@ msgid "Verified"
 msgstr "Проверено"
 
 #: .\main\views.py:209
-msgid "Select the materials to be verified"
-msgstr "Выберите материалы для проверки"
+msgid "Select the work to be verified"
+msgstr "Выберите работу для проверки"
 
 #: .\main\views.py:214
 msgid "Date verified"
 msgstr "Дата проверки"
+
+#: .\main\views.py:263
+msgid "Score the work of applicant"
+msgstr "Оцените работу абитуриента"
 
 #: .\templates\admin\base_site.html:23
 msgid "Django site admin"
