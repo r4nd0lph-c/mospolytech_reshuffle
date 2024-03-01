@@ -1,0 +1,32 @@
+{% extends "main/base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block body %}
+    <!-- header START -->
+    <header>
+        <a href="{% url 'index' %}" class="display-1 fw-bold"> {{ project_name }} </a>
+        <p class="display-6"> {{ subtitle }} </p>
+    </header>
+    <!-- header END -->
+
+    <!-- main START -->
+    <main class="content">
+        ...
+    </main>
+    <!-- main END -->
+
+    <!--footer START -->
+    <footer>
+        <a href="{% url 'index' %}"> {% trans "To main page" %} </a>
+    </footer>
+    <!--footer END -->
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // add "custom-container" & "text-center" classes to body
+        document.body.classList.add("custom-container", "text-center");
+    </script>
+{% endblock %}

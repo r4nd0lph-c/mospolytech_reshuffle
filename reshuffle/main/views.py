@@ -23,6 +23,36 @@ minio_client = MinioClient()
 analyzer = Analyzer()
 
 
+class ObjectStorageListView(LoginRequiredMixin, ListView):
+    """ Parent for Creation CBV & Download CBV """
+
+    login_url = reverse_lazy("auth")
+    paginate_by = PAGINATION_N
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["project_name"] = PROJECT_NAME.upper()
+        context["table_head"] = [
+            ObjectStorageEntry._meta.get_field("subject").verbose_name,
+            ObjectStorageEntry._meta.get_field("date").verbose_name,
+            ObjectStorageEntry._meta.get_field("amount").verbose_name,
+            ObjectStorageEntry._meta.get_field("user").verbose_name,
+            ObjectStorageEntry._meta.get_field("created").verbose_name,
+            _("Download")
+        ]
+        return context
+
+    def get_queryset(self):
+        qs = ObjectStorageEntry.objects.all().order_by("-created")
+        groups = self.request.user.groups.all()
+        if self.request.user.is_superuser or not groups.exists():
+            return qs
+        accesses = []
+        for g in groups:
+            accesses += [a.subject.id for a in Access.objects.filter(group=g)]
+        return qs.filter(subject__id__in=accesses)
+
+
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
 class Auth(LoginView):
     template_name = "main/auth.html"
@@ -58,36 +88,6 @@ class Index(LoginRequiredMixin, TemplateView):
         context["subtitle"] = _("Select an activity")
         context["user_full_name"] = r.user.get_full_name() if r.user.get_full_name() else r.user.username
         return context
-
-
-class ObjectStorageListView(LoginRequiredMixin, ListView):
-    """ Parent for Creation CBV & Download CBV """
-
-    login_url = reverse_lazy("auth")
-    paginate_by = PAGINATION_N
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["project_name"] = PROJECT_NAME.upper()
-        context["table_head"] = [
-            ObjectStorageEntry._meta.get_field("subject").verbose_name,
-            ObjectStorageEntry._meta.get_field("date").verbose_name,
-            ObjectStorageEntry._meta.get_field("amount").verbose_name,
-            ObjectStorageEntry._meta.get_field("user").verbose_name,
-            ObjectStorageEntry._meta.get_field("created").verbose_name,
-            _("Download")
-        ]
-        return context
-
-    def get_queryset(self):
-        qs = ObjectStorageEntry.objects.all().order_by("-created")
-        groups = self.request.user.groups.all()
-        if self.request.user.is_superuser or not groups.exists():
-            return qs
-        accesses = []
-        for g in groups:
-            accesses += [a.subject.id for a in Access.objects.filter(group=g)]
-        return qs.filter(subject__id__in=accesses)
 
 
 class Creation(ObjectStorageListView, FormView):
@@ -206,7 +206,7 @@ class Capture(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Capture") + " | " + PROJECT_NAME
-        context["subtitle"] = _("Select the materials to be verified")
+        context["subtitle"] = _("Select the work to be verified")
         context["table_head"] = [
             VerifiedWorkEntry._meta.get_field("unique_key").verbose_name,
             VerifiedWorkEntry._meta.get_field("score").verbose_name,
@@ -237,19 +237,31 @@ def recognize(request):
                 stats = analyzer.calc_stats(img_threshold)
                 data = json.loads(minio_client.get_object_content(f"{prefix}/{GeneratorJSON.OUTPUT_JSON}"))
                 uk = analyzer.get_unique_key(img_threshold, stats, data)
-                # generate JSON response (correct)
+                # generate JSON response (recognized)
                 return JsonResponse({
                     "recognized": True,
                     "unique_key": uk
                 })
             except Exception:
-                # generate JSON response (incorrect)
+                # generate JSON response (unrecognized)
                 return JsonResponse({
                     "recognized": False,
                     "unique_key": None
                 })
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
+
+
+class Score(LoginRequiredMixin, TemplateView):
+    template_name = "main/score.html"
+    login_url = reverse_lazy("auth")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["project_name"] = PROJECT_NAME.upper()
+        context["title"] = _("Score") + " | " + PROJECT_NAME
+        context["subtitle"] = _("Score the work of applicant")
+        return context
 
 
 def logout_user(request):
