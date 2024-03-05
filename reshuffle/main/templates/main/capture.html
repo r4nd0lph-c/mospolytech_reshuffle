@@ -4,70 +4,70 @@
 {% load static %}
 
 {% block inner_body %}
+    <!-- recognized modal START -->
+    <button id="recognized_modal_trigger" data-bs-toggle="modal" data-bs-target="#recognized_modal"
+            style="display: none;"></button>
+    <div class="modal" id="recognized_modal" tabindex="-1" aria-labelledby="recognized_modal_label"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="recognized_modal_label">{% trans "Recognized" %}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            data-bs-target="#recognized_modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans "The system detected the applicant's work in the image, but did not correctly recognize the unique key." %}</p>
+                    <p>{% trans "Make sure that the work being checked belongs to the appropriate archive and try again. Or you can specify the unique key manually" %}:</p>
+                    <div class="form-floating mb-2">
+                        <input id="unique_key_input" type="text" class="form-control" placeholder="------">
+                        <label for="unique_key_input">{% trans "Unique key" %}</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                            data-bs-target="#recognized_modal">
+                        {% trans "Try again" %}
+                    </button>
+                    <button type="button" class="btn btn-primary" disabled>{% trans "Continue" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- recognized modal END -->
+
+    <!-- unrecognized modal START -->
+    <button id="unrecognized_modal_trigger" data-bs-toggle="modal" data-bs-target="#unrecognized_modal"
+            style="display: none;"></button>
+    <div class="modal" id="unrecognized_modal" tabindex="-1" aria-labelledby="unrecognized_modal_label"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unrecognized_modal_label">{% trans "Unrecognized" %}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            data-bs-target="#unrecognized_modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans "The system failed to detect the applicant's work in the image." %}</p>
+                    <p>{% trans "Make sure" %}:</p>
+                    <ol>
+                        <li>{% trans "the image has a good enough resolution" %};</li>
+                        <li>{% trans "there is enough contrast in the image" %};</li>
+                        <li>{% trans "the work is completely in the image" %};</li>
+                        <li>{% trans "there is nothing unnecessary in the image" %}.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- unrecognized modal END -->
+
     <section id="background">
         <div class="bg-vid-container" style="display: none;">
             <video id="video_stream" class="bg-vid" autoplay></video>
         </div>
         <div class="custom-container" style="position: absolute; bottom: 0; top: 0; left: 0; right: 0;">
-            <!-- recognized modal START -->
-            <button id="recognized_modal_trigger" data-bs-toggle="modal" data-bs-target="#recognized_modal"
-                    style="display: none;"></button>
-            <div class="modal" id="recognized_modal" tabindex="-1" aria-labelledby="recognized_modal_label"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="recognized_modal_label">{% trans "Recognized" %}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    data-bs-target="#recognized_modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>{% trans "The system detected the applicant's work in the image, but did not correctly recognize the unique key." %}</p>
-                            <p>{% trans "Make sure that the work being checked belongs to the appropriate archive and try again. Or you can specify the unique key manually" %}:</p>
-                            <div class="form-floating mb-2">
-                                <input id="unique_key_input" type="text" class="form-control" placeholder="------">
-                                <label for="unique_key_input">{% trans "Unique key" %}</label>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                                    data-bs-target="#recognized_modal">
-                                {% trans "Try again" %}
-                            </button>
-                            <button type="button" class="btn btn-primary" disabled>{% trans "Continue" %}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- recognized modal END -->
-
-            <!-- unrecognized modal START -->
-            <button id="unrecognized_modal_trigger" data-bs-toggle="modal" data-bs-target="#unrecognized_modal"
-                    style="display: none;"></button>
-            <div class="modal" id="unrecognized_modal" tabindex="-1" aria-labelledby="unrecognized_modal_label"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="unrecognized_modal_label">{% trans "Unrecognized" %}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    data-bs-target="#unrecognized_modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>{% trans "The system failed to detect the applicant's work in the image." %}</p>
-                            <p>{% trans "Make sure" %}:</p>
-                            <ol>
-                                <li>{% trans "the image has a good enough resolution" %};</li>
-                                <li>{% trans "there is enough contrast in the image" %};</li>
-                                <li>{% trans "the work is completely in the image" %};</li>
-                                <li>{% trans "there is nothing unnecessary in the image" %}.</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- unrecognized modal END -->
-
             <!-- header START -->
             <header style="margin: 0 !important; background: var(--white);">
                 <nav class="container-fluid border-bottom">

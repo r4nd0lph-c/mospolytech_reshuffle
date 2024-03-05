@@ -12,6 +12,7 @@ from django.urls import reverse_lazy
 from reshuffle.settings import PROJECT_NAME, LANGUAGE_CODE
 from main.forms import *
 from main.models import *
+from minio.error import S3Error
 from main.services.docs.minio_client import MinioClient
 from main.services.docs.factory import DocumentPackager, GeneratorJSON
 from main.services.ocr.analyzer import Analyzer
@@ -225,11 +226,14 @@ class Score(VerificationChildTemplateView):
     template_name = "main/score.html"
 
     def get(self, request, *args, **kwargs):
-        data = json.loads(minio_client.get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}"))
-        for v in data["variants"]:
-            if kwargs["unique_key"] == v["unique_key"]:
-                return super().get(request, *args, **kwargs)
-        return redirect(reverse_lazy("verification"))
+        try:
+            data = json.loads(minio_client.get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}"))
+            for v in data["variants"]:
+                if kwargs["unique_key"] == v["unique_key"]:
+                    return super().get(request, *args, **kwargs)
+        except S3Error:
+            return redirect(reverse_lazy("verification"))
+        return redirect(reverse_lazy("capture", kwargs={"prefix": kwargs["prefix"]}))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
