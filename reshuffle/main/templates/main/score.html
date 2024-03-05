@@ -1,32 +1,47 @@
-{% extends "main/base.html" %}
+{% extends "main/verification_child.html" %}
 
 {% load i18n %}
 {% load static %}
 
-{% block body %}
+{% block inner_body %}
     <!-- header START -->
-    <header>
-        <a href="{% url 'index' %}" class="display-1 fw-bold"> {{ project_name }} </a>
-        <p class="display-6"> {{ subtitle }} </p>
+    <header style="margin: 0 !important; background: var(--white);">
+        <nav class="container-fluid border-bottom">
+            <div class="row align-items-center" style="min-height: 52px;">
+                <div class="col-auto">
+                    <span class="fw-semibold" style="font-size: 24px;">{{ project_name }}</span>
+                </div>
+                <div class="col-lg">
+                    <span class="nav-subtitle" style="color: var(--text-secondary);">{{ subtitle }}</span>
+                </div>
+                <div class="col-auto">
+                    <span>{% trans "Archive" %}: <b>{{ prefix }}</b></span>
+                    <span class="nav-item-divider"> / </span>
+                    <span>{% trans "Unique key" %}: <b class="uk">{{ unique_key }}</b></span>
+                    <span class="nav-item-divider"> / </span>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#stats_modal">{% trans "Stats" %}</a>
+                    <span class="nav-item-divider"> / </span>
+                    <a href="{% url 'index' %}">{% trans "End session" %}</a>
+                </div>
+            </div>
+        </nav>
     </header>
     <!-- header END -->
 
     <!-- main START -->
     <main class="content">
-        ...
     </main>
     <!-- main END -->
 
     <!--footer START -->
     <footer>
-        <a href="{% url 'index' %}"> {% trans "To main page" %} </a>
     </footer>
     <!--footer END -->
 {% endblock %}
 
-{% block extra_js %}
+{% block extra_js_custom_logic %}
     <script>
-        // add "custom-container" & "text-center" classes to body
-        document.body.classList.add("custom-container", "text-center");
+        // add "custom-container" class to body
+        document.body.classList.add("custom-container");
     </script>
 {% endblock %}

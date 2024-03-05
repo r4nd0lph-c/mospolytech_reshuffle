@@ -53,6 +53,46 @@ class ObjectStorageListView(LoginRequiredMixin, ListView):
         return qs.filter(subject__id__in=accesses)
 
 
+class VerificationChildTemplateView(LoginRequiredMixin, TemplateView):
+    """ Parent for Capture CBV & Score CBV """
+
+    login_url = reverse_lazy("auth")
+
+    def get(self, request, *args, **kwargs):
+        qs = ObjectStorageEntry.objects.filter(prefix=kwargs["prefix"])
+        groups = self.request.user.groups.all()
+        if not self.request.user.is_superuser and groups.exists():
+            accesses = []
+            for g in groups:
+                accesses += [a.subject.id for a in Access.objects.filter(group=g)]
+                qs = qs.filter(subject__id__in=accesses)
+        if qs.first():
+            return super().get(request, *args, **kwargs)
+        return redirect(reverse_lazy("verification"))
+
+    def get_context_data(self, **kwargs):
+        archive = ObjectStorageEntry.objects.get(prefix=kwargs["prefix"])
+        data = json.loads(minio_client.get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}"))
+        qs_verified = VerifiedWorkEntry.objects.filter(archive=archive)
+        uk_verified = qs_verified.values_list("unique_key", flat=True)
+        uk_unverified = [v["unique_key"] for v in data["variants"] if v["unique_key"] not in uk_verified]
+        context = super().get_context_data(**kwargs)
+        context["project_name"] = PROJECT_NAME.upper()
+        context["table_head"] = [
+            VerifiedWorkEntry._meta.get_field("unique_key").verbose_name,
+            VerifiedWorkEntry._meta.get_field("score").verbose_name,
+            VerifiedWorkEntry._meta.get_field("user").verbose_name,
+            _("Date verified")
+        ]
+        context["verified_table_body"] = qs_verified
+        context["unverified_table_body"] = uk_unverified
+        context["verified_count"] = qs_verified.count()
+        context["unverified_count"] = archive.amount - context["verified_count"]
+        context["amount"] = archive.amount
+        context["percentage"] = round(context["verified_count"] / archive.amount * 100)
+        return context
+
+
 # MAIN VIEWS --------------------------------------------------------------------------------------------------------- #
 class Auth(LoginView):
     template_name = "main/auth.html"
@@ -138,16 +178,6 @@ class Download(ObjectStorageListView):
         return context
 
 
-def download_archive(request, prefix: str = None):
-    if request.method == "GET":
-        if request.user.is_authenticated:
-            if prefix:
-                # redirect to generated tmp link
-                return redirect(minio_client.get_object_url(f"{prefix}.{DocumentPackager.ARCHIVE_FORMAT}"))
-    # generate JSON response (error)
-    return JsonResponse({"error": "you don't have enough permissions"})
-
-
 class Verification(LoginRequiredMixin, ListView):
     login_url = reverse_lazy("auth")
     paginate_by = PAGINATION_N
@@ -181,45 +211,41 @@ class Verification(LoginRequiredMixin, ListView):
         return qs.filter(subject__id__in=accesses)
 
 
-class Capture(LoginRequiredMixin, TemplateView):
+class Capture(VerificationChildTemplateView):
     template_name = "main/capture.html"
-    login_url = reverse_lazy("auth")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = _("Capture") + " | " + PROJECT_NAME
+        context["subtitle"] = _("Select the work to be verified")
+        return context
+
+
+class Score(VerificationChildTemplateView):
+    template_name = "main/score.html"
 
     def get(self, request, *args, **kwargs):
-        qs = ObjectStorageEntry.objects.filter(prefix=kwargs["prefix"])
-        groups = self.request.user.groups.all()
-        if not self.request.user.is_superuser and groups.exists():
-            accesses = []
-            for g in groups:
-                accesses += [a.subject.id for a in Access.objects.filter(group=g)]
-                qs = qs.filter(subject__id__in=accesses)
-        if qs.first():
-            return super().get(request, *args, **kwargs)
+        data = json.loads(minio_client.get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}"))
+        for v in data["variants"]:
+            if kwargs["unique_key"] == v["unique_key"]:
+                return super().get(request, *args, **kwargs)
         return redirect(reverse_lazy("verification"))
 
     def get_context_data(self, **kwargs):
-        archive = ObjectStorageEntry.objects.get(prefix=kwargs["prefix"])
-        data = json.loads(minio_client.get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}"))
-        qs_verified = VerifiedWorkEntry.objects.filter(archive=archive)
-        uk_verified = qs_verified.values_list("unique_key", flat=True)
-        uk_unverified = [v["unique_key"] for v in data["variants"] if v["unique_key"] not in uk_verified]
         context = super().get_context_data(**kwargs)
-        context["project_name"] = PROJECT_NAME.upper()
-        context["title"] = _("Capture") + " | " + PROJECT_NAME
-        context["subtitle"] = _("Select the work to be verified")
-        context["table_head"] = [
-            VerifiedWorkEntry._meta.get_field("unique_key").verbose_name,
-            VerifiedWorkEntry._meta.get_field("score").verbose_name,
-            VerifiedWorkEntry._meta.get_field("user").verbose_name,
-            _("Date verified")
-        ]
-        context["verified_table_body"] = qs_verified
-        context["unverified_table_body"] = uk_unverified
-        context["verified_count"] = qs_verified.count()
-        context["unverified_count"] = archive.amount - context["verified_count"]
-        context["amount"] = archive.amount
-        context["percentage"] = round(context["verified_count"] / archive.amount * 100)
+        context["title"] = _("Score") + " | " + PROJECT_NAME
+        context["subtitle"] = _("Score the work of applicant")
         return context
+
+
+def download_archive(request, prefix: str = None):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            if prefix:
+                # redirect to generated tmp link
+                return redirect(minio_client.get_object_url(f"{prefix}.{DocumentPackager.ARCHIVE_FORMAT}"))
+    # generate JSON response (error)
+    return JsonResponse({"error": "you don't have enough permissions"})
 
 
 def recognize(request):
@@ -250,18 +276,6 @@ def recognize(request):
                 })
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
-
-
-class Score(LoginRequiredMixin, TemplateView):
-    template_name = "main/score.html"
-    login_url = reverse_lazy("auth")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["project_name"] = PROJECT_NAME.upper()
-        context["title"] = _("Score") + " | " + PROJECT_NAME
-        context["subtitle"] = _("Score the work of applicant")
-        return context
 
 
 def logout_user(request):
