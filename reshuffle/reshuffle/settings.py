@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config, Csv
+from django.contrib.messages import constants as messages
 from reshuffle.ckeditor_config import *
 
 # Project name
@@ -109,10 +110,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Message tags
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "light",
+    messages.INFO: "primary",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-US"  # en-US, ru-RU
+LANGUAGE_CODE = "ru-RU"  # en-US, ru-RU
 
 LOCALE_PATHS = [
     Path(BASE_DIR, "locale"),

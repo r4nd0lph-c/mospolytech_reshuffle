@@ -3,6 +3,7 @@ import cv2
 from decouple import config
 from django.utils.translation import gettext_lazy as _
 from django.http import JsonResponse
+from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
@@ -69,6 +70,7 @@ class VerificationChildTemplateView(LoginRequiredMixin, TemplateView):
                 qs = qs.filter(subject__id__in=accesses)
         if qs.first():
             return super().get(request, *args, **kwargs)
+        messages.error(request, _("The specified archive prefix is invalid"))
         return redirect(reverse_lazy("verification"))
 
     def get_context_data(self, **kwargs):
@@ -232,7 +234,9 @@ class Score(VerificationChildTemplateView):
                 if kwargs["unique_key"] == v["unique_key"]:
                     return super().get(request, *args, **kwargs)
         except S3Error:
+            messages.error(request, _("The specified archive prefix is invalid"))
             return redirect(reverse_lazy("verification"))
+        messages.error(request, _("The specified unique key is invalid") + f": <b>{kwargs['unique_key']}</b>")
         return redirect(reverse_lazy("capture", kwargs={"prefix": kwargs["prefix"]}))
 
     def get_context_data(self, **kwargs):

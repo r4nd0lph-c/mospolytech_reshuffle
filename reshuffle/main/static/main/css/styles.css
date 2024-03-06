@@ -149,7 +149,7 @@ header .display-6 {
 }
 
 
-/* TABLE & ALERT & MODAL */
+/* TABLE & ALERT & TOAST & MODAL */
 
 .table-container {
     margin: 0 16px;
@@ -177,6 +177,10 @@ header .display-6 {
 
 .alert-container {
     margin: 0 16px;
+}
+
+.toast-container > .toast {
+    width: 370px !important;
 }
 
 .modal-backdrop {
