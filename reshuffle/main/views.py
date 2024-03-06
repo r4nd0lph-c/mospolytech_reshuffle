@@ -236,7 +236,10 @@ class Score(VerificationChildTemplateView):
         except S3Error:
             messages.error(request, _("The specified archive prefix is invalid"))
             return redirect(reverse_lazy("verification"))
-        messages.error(request, _("The specified unique key is invalid") + f": <b>{kwargs['unique_key']}</b>")
+        messages.error(
+            request,
+            _("The specified unique key is invalid") + f": <b class='uk'>{kwargs['unique_key']}</b>"
+        )
         return redirect(reverse_lazy("capture", kwargs={"prefix": kwargs["prefix"]}))
 
     def get_context_data(self, **kwargs):

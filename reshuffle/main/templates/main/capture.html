@@ -50,7 +50,9 @@
                             data-bs-target="#recognized_modal">
                         {% trans "Try again" %}
                     </button>
-                    <button type="button" class="btn btn-primary" disabled>{% trans "Continue" %}</button>
+                    <button id="unique_key_button" type="button" class="btn btn-primary" disabled>
+                        {% trans "Continue" %}
+                    </button>
                 </div>
             </div>
         </div>
@@ -260,6 +262,8 @@
                         if (data["unique_key"]) {
                             // TODO: redirect to score page
                         } else {
+                            unique_key_input.value = "";
+                            unique_key_button.disabled = true;
                             recognized_modal_trigger.click();
                         }
                     } else {
@@ -307,6 +311,18 @@
                 form_data.append("image", blob, `captured.${format}`);
                 recognize(form_data);
             }, `image/${format}`, quality);
+        });
+
+        // change behavior & add redirect event to button from recognized modal
+        let unique_key_input = document.getElementById("unique_key_input");
+        let unique_key_button = document.getElementById("unique_key_button");
+
+        unique_key_input.addEventListener("input", () => {
+            unique_key_button.disabled = !unique_key_input.value;
+        });
+
+        unique_key_button.addEventListener("click", () => {
+            // TODO: redirect to score page
         });
     </script>
 {% endblock %}
