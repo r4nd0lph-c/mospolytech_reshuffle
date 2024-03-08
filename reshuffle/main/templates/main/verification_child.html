@@ -121,10 +121,10 @@
 {% block extra_js %}
     <script>
         // add confirmation before reloading / closing
-        window.addEventListener("beforeunload", (e) => {
-            e.preventDefault();
-            e.returnValue = "";
-        });
+        // window.addEventListener("beforeunload", (e) => {
+        //     e.preventDefault();
+        //     e.returnValue = "";
+        // });
     </script>
     {% block extra_js_custom_logic %}
     {% endblock %}
