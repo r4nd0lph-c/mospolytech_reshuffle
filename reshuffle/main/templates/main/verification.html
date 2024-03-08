@@ -61,7 +61,14 @@
                             <tr>
                                 <td><a href="{% url 'capture' prefix=obj.prefix %}">{{ obj.subject }}</a></td>
                                 <td>{{ obj.date }}</td>
-                                <td>{{ obj.verified_count }} ({{ obj.amount }})</td>
+                                <td class="align-middle">
+                                    <div class="progress"
+                                         data-bs-toggle="tooltip" data-bs-placement="top"
+                                         data-bs-title="{{ obj.verified_count }} / {{ obj.amount }}">
+                                        <div class="progress-bar"
+                                             style="width: {% widthratio obj.verified_count obj.amount 100 %}%"></div>
+                                    </div>
+                                </td>
                                 <td>{{ obj.user.get_full_name | default:obj.user.username }}</td>
                                 <td>{{ obj.created }}</td>
                                 {% if obj.verified_count == obj.amount %}

@@ -194,7 +194,7 @@ class Verification(LoginRequiredMixin, ListView):
         context["table_head"] = [
             ObjectStorageEntry._meta.get_field("subject").verbose_name,
             ObjectStorageEntry._meta.get_field("date").verbose_name,
-            _("Verified") + f" ({ObjectStorageEntry._meta.get_field("amount").verbose_name})",
+            _("Verification progress"),
             ObjectStorageEntry._meta.get_field("user").verbose_name,
             ObjectStorageEntry._meta.get_field("created").verbose_name,
             _("Download")

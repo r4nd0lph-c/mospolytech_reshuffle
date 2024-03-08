@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-06 14:04+0300\n"
-"PO-Revision-Date: 2024-03-06 14:04+0300\n"
+"POT-Creation-Date: 2024-03-08 16:12+0300\n"
+"PO-Revision-Date: 2024-03-08 16:12+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -424,7 +424,7 @@ msgstr "Уникальный ключ"
 msgid "Number of points scored (primary system)"
 msgstr "Количество набранных баллов ( первичная система)"
 
-#: .\main\models.py:354 .\main\views.py:244
+#: .\main\models.py:354 .\main\views.py:247
 msgid "Score"
 msgstr "Оценка"
 
@@ -528,7 +528,7 @@ msgstr "Содержание"
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:348
+#: .\main\templates\main\404.html:17 .\main\views.py:351
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -543,7 +543,7 @@ msgstr ""
 
 #: .\main\templates\main\404.html:23
 #: .\main\templates\main\object_storage.html:88
-#: .\main\templates\main\verification.html:117
+#: .\main\templates\main\verification.html:124
 msgid "To main page"
 msgstr "На главную"
 
@@ -595,69 +595,69 @@ msgstr ""
 msgid "Try again"
 msgstr "Попробовать снова"
 
-#: .\main\templates\main\capture.html:53
+#: .\main\templates\main\capture.html:54
 msgid "Continue"
 msgstr "Продолжить"
 
-#: .\main\templates\main\capture.html:68
+#: .\main\templates\main\capture.html:70
 msgid "Unrecognized"
 msgstr "Работа не распознана"
 
-#: .\main\templates\main\capture.html:73
+#: .\main\templates\main\capture.html:75
 msgid "The system failed to detect the applicant's work in the image."
 msgstr "Система не смогла обнаружить на изображении работу абитуриента."
 
-#: .\main\templates\main\capture.html:74
+#: .\main\templates\main\capture.html:76
 msgid "Make sure"
 msgstr "Убедитесь, что"
 
-#: .\main\templates\main\capture.html:76
+#: .\main\templates\main\capture.html:78
 msgid "the image has a good enough resolution"
 msgstr "изображение имеет достаточно хорошее разрешение"
 
-#: .\main\templates\main\capture.html:77
+#: .\main\templates\main\capture.html:79
 msgid "there is enough contrast in the image"
 msgstr "изображение достаточно контрастное"
 
-#: .\main\templates\main\capture.html:78
+#: .\main\templates\main\capture.html:80
 msgid "the work is completely in the image"
 msgstr "работа полностью помещается на изображении"
 
-#: .\main\templates\main\capture.html:79
+#: .\main\templates\main\capture.html:81
 msgid "there is nothing unnecessary in the image"
 msgstr "на изображении нет ничего лишнего"
 
-#: .\main\templates\main\capture.html:103 .\main\templates\main\download.html:9
+#: .\main\templates\main\capture.html:105 .\main\templates\main\download.html:9
 #: .\main\templates\main\score.html:18
 msgid "Archive"
 msgstr "Архив"
 
-#: .\main\templates\main\capture.html:105
+#: .\main\templates\main\capture.html:107
 msgid "Works verified"
 msgstr "Проверенных работ"
 
-#: .\main\templates\main\capture.html:107 .\main\templates\main\score.html:22
+#: .\main\templates\main\capture.html:109 .\main\templates\main\score.html:22
 #: .\main\templates\main\verification_child.html:14
 msgid "Stats"
 msgstr "Статистика"
 
-#: .\main\templates\main\capture.html:109 .\main\templates\main\score.html:24
+#: .\main\templates\main\capture.html:111 .\main\templates\main\score.html:24
 msgid "End session"
 msgstr "Завершить сессию"
 
-#: .\main\templates\main\capture.html:122
+#: .\main\templates\main\capture.html:124
 msgid "Image Scanning"
 msgstr "Сканирование изображения"
 
-#: .\main\templates\main\capture.html:128
+#: .\main\templates\main\capture.html:130
 msgid "Trying to access the web-camera"
 msgstr "Попытка получить доступ к веб-камере"
 
-#: .\main\templates\main\capture.html:131
+#: .\main\templates\main\capture.html:133
 msgid "Video issue"
 msgstr "Проблемы с видео"
 
-#: .\main\templates\main\capture.html:133
+#: .\main\templates\main\capture.html:135
 msgid ""
 "The application cannot access the web-camera. Make sure you have allowed "
 "access in your browser settings, check if your antivirus is blocking the "
@@ -671,15 +671,15 @@ msgstr ""
 "попробуйте перезагрузить страницу. Если эти действия не помогли, вы можете "
 "воспользоваться опцией загрузки изображения с компьютера."
 
-#: .\main\templates\main\capture.html:143 .\main\views.py:222
+#: .\main\templates\main\capture.html:145 .\main\views.py:222
 msgid "Capture"
 msgstr "Сканирование"
 
-#: .\main\templates\main\capture.html:149
+#: .\main\templates\main\capture.html:151
 msgid "Select a video source"
 msgstr "Выберите источник видео"
 
-#: .\main\templates\main\capture.html:156
+#: .\main\templates\main\capture.html:158
 msgid "Upload image"
 msgstr "Загрузить скан"
 
@@ -783,15 +783,15 @@ msgstr "Таблица архивов"
 
 #: .\main\templates\main\object_storage.html:57
 #: .\main\templates\main\object_storage.html:60
-#: .\main\templates\main\verification.html:86
-#: .\main\templates\main\verification.html:89
+#: .\main\templates\main\verification.html:93
+#: .\main\templates\main\verification.html:96
 msgid "First"
 msgstr "Начало"
 
 #: .\main\templates\main\object_storage.html:67
 #: .\main\templates\main\object_storage.html:70
-#: .\main\templates\main\verification.html:96
-#: .\main\templates\main\verification.html:99
+#: .\main\templates\main\verification.html:103
+#: .\main\templates\main\verification.html:106
 msgid "Last"
 msgstr "Конец"
 
@@ -825,11 +825,11 @@ msgstr ""
 msgid "Table of verification"
 msgstr "Таблица проверки"
 
-#: .\main\templates\main\verification.html:74
+#: .\main\templates\main\verification.html:81
 msgid "To download the report, the archive must be fully verified."
 msgstr "Чтобы скачать отчёт, архив должен быть полностью проверен."
 
-#: .\main\templates\main\verification.html:107
+#: .\main\templates\main\verification.html:114
 msgid ""
 "In the future there will be information here about archives you can verify. "
 "At the moment they are not available."
@@ -900,18 +900,18 @@ msgid "Verify works of applicants"
 msgstr "Проверьте работы абитуриентов"
 
 #: .\main\views.py:197
-msgid "Verified"
-msgstr "Проверено"
+msgid "Verification progress"
+msgstr "Прогресс проверки"
 
 #: .\main\views.py:223
 msgid "Select the work to be verified"
 msgstr "Выберите работу для проверки"
 
-#: .\main\views.py:239
+#: .\main\views.py:241
 msgid "The specified unique key is invalid"
 msgstr "Указанный уникальный ключ неверен"
 
-#: .\main\views.py:245
+#: .\main\views.py:248
 msgid "Score the work of applicant"
 msgstr "Оцените работу абитуриента"
 

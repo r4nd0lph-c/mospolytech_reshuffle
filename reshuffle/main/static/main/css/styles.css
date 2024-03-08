@@ -167,7 +167,7 @@ header .display-6 {
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-    --bs-table-bg-state: var(--light);
+    --bs-table-bg-state: var(--light-hover);
 }
 
 .pagination {
