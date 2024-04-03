@@ -19,7 +19,7 @@ from main.services.docs.factory import DocumentPackager, GeneratorJSON
 from main.services.ocr.analyzer import Analyzer
 
 # UTILS -------------------------------------------------------------------------------------------------------------- #
-PAGINATION_N = 10
+PAGINATION_N = 10  # TODO: fix screen scroll for 1920x1080 size
 
 minio_client = MinioClient()
 analyzer = Analyzer()

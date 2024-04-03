@@ -30,11 +30,32 @@
 
     <!-- main START -->
     <main class="content">
+        <div class="row" style="margin: 0; padding: 0;">
+            <div id="frame_panel" class="col-lg-7" style="margin: 0; padding: 0; border: 1px solid red;">
+                1
+            </div>
+            <div id="frame_image" class="col-lg-5" style="margin: 0; padding: 0; border: 1px solid cyan;">
+                2
+            </div>
+        </div>
     </main>
     <!-- main END -->
 
     <!--footer START -->
-    <footer>
+    <footer style="margin: 0; padding: 0;">
+        <div class="row" style="margin: 0; padding: 0;">
+            <div class="col-lg-7" style="margin: 0; padding: 0; border: 1px solid lawngreen;">
+                3
+            </div>
+            <div class="col-lg-5" style="margin: 0; padding: 12px; border: 1px solid mediumpurple;">
+                <button class="btn btn-light" style="min-width: 152px;">
+                    {% trans "Back to scanning" %}
+                </button>
+                <button class="btn btn-primary" style="min-width: 152px;">
+                    {% trans "Accept" %}
+                </button>
+            </div>
+        </div>
     </footer>
     <!--footer END -->
 {% endblock %}
@@ -43,5 +64,24 @@
     <script>
         // add "custom-container" class to body
         document.body.classList.add("custom-container");
+
+        let header = document.querySelector("header");
+        let footer = document.querySelector("footer");
+        let frame_panel = document.getElementById("frame_panel");
+        let frame_image = document.getElementById("frame_image");
+
+        function calc_sizes() {
+            // maxHeight from min(<...>, <...>) ???
+            if (window.innerWidth >= 992) {
+                frame_panel.style.minHeight = `${window.innerHeight - header.offsetHeight - footer.offsetHeight}px`;
+                frame_image.style.minHeight = `${window.innerHeight - header.offsetHeight - footer.offsetHeight}px`;
+            } else {
+                frame_panel.style.minHeight = `${window.innerHeight - header.offsetHeight}px`;
+                frame_image.style.minHeight = `${frame_image.offsetWidth}px`;
+            }
+        }
+
+        window.addEventListener("resize", calc_sizes);
+        calc_sizes();
     </script>
 {% endblock %}
