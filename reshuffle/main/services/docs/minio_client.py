@@ -1,7 +1,9 @@
 from os import path
 from glob import glob, escape
 from datetime import timedelta
+from io import BytesIO
 from minio import Minio
+from minio.commonconfig import CopySource
 from reshuffle.settings import MINIO_ENDPOINT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET_NAME
 
 
@@ -39,6 +41,15 @@ class MinioClient:
             alias = file.split("\\")[-1]
         self.__client.fput_object(bucket_name=self.__bucket_name, object_name=alias, file_path=file)
 
+    def upload_bytes(self, obj: BytesIO, alias: str, length: int, part_size: int = 0) -> None:
+        self.__client.put_object(
+            bucket_name=self.__bucket_name,
+            object_name=alias,
+            data=obj,
+            length=length,
+            part_size=part_size
+        )
+
     def get_object_content(self, alias: str) -> str:
         return self.__client.get_object(
             bucket_name=self.__bucket_name,
@@ -52,6 +63,14 @@ class MinioClient:
             object_name=alias,
             expires=timedelta(minutes=1)
         )
+
+    def rename_object(self, alias_old: str, alias_new: str) -> None:
+        self.__client.copy_object(
+            bucket_name=self.__bucket_name,
+            object_name=alias_new,
+            source=CopySource(bucket_name=self.__bucket_name, object_name=alias_old)
+        )
+        self.__client.remove_object(bucket_name=self.__bucket_name, object_name=alias_old)
 
     def delete_object(self, alias: str) -> None:
         for o in self.__client.list_objects(bucket_name=self.__bucket_name, prefix=alias, recursive=True):
