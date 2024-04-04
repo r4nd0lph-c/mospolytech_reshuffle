@@ -14,6 +14,7 @@ urlpatterns = [
     path("verification/score/<str:prefix>/<str:unique_key>", Score.as_view(), name="score"),
     path("download_archive/<str:prefix>", download_archive, name="download_archive"),
     path("verification/recognize", recognize, name="recognize"),
+    path("verification/rename_alias", rename_alias, name="rename_alias"),
     path("logout/", logout_user, name="logout"),
     path("validation_part/", validation_part, name="validation_part"),
     path("validation_task/", validation_task, name="validation_task"),

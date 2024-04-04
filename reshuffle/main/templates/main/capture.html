@@ -172,6 +172,7 @@
         let overlay = document.getElementById("overlay");
         let recognized_modal_trigger = document.getElementById("recognized_modal_trigger");
         let unrecognized_modal_trigger = document.getElementById("unrecognized_modal_trigger");
+        let recognized_alias = null;
 
         // local storage key for storing the deviceId of the active web-camera
         const ls_key = "active_video_source";
@@ -256,13 +257,13 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    console.log(data);
                     overlay.style.display = "none";
                     if (data["recognized"]) {
                         if (data["unique_key"]) {
                             let url = "{% url 'score'  prefix=prefix unique_key='*'%}".replace("*", data["unique_key"]);
                             window.location.replace(url);
                         } else {
+                            recognized_alias = data["alias"];
                             unique_key_input.value = "";
                             unique_key_button.disabled = true;
                             recognized_modal_trigger.click();
@@ -274,6 +275,25 @@
                 error: function () {
                     overlay.style.display = "none";
                     console.log("validation_part() error");
+                }
+            });
+        }
+
+        // send an AJAX request to rename alias
+        function rename_alias(alias_old, alias_new) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'rename_alias' %}",
+                data: {
+                    csrfmiddlewaretoken: CSRF_TOKEN,
+                    prefix: "{{ prefix }}",
+                    alias_old: alias_old,
+                    alias_new: alias_new
+                },
+                success: function (data) {
+                },
+                error: function () {
+                    console.log("rename_alias() error");
                 }
             });
         }
@@ -323,6 +343,7 @@
         });
 
         unique_key_button.addEventListener("click", () => {
+            rename_alias(recognized_alias, unique_key_input.value);
             let url = "{% url 'score'  prefix=prefix unique_key='*'%}".replace("*", unique_key_input.value);
             window.location.replace(url);
         });

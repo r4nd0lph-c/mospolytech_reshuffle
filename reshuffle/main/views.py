@@ -1,5 +1,7 @@
 import json
 import cv2
+from io import BytesIO
+from uuid import uuid4
 from decouple import config
 from django.utils.translation import gettext_lazy as _
 from django.http import JsonResponse
@@ -20,6 +22,10 @@ from main.services.ocr.analyzer import Analyzer
 
 # UTILS -------------------------------------------------------------------------------------------------------------- #
 PAGINATION_N = 10  # TODO: fix screen scroll for 1920x1080 size
+
+IMAGE_FORMAT = "png"
+FOLDER_CAPTURED = "captured"
+FOLDER_SCORED = "scored"
 
 minio_client = MinioClient()
 analyzer = Analyzer()
@@ -267,6 +273,7 @@ def recognize(request):
             img_path = request.FILES.get("image").temporary_file_path()
             # recognize the unique key of the uploaded work
             try:
+                # process image
                 img_base = cv2.imread(img_path)
                 img_grayscale = analyzer.grayscale(img_base)
                 img_restore_perspective = analyzer.restore_perspective(img_grayscale)
@@ -274,17 +281,41 @@ def recognize(request):
                 stats = analyzer.calc_stats(img_threshold)
                 data = json.loads(minio_client.get_object_content(f"{prefix}/{GeneratorJSON.OUTPUT_JSON}"))
                 uk = analyzer.get_unique_key(img_threshold, stats, data)
+                # save processed image to storage
+                _, buffer = cv2.imencode(f".{IMAGE_FORMAT}", img_threshold)
+                obj = BytesIO(buffer.tobytes())
+                name = uk if uk else str(uuid4())
+                minio_client.upload_bytes(
+                    obj=obj,
+                    alias=f"{prefix}/{FOLDER_CAPTURED}/{name}.{IMAGE_FORMAT}",
+                    length=obj.getbuffer().nbytes
+                )
                 # generate JSON response (recognized)
-                return JsonResponse({
-                    "recognized": True,
-                    "unique_key": uk
-                })
-            except Exception:
+                return JsonResponse({"recognized": True, "unique_key": uk, "alias": name})
+            except:
                 # generate JSON response (unrecognized)
-                return JsonResponse({
-                    "recognized": False,
-                    "unique_key": None
-                })
+                return JsonResponse({"recognized": False, "unique_key": None, "alias": None})
+    # generate JSON response (error)
+    return JsonResponse({"error": "you don't have enough permissions"})
+
+
+def rename_alias(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            # get data from request
+            prefix = request.POST.get("prefix") if request.POST.get("prefix") else None
+            alias_old = request.POST.get("alias_old") if request.POST.get("alias_old") else None
+            alias_new = request.POST.get("alias_new") if request.POST.get("alias_new") else None
+            try:
+                minio_client.rename_object(
+                    alias_old=f"{prefix}/{FOLDER_CAPTURED}/{alias_old}.{IMAGE_FORMAT}",
+                    alias_new=f"{prefix}/{FOLDER_CAPTURED}/{alias_new}.{IMAGE_FORMAT}"
+                )
+                # generate JSON response (correct)
+                return JsonResponse({"alias": alias_new})
+            except:
+                # generate JSON response (error)
+                return JsonResponse({"error": "something went wrong"})
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
 
