@@ -345,7 +345,11 @@
         unique_key_button.addEventListener("click", () => {
             rename_alias(recognized_alias, unique_key_input.value);
             let url = "{% url 'score'  prefix=prefix unique_key='*'%}".replace("*", unique_key_input.value);
-            window.location.replace(url);
+            // WARNING: The timeout is used to give the alias rename request time to be processed
+            // ALTERNATIVE: Pass <unique key | alias> using a delimiter to the server and process two requests there
+            setTimeout(() => {
+                window.location.replace(url);
+            }, 200);
         });
     </script>
 {% endblock %}

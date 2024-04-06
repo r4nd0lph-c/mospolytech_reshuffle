@@ -238,20 +238,30 @@ class Score(VerificationChildTemplateView):
             data = json.loads(minio_client.get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}"))
             for v in data["variants"]:
                 if kwargs["unique_key"] == v["unique_key"]:
+                    try:
+                        minio_client.get_object_stats(
+                            alias=f"{kwargs['prefix']}/{FOLDER_CAPTURED}/{kwargs['unique_key']}.{IMAGE_FORMAT}"
+                        )
+                    except S3Error:
+                        messages.error(request, _("The requested image was not found"))
+                        return redirect(reverse_lazy("capture", kwargs={"prefix": kwargs["prefix"]}))
                     return super().get(request, *args, **kwargs)
+            messages.error(
+                request,
+                _("The specified unique key is invalid") + f": <b class='uk'>{kwargs['unique_key']}</b>"
+            )
+            return redirect(reverse_lazy("capture", kwargs={"prefix": kwargs["prefix"]}))
         except S3Error:
             messages.error(request, _("The specified archive prefix is invalid"))
             return redirect(reverse_lazy("verification"))
-        messages.error(
-            request,
-            _("The specified unique key is invalid") + f": <b class='uk'>{kwargs['unique_key']}</b>"
-        )
-        return redirect(reverse_lazy("capture", kwargs={"prefix": kwargs["prefix"]}))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = _("Score") + " | " + PROJECT_NAME
         context["subtitle"] = _("Score the work of applicant")
+        context["img_threshold_url"] = minio_client.get_object_url(
+            alias=f"{kwargs['prefix']}/{FOLDER_CAPTURED}/{kwargs['unique_key']}.{IMAGE_FORMAT}"
+        )
         return context
 
 

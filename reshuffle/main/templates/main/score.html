@@ -35,7 +35,7 @@
                 1
             </div>
             <div id="frame_image" class="col-lg-5" style="margin: 0; padding: 0; border: 1px solid cyan;">
-                2
+                <img id="img_threshold" src="{{ img_threshold_url }}" alt="threshold image">
             </div>
         </div>
     </main>
@@ -48,9 +48,9 @@
                 3
             </div>
             <div class="col-lg-5" style="margin: 0; padding: 12px; border: 1px solid mediumpurple;">
-                <button class="btn btn-light" style="min-width: 152px;">
+                <a class="btn btn-light" style="min-width: 152px;" href="{% url 'capture' prefix=prefix %}">
                     {% trans "Back to scanning" %}
-                </button>
+                </a>
                 <button class="btn btn-primary" style="min-width: 152px;">
                     {% trans "Accept" %}
                 </button>
@@ -65,13 +65,15 @@
         // add "custom-container" class to body
         document.body.classList.add("custom-container");
 
+        // init elements
         let header = document.querySelector("header");
         let footer = document.querySelector("footer");
         let frame_panel = document.getElementById("frame_panel");
         let frame_image = document.getElementById("frame_image");
+        let img_threshold = document.getElementById("img_threshold");
 
+        // calculate elements' size
         function calc_sizes() {
-            // maxHeight from min(<...>, <...>) ???
             if (window.innerWidth >= 992) {
                 frame_panel.style.minHeight = `${window.innerHeight - header.offsetHeight - footer.offsetHeight}px`;
                 frame_image.style.minHeight = `${window.innerHeight - header.offsetHeight - footer.offsetHeight}px`;
@@ -81,6 +83,7 @@
             }
         }
 
+        // activate resize
         window.addEventListener("resize", calc_sizes);
         calc_sizes();
     </script>

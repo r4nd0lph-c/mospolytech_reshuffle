@@ -3,6 +3,7 @@ from glob import glob, escape
 from datetime import timedelta
 from io import BytesIO
 from minio import Minio
+from minio.datatypes import Object
 from minio.commonconfig import CopySource
 from reshuffle.settings import MINIO_ENDPOINT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET_NAME
 
@@ -55,6 +56,9 @@ class MinioClient:
             bucket_name=self.__bucket_name,
             object_name=alias,
         ).data.decode()
+
+    def get_object_stats(self, alias: str) -> Object:
+        return self.__client.stat_object(bucket_name=self.__bucket_name, object_name=alias)
 
     def get_object_url(self, alias: str) -> str:
         return self.__client.get_presigned_url(
