@@ -18,4 +18,9 @@ urlpatterns = [
     path("logout/", logout_user, name="logout"),
     path("validation_part/", validation_part, name="validation_part"),
     path("validation_task/", validation_task, name="validation_task"),
+    path(
+        "modification_verified_work_entry/",
+        modification_verified_work_entry,
+        name="modification_verified_work_entry"
+    ),
 ]

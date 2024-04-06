@@ -329,8 +329,8 @@ class ObjectStorageEntry(AbstractDatestamp):
 
 
 class VerifiedWorkEntry(AbstractDatestamp):
-    UK_LENGTH = 64
-    URL_LENGTH = 256
+    UK_LENGTH = 8
+    ALIAS_LENGTH = 128
 
     user = models.ForeignKey(
         User,
@@ -353,8 +353,8 @@ class VerifiedWorkEntry(AbstractDatestamp):
         help_text=_("Number of points scored (primary system)"),
         verbose_name=_("Score")
     )
-    scan = models.URLField(
-        max_length=URL_LENGTH,
+    alias = models.CharField(
+        max_length=ALIAS_LENGTH,
         help_text=_("Image of scanned and verified work from object storage"),
         verbose_name=_("Scan of the work")
     )

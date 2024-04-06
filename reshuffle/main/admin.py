@@ -316,6 +316,9 @@ class VerifiedWorkEntryAdmin(AdministrationEntry):
 
     username.short_description = VerifiedWorkEntry._meta.get_field("user").verbose_name
 
+    class Media:
+        js = ("admin/js/model_verified_work_entry_modification.js",)
+
 
 # AUTHENTICATION AND AUTHORIZATION ----------------------------------------------------------------------------------- #
 @admin.register(Access)

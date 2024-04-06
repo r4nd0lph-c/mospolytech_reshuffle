@@ -335,7 +335,7 @@ def logout_user(request):
     return redirect("auth")
 
 
-# VALIDATORS --------------------------------------------------------------------------------------------------------- #
+# VALIDATORS & MODIFICATIONS ----------------------------------------------------------------------------------------- #
 def validation_part(request):
     if request.method == "GET":
         if request.user.is_authenticated:
@@ -378,6 +378,21 @@ def validation_task(request):
                 "amount_max": Part.objects.get(pk=id_prt).task_count if id_prt else 0,
                 "labels": Task.LABELS,
             })
+    # generate JSON response (error)
+    return JsonResponse({"error": "you don't have enough permissions"})
+
+
+def modification_verified_work_entry(request):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            # get data from request
+            alias = request.GET.get("alias") if request.GET.get("alias") else None
+            # generate JSON response (correct / incorrect)
+            try:
+                minio_client.get_object_stats(alias=alias)
+                return JsonResponse({"url": minio_client.get_object_url(alias=alias), "error": None})
+            except S3Error:
+                return JsonResponse({"url": None, "error": _("No image could be found as requested")})
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
 
