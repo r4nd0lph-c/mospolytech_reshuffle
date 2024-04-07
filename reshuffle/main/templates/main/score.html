@@ -31,10 +31,11 @@
     <!-- main START -->
     <main class="content">
         <div class="row" style="margin: 0; padding: 0;">
-            <div id="frame_panel" class="col-lg-7" style="margin: 0; padding: 0; border: 1px solid red;">
-                1
+            <div id="frame_panel" class="col-lg-7" style="margin: 0; padding: 0;">
+
             </div>
-            <div id="frame_image" class="col-lg-5" style="margin: 0; padding: 0; border: 1px solid cyan;">
+            <div id="frame_image" class="col-lg-5"
+                 style="margin: 0; padding: 0; display: flex; align-items: flex-end;">
                 <img id="img_threshold" src="{{ img_threshold_url }}" alt="threshold image">
             </div>
         </div>
@@ -42,12 +43,12 @@
     <!-- main END -->
 
     <!--footer START -->
-    <footer style="margin: 0; padding: 0;">
+    <footer style="margin: 0; padding: 0; background: white; border-top: 1px solid var(--bs-border-color);">
         <div class="row" style="margin: 0; padding: 0;">
-            <div class="col-lg-7" style="margin: 0; padding: 0; border: 1px solid lawngreen;">
-                3
+            <div class="col-lg-7" style="margin: 0; padding: 0;">
+
             </div>
-            <div class="col-lg-5" style="margin: 0; padding: 12px; border: 1px solid mediumpurple;">
+            <div class="col-lg-5" style="margin: 0; padding: 12px;">
                 <a class="btn btn-light" style="min-width: 152px;" href="{% url 'capture' prefix=prefix %}">
                     {% trans "Back to scanning" %}
                 </a>
@@ -74,12 +75,25 @@
 
         // calculate elements' size
         function calc_sizes() {
-            if (window.innerWidth >= 992) {
-                frame_panel.style.minHeight = `${window.innerHeight - header.offsetHeight - footer.offsetHeight}px`;
-                frame_image.style.minHeight = `${window.innerHeight - header.offsetHeight - footer.offsetHeight}px`;
+            let w = window.innerWidth;
+            let h = window.innerHeight;
+            if (w >= 992) {
+                frame_panel.style.height = `${h - header.offsetHeight - footer.offsetHeight}px`;
+                if (h - header.offsetHeight - footer.offsetHeight >= w * 5 / 12) {
+                    frame_image.style.justifyContent = "space-around";
+                    frame_image.style.flexDirection = "column";
+                    img_threshold.style.width = `${w * 5 / 12}px`;
+                    img_threshold.style.height = "auto";
+                } else {
+                    frame_image.style.justifyContent = "flex-end";
+                    frame_image.style.flexDirection = "row";
+                    img_threshold.style.height = `${h - header.offsetHeight - footer.offsetHeight}px`;
+                    img_threshold.style.width = "auto";
+                }
             } else {
-                frame_panel.style.minHeight = `${window.innerHeight - header.offsetHeight}px`;
-                frame_image.style.minHeight = `${frame_image.offsetWidth}px`;
+                frame_panel.style.height = `${h - header.offsetHeight}px`;
+                img_threshold.style.width = `${w}px`;
+                img_threshold.style.height = "auto";
             }
         }
 
