@@ -1,4 +1,5 @@
 import json
+import numpy as np
 import cv2
 from io import BytesIO
 from uuid import uuid4
@@ -256,12 +257,24 @@ class Score(VerificationChildTemplateView):
             return redirect(reverse_lazy("verification"))
 
     def get_context_data(self, **kwargs):
+        alias = f"{kwargs['prefix']}/{FOLDER_CAPTURED}/{kwargs['unique_key']}.{IMAGE_FORMAT}"
+        img_data = minio_client.get_object_content(alias=alias, decoded=False).data
+        img_threshold = cv2.imdecode(np.frombuffer(img_data, np.uint8), cv2.IMREAD_GRAYSCALE)
+        try:
+            stats = analyzer.calc_stats(img_threshold)
+            variants = json.loads(
+                minio_client.get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}")
+            )["variants"]
+            variant = list(filter(lambda v: v["unique_key"] == kwargs["unique_key"], variants))[0]
+            f_answers, f_correction = analyzer.get_fields(img_threshold, stats, variant)
+            score_result = analyzer.score(variant, f_answers, f_correction)
+        except:
+            score_result = {"scored": False}
         context = super().get_context_data(**kwargs)
         context["title"] = _("Score") + " | " + PROJECT_NAME
         context["subtitle"] = _("Score the work of applicant")
-        context["img_threshold_url"] = minio_client.get_object_url(
-            alias=f"{kwargs['prefix']}/{FOLDER_CAPTURED}/{kwargs['unique_key']}.{IMAGE_FORMAT}"
-        )
+        context["img_threshold_url"] = minio_client.get_object_url(alias=alias)
+        context["score_result"] = score_result
         return context
 
 

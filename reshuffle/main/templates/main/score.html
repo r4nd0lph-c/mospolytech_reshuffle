@@ -31,8 +31,8 @@
     <!-- main START -->
     <main class="content">
         <div class="row" style="margin: 0; padding: 0;">
-            <div id="frame_panel" class="col-lg-7" style="margin: 0; padding: 0;">
-
+            <div id="frame_panel" class="col-lg-7" style="margin: 0; padding: 0; z-index: 1; background: var(--light);">
+                {{ score_result }}
             </div>
             <div id="frame_image" class="col-lg-5"
                  style="margin: 0; padding: 0; display: flex; align-items: flex-end;">
@@ -48,8 +48,9 @@
             <div class="col-lg-7" style="margin: 0; padding: 0;">
 
             </div>
-            <div class="col-lg-5" style="margin: 0; padding: 12px;">
-                <a class="btn btn-light" style="min-width: 152px;" href="{% url 'capture' prefix=prefix %}">
+            <div class="col-lg-5" style="margin: 0; padding: 12px; display: flex; justify-content: flex-end;">
+                <a class="btn btn-light" style="min-width: 152px; margin-right: 12px;"
+                   href="{% url 'capture' prefix=prefix %}">
                     {% trans "Back to scanning" %}
                 </a>
                 <button class="btn btn-primary" style="min-width: 152px;">

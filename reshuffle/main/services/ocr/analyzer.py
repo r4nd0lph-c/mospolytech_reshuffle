@@ -270,6 +270,9 @@ class Analyzer:
         # return result
         return fields_answers, fields_correction
 
+    def score(self, variant: dict, fields_answers: dict, fields_correction: ndarray) -> dict:
+        return {"scored": True}
+
 
 if __name__ == "__main__":
     img_base = cv2.imread("test_GDEHFS.png")

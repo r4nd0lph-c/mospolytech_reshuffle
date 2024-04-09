@@ -2,6 +2,7 @@ from os import path
 from glob import glob, escape
 from datetime import timedelta
 from io import BytesIO
+from urllib3 import BaseHTTPResponse, HTTPResponse
 from minio import Minio
 from minio.datatypes import Object
 from minio.commonconfig import CopySource
@@ -51,11 +52,11 @@ class MinioClient:
             part_size=part_size
         )
 
-    def get_object_content(self, alias: str) -> str:
-        return self.__client.get_object(
-            bucket_name=self.__bucket_name,
-            object_name=alias,
-        ).data.decode()
+    def get_object_content(self, alias: str, decoded: bool = True) -> str | HTTPResponse | BaseHTTPResponse:
+        obj = self.__client.get_object(bucket_name=self.__bucket_name, object_name=alias)
+        if decoded:
+            return obj.data.decode()
+        return obj
 
     def get_object_stats(self, alias: str) -> Object:
         return self.__client.stat_object(bucket_name=self.__bucket_name, object_name=alias)
