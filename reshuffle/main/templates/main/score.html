@@ -31,33 +31,51 @@
     <!-- main START -->
     <main class="content">
         <div class="row" style="margin: 0; padding: 0;">
-            <div id="frame_panel" class="col-lg-7" style="margin: 0; padding: 0; z-index: 1; background: var(--light);">
-                {{ score_result }}
+            <div id="frame_panel" class="col-xl" style="margin: 0; padding: 0; overflow-y: auto;">
+                <div class="accordion accordion-flush" id="accordion_panel">
+                    {% for part in score_result.variant.parts %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#panel_collapse_{{ forloop.counter }}" aria-expanded="true"
+                                        aria-controls="panel_collapse_{{ forloop.counter }}">
+                                    {% trans "Part" %} {{ part.info.title }}
+                                    &nbsp;
+                                    <b>({{ part.info.task_count }})</b>
+                                </button>
+                            </h2>
+                            <div id="panel_collapse_{{ forloop.counter }}" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    <strong>This is the second item's accordion body.</strong> It is hidden by default,
+                                    until the collapse plugin adds the appropriate classes that we use to style each
+                                    element. These classes control the overall appearance, as well as the showing and
+                                    hiding
+                                    via CSS transitions. You can modify any of this with custom CSS or overriding our
+                                    default variables. It's also worth noting that just about any HTML can go within the
+                                    <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-            <div id="frame_image" class="col-lg-5"
-                 style="margin: 0; padding: 0; display: flex; align-items: flex-end;">
-                <img id="img_threshold" src="{{ img_threshold_url }}" alt="threshold image">
+            <div id="frame_image" class="col-xl-auto"
+                 style="margin: 0; padding: 0; outline: 1px solid var(--bs-border-color);">
+                <img id="scanned_image" src="{{ img_threshold_url }}" alt="threshold scanned image">
             </div>
         </div>
     </main>
     <!-- main END -->
 
     <!--footer START -->
-    <footer style="margin: 0; padding: 0; background: white; border-top: 1px solid var(--bs-border-color);">
-        <div class="row" style="margin: 0; padding: 0;">
-            <div class="col-lg-7" style="margin: 0; padding: 0;">
-
-            </div>
-            <div class="col-lg-5" style="margin: 0; padding: 12px; display: flex; justify-content: flex-end;">
-                <a class="btn btn-light" style="min-width: 152px; margin-right: 12px;"
-                   href="{% url 'capture' prefix=prefix %}">
-                    {% trans "Back to scanning" %}
-                </a>
-                <button class="btn btn-primary" style="min-width: 152px;">
-                    {% trans "Accept" %}
-                </button>
-            </div>
-        </div>
+    <footer style="margin: 0; padding: 12px; background: white; border-top: 1px solid var(--bs-border-color);">
+        <a class="btn btn-light" style="min-width: 152px; margin-right: 12px;"
+           href="{% url 'capture' prefix=prefix %}">
+            {% trans "Back to scanning" %}
+        </a>
+        <button class="btn btn-primary" style="min-width: 152px;">
+            {% trans "Accept" %}
+        </button>
     </footer>
     <!--footer END -->
 {% endblock %}
@@ -72,29 +90,20 @@
         let footer = document.querySelector("footer");
         let frame_panel = document.getElementById("frame_panel");
         let frame_image = document.getElementById("frame_image");
-        let img_threshold = document.getElementById("img_threshold");
+        let image = document.getElementById("scanned_image");
 
         // calculate elements' size
         function calc_sizes() {
             let w = window.innerWidth;
             let h = window.innerHeight;
-            if (w >= 992) {
+            if (w >= 1200) {
                 frame_panel.style.height = `${h - header.offsetHeight - footer.offsetHeight}px`;
-                if (h - header.offsetHeight - footer.offsetHeight >= w * 5 / 12) {
-                    frame_image.style.justifyContent = "space-around";
-                    frame_image.style.flexDirection = "column";
-                    img_threshold.style.width = `${w * 5 / 12}px`;
-                    img_threshold.style.height = "auto";
-                } else {
-                    frame_image.style.justifyContent = "flex-end";
-                    frame_image.style.flexDirection = "row";
-                    img_threshold.style.height = `${h - header.offsetHeight - footer.offsetHeight}px`;
-                    img_threshold.style.width = "auto";
-                }
+                image.style.height = `${h - header.offsetHeight - footer.offsetHeight}px`;
+                image.style.width = "auto";
             } else {
-                frame_panel.style.height = `${h - header.offsetHeight}px`;
-                img_threshold.style.width = `${w}px`;
-                img_threshold.style.height = "auto";
+                frame_panel.style.height = "auto";
+                image.style.width = `${header.offsetWidth}px`;
+                image.style.height = "auto";
             }
         }
 
