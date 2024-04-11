@@ -326,4 +326,25 @@ header .display-6 {
 
 /* SCORE PAGE */
 
+.task_container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
+.task_body {
+    margin: 6px 3px;
+}
+
+.task_body .form-label {
+    margin-bottom: 3px !important;
+}
+
+.task_0 {
+    width: 70px;
+}
+
+.task_1 {
+    width: 180px;
+}

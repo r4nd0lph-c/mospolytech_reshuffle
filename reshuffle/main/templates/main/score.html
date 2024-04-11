@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load static %}
+{% load custom_tags %}
 
 {% block inner_body %}
     <!-- header START -->
@@ -45,14 +46,31 @@
                                 </button>
                             </h2>
                             <div id="panel_collapse_{{ forloop.counter }}" class="accordion-collapse collapse show">
-                                <div class="accordion-body">
-                                    <strong>This is the second item's accordion body.</strong> It is hidden by default,
-                                    until the collapse plugin adds the appropriate classes that we use to style each
-                                    element. These classes control the overall appearance, as well as the showing and
-                                    hiding
-                                    via CSS transitions. You can modify any of this with custom CSS or overriding our
-                                    default variables. It's also worth noting that just about any HTML can go within the
-                                    <code>.accordion-body</code>, though the transition does limit overflow.
+                                <div class="accordion-body task_container">
+                                    {% if part.info.answer_type == 0 %}
+                                        {% for task in part.material %}
+                                            <div class="task_body text-center">
+                                                <label for="task_{{ task.position }}" class="form-label">
+                                                    {{ task.position }}
+                                                </label>
+                                                <input type="number" min="1" max="4" class="form-control task_0"
+                                                       id="task_{{ task.position }}"
+                                                       placeholder="
+{% for o in task.options %}{% if o.is_answer %}{{ forloop.counter }}{% endif %}{% endfor %}">
+                                            </div>
+                                        {% endfor %}
+                                    {% elif part.info.answer_type == 1 %}
+                                        {% for task in part.material %}
+                                            <div class="task_body text-center">
+                                                <label for="task_{{ task.position }}" class="form-label">
+                                                    {{ task.position }}
+                                                </label>
+                                                <input type="text" class="form-control task_1"
+                                                       id="task_{{ task.position }}"
+                                                       placeholder="{{ task.options.0.content|re_clean }}">
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
