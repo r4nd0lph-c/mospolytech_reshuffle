@@ -10,6 +10,8 @@
     --dark: #212529;
     --primary: #0D6EFD;
     --pr-accent: #86B7FE;
+    --bs-success: #198754;
+    --bs-danger: #DC3545;
 }
 
 *:focus {
@@ -347,4 +349,33 @@ header .display-6 {
 
 .task_1 {
     width: 180px;
+}
+
+.task_answers_container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.task_answer {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.task_answers_container .correct {
+    color: var(--bs-success);
+    font-weight: bold;
+}
+
+.task_answers_container .incorrect {
+    color: var(--bs-danger);
+}
+
+.task_modal_part table, .task_modal_part th, .task_modal_part td {
+    border: 1px solid black;
+    border-collapse: collapse;
 }

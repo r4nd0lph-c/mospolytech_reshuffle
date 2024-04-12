@@ -5,6 +5,46 @@
 {% load custom_tags %}
 
 {% block inner_body %}
+    <!-- task modals START -->
+    {% for part in score_result.variant.parts %}
+        {% for task in part.material %}
+            <div class="modal fade" id="task_modal_{{ task.position }}" tabindex="-1"
+                 aria-labelledby="task_modal_{{ task.position }}_label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="task_modal_{{ task.position }}_label">
+                                {% trans "Task" %} {{ task.position }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    data-bs-target="#task_modal_{{ task.position }}"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body task_modal_part">
+                            {{ task.content | safe }}
+                        </div>
+                        <div class="modal-footer task_modal_part task_answers_container">
+                            {% if part.info.answer_type == 0 %}
+                                {% for option in task.options %}
+                                    <div class="task_answer {% if option.is_answer %}correct{% else %}incorrect{% endif %}">
+                                        {{ forloop.counter }}.&nbsp;{{ option.content | safe }}
+                                    </div>
+                                {% endfor %}
+                            {% elif part.info.answer_type == 1 %}
+                                {% for option in task.options %}
+                                    <div class="task_answer {% if option.is_answer %}correct{% else %}incorrect{% endif %}">
+                                        {{ option.content | safe }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <!-- task modals END -->
+
     <!-- header START -->
     <header style="margin: 0 !important; background: var(--white);">
         <nav class="container-fluid border-bottom">
@@ -47,30 +87,25 @@
                             </h2>
                             <div id="panel_collapse_{{ forloop.counter }}" class="accordion-collapse collapse show">
                                 <div class="accordion-body task_container">
-                                    {% if part.info.answer_type == 0 %}
-                                        {% for task in part.material %}
-                                            <div class="task_body text-center">
-                                                <label for="task_{{ task.position }}" class="form-label">
+                                    {% for task in part.material %}
+                                        <div class="task_body text-center">
+                                            <label for="task_{{ task.position }}" class="form-label">
+                                                <a href="#" data-bs-toggle="modal"
+                                                   data-bs-target="#task_modal_{{ task.position }}">
                                                     {{ task.position }}
-                                                </label>
+                                                </a>
+                                            </label>
+                                            {% if part.info.answer_type == 0 %}
                                                 <input type="number" min="1" max="4" class="form-control task_0"
-                                                       id="task_{{ task.position }}"
-                                                       placeholder="
+                                                       id="task_{{ task.position }}" placeholder="
 {% for o in task.options %}{% if o.is_answer %}{{ forloop.counter }}{% endif %}{% endfor %}">
-                                            </div>
-                                        {% endfor %}
-                                    {% elif part.info.answer_type == 1 %}
-                                        {% for task in part.material %}
-                                            <div class="task_body text-center">
-                                                <label for="task_{{ task.position }}" class="form-label">
-                                                    {{ task.position }}
-                                                </label>
+                                            {% elif part.info.answer_type == 1 %}
                                                 <input type="text" class="form-control task_1"
                                                        id="task_{{ task.position }}"
                                                        placeholder="{{ task.options.0.content|re_clean }}">
-                                            </div>
-                                        {% endfor %}
-                                    {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -99,6 +134,7 @@
 {% endblock %}
 
 {% block extra_js_custom_logic %}
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG"></script>
     <script>
         // add "custom-container" class to body
         document.body.classList.add("custom-container");
