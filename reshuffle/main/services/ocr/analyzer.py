@@ -1,11 +1,3 @@
-# import os
-#
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reshuffle.settings")
-# import django
-#
-# django.setup()
-
-import json
 import re
 from math import ceil
 import numpy as np
@@ -271,28 +263,58 @@ class Analyzer:
         return fields_answers, fields_correction
 
     def score(self, variant: dict, fields_answers: dict, fields_correction: ndarray) -> dict:
-        return {"scored": True}
+        # apply corrections
+        for k in fields_answers.keys():
+            if fields_answers[k]["answer_type"] == 0:
+                material = fields_answers[k]["material"].copy()
+                fields_answers[k]["material"] = []
+                for i in range(len(material)):
+                    fields_answers[k]["material"].append({
+                        "answer": list(material[i]).index(True) + 1 if True in material[i] else 0,
+                        "edited": False
+                    })
+        for edit in fields_correction:
+            if edit != "":
+                part = edit[0]
+                task = edit[1:-1]
+                answer = int(edit[-1])
+                try:
+                    fields_answers[part]["material"][int(task) - 1] = {"answer": answer, "edited": True}
+                except:
+                    pass
+        # copy variant dict
+        variant_scored = variant.copy()
+        # create new fields [scores]
+        variant_scored["total_score"] = sum([p["info"]["task_count"] for p in variant_scored["parts"]])
+        variant_scored["achieved_score"] = 0
+        # create new fields [tasks]
+        for part in variant_scored["parts"]:
+            # task type 0
+            if part["info"]["answer_type"] == 0:
+                for i, task in enumerate(part["material"]):
+                    part["material"][i]["answer"] = fields_answers[part["info"]["title"]]["material"][i]["answer"]
+                    part["material"][i]["edited"] = fields_answers[part["info"]["title"]]["material"][i]["edited"]
+                    part["material"][i]["is_correct"] = [o["is_answer"] for o in task["options"]].index(True) + 1 == \
+                                                        fields_answers[part["info"]["title"]]["material"][i]["answer"]
+                    variant_scored["achieved_score"] += part["material"][i]["is_correct"]
+            # task type 1
+            elif part["info"]["answer_type"] == 1:
+                for i, task in enumerate(part["material"]):
+                    answers = [
+                        re.sub(
+                            re.compile("<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});"),
+                            "",
+                            o["content"]
+                        ).strip().lower()
+                        for o in task["options"] if o["is_answer"]
+                    ]
+                    # TODO: make a soft comparison (with accuracy rate)
+                    part["material"][i]["answer"] = fields_answers[part["info"]["title"]]["material"][i].strip().lower()
+                    part["material"][i]["is_correct"] = part["material"][i]["answer"] in answers
+                    variant_scored["achieved_score"] += part["material"][i]["is_correct"]
+        # return result
+        return {"scored": True, "variant": variant_scored}
 
 
 if __name__ == "__main__":
-    img_base = cv2.imread("test_GDEHFS.png")
-    with open("data_GDEHFS.json", "r", encoding="UTF-8") as f:
-        data_base = json.load(f)
-    a = Analyzer()
-    img_grayscale = a.grayscale(img_base)
-    img_restore_perspective = a.restore_perspective(img_grayscale)
-    img_threshold = a.threshold(img_restore_perspective)
-    img_mask = a.find_mask(img_threshold)
-
-    cv2.imwrite("threshold.png", img_threshold)
-    cv2.imwrite("mask.png", img_mask)
-
-    st = a.calc_stats(img_threshold)
-
-    uk = a.get_unique_key(img_threshold, st, data_base)
-    print(uk)
-
-    filtered = list(filter(lambda v: v["unique_key"] == uk, data_base["variants"]))
-    v = filtered[0] if filtered else data_base["variants"][0]
-    f_answers, f_correction = a.get_fields(img_threshold, st, v)
-    print(f_answers, "\n", f_correction)
+    pass

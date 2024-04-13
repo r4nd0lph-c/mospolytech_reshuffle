@@ -260,16 +260,16 @@ class Score(VerificationChildTemplateView):
         alias = f"{kwargs['prefix']}/{FOLDER_CAPTURED}/{kwargs['unique_key']}.{IMAGE_FORMAT}"
         img_data = minio_client.get_object_content(alias=alias, decoded=False).data
         img_threshold = cv2.imdecode(np.frombuffer(img_data, np.uint8), cv2.IMREAD_GRAYSCALE)
+        variants = json.loads(
+            minio_client.get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}")
+        )["variants"]
+        variant = list(filter(lambda v: v["unique_key"] == kwargs["unique_key"], variants))[0]
         try:
             stats = analyzer.calc_stats(img_threshold)
-            variants = json.loads(
-                minio_client.get_object_content(f"{kwargs['prefix']}/{GeneratorJSON.OUTPUT_JSON}")
-            )["variants"]
-            variant = list(filter(lambda v: v["unique_key"] == kwargs["unique_key"], variants))[0]
             f_answers, f_correction = analyzer.get_fields(img_threshold, stats, variant)
             score_result = analyzer.score(variant, f_answers, f_correction)
         except:
-            score_result = {"scored": False}
+            score_result = {"scored": False, "variant": variant}
         context = super().get_context_data(**kwargs)
         context["title"] = _("Score") + " | " + PROJECT_NAME
         context["subtitle"] = _("Score the work of applicant")
