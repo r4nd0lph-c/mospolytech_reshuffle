@@ -347,8 +347,16 @@ header .display-6 {
     width: 70px;
 }
 
+.task_0::-webkit-input-placeholder {
+    color: var(--secondary);
+}
+
 .task_1 {
     width: 180px;
+}
+
+.task_1::-webkit-input-placeholder {
+    color: var(--secondary);
 }
 
 .task_answers_container {

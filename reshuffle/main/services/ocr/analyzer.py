@@ -305,11 +305,11 @@ class Analyzer:
                             re.compile("<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});"),
                             "",
                             o["content"]
-                        ).strip().lower()
+                        ).strip().upper()
                         for o in task["options"] if o["is_answer"]
                     ]
                     # TODO: make a soft comparison (with accuracy rate)
-                    part["material"][i]["answer"] = fields_answers[part["info"]["title"]]["material"][i].strip().lower()
+                    part["material"][i]["answer"] = fields_answers[part["info"]["title"]]["material"][i].strip().upper()
                     part["material"][i]["is_correct"] = part["material"][i]["answer"] in answers
                     variant_scored["achieved_score"] += part["material"][i]["is_correct"]
         # return result

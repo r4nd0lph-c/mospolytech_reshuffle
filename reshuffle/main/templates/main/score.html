@@ -93,16 +93,25 @@
                                                 <a href="#" data-bs-toggle="modal"
                                                    data-bs-target="#task_modal_{{ task.position }}">
                                                     {{ task.position }}
+                                                    {% if  task.edited %}
+                                                        <span class="badge rounded-circle bg-primary"
+                                                              data-bs-toggle="tooltip"
+                                                              data-bs-title="{% trans 'Edited' %}">!</span>
+                                                    {% endif %}
                                                 </a>
                                             </label>
                                             {% if part.info.answer_type == 0 %}
                                                 <input type="number" min="1" max="4" class="form-control task_0"
-                                                       id="task_{{ task.position }}" placeholder="
-{% for o in task.options %}{% if o.is_answer %}{{ forloop.counter }}{% endif %}{% endfor %}">
+                                                       id="task_{{ task.position }}"
+                                                       placeholder="{% for o in task.options %}{% if o.is_answer %}{{ forloop.counter }}{% endif %}{% endfor %}"
+                                                       value="{% if score_result.scored %}{% if task.answer %}{{ task.answer }}{% else %}{{ "" }}{% endif %}{% else %}{{ "" }}{% endif %}"
+                                                >
                                             {% elif part.info.answer_type == 1 %}
                                                 <input type="text" class="form-control task_1"
                                                        id="task_{{ task.position }}"
-                                                       placeholder="{{ task.options.0.content|re_clean }}">
+                                                       placeholder="{{ task.options.0.content|re_clean }}"
+                                                       value="{% if score_result.scored %}{% if task.answer %}{{ task.answer }}{% else %}{{ "" }}{% endif %}{% else %}{{ "" }}{% endif %}"
+                                                >
                                             {% endif %}
                                         </div>
                                     {% endfor %}
@@ -121,14 +130,21 @@
     <!-- main END -->
 
     <!--footer START -->
-    <footer style="margin: 0; padding: 12px; background: white; border-top: 1px solid var(--bs-border-color);">
-        <a class="btn btn-light" style="min-width: 152px; margin-right: 12px;"
-           href="{% url 'capture' prefix=prefix %}">
-            {% trans "Back to scanning" %}
-        </a>
-        <button class="btn btn-primary" style="min-width: 152px;">
-            {% trans "Accept" %}
-        </button>
+    <footer style="margin: 0; padding: 12px; background: white; border-top: 1px solid var(--bs-border-color); display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+        <div>
+            {% trans "Score" %}:
+            &nbsp;
+            <b id="score_text">{{ score_result.variant.achieved_score }} / {{ score_result.variant.total_score }}</b>
+        </div>
+        <div>
+            <a class="btn btn-light" style="min-width: 152px; margin-right: 12px;"
+               href="{% url 'capture' prefix=prefix %}">
+                {% trans "Back to scanning" %}
+            </a>
+            <button class="btn btn-primary" style="min-width: 152px;">
+                {% trans "Accept" %}
+            </button>
+        </div>
     </footer>
     <!--footer END -->
 {% endblock %}
@@ -139,7 +155,11 @@
         // add "custom-container" class to body
         document.body.classList.add("custom-container");
 
-        // init elements
+        // init tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+        // init elements for resizing
         let header = document.querySelector("header");
         let footer = document.querySelector("footer");
         let frame_panel = document.getElementById("frame_panel");
@@ -164,5 +184,65 @@
         // activate resize
         window.addEventListener("resize", calc_sizes);
         calc_sizes();
+
+        // get score
+        let s = document.getElementById("score_text").textContent.split("/");
+        let achieved_score = parseInt(s[0]);
+        let total_score = parseInt(s[1]);
+
+        // init elements for check inputs & add change listeners
+        let task_inputs = document.querySelectorAll(".task_0, .task_1");
+        [...task_inputs].forEach((input) => {
+            check_input(input);
+            input.addEventListener("change", function () {
+                check_input(input);
+            });
+        });
+
+        // calculate score &  change task input color
+        function check_input(input) {
+            // find task type
+            let task_type = -1;
+            [...input.classList].forEach((c) => {
+                if (c.startsWith("task_")) {
+                    task_type = parseInt(c[c.length - 1]);
+                }
+            });
+            // calc score & change color
+            if (task_type === 0) {
+                // [type 0]
+                let ans_correct = input.getAttribute("placeholder");
+                let ans_entered = input.value;
+                if (ans_entered) {
+                    if (ans_correct === ans_entered) {
+                        input.style.border = "var(--bs-border-width) solid var(--bs-success)";
+                    } else {
+                        input.style.border = "var(--bs-border-width) solid var(--bs-danger)";
+                    }
+                } else {
+                    input.style.border = "var(--bs-border-width) solid var(--bs-border-color)";
+                }
+            } else if (task_type === 1) {
+                // [type 1]
+                let ans_correct = [];
+                let modal = document.getElementById(`${input.id.split("_")[0]}_modal_${input.id.split("_")[1]}`);
+                let ans_container = modal.children[0].children[0].children[2];
+                [...ans_container.children].forEach((ans) => {
+                    ans_correct.push(ans.innerText.trim().toUpperCase());
+                });
+                let ans_entered = input.value;
+                if (ans_entered) {
+                    if (ans_correct.includes(ans_entered.toUpperCase())) {
+                        input.style.border = "var(--bs-border-width) solid var(--bs-success)";
+                    } else {
+                        input.style.border = "var(--bs-border-width) solid var(--bs-danger)";
+                    }
+                } else {
+                    input.style.border = "var(--bs-border-width) solid var(--bs-border-color)";
+                }
+            }
+            // update score string
+            document.getElementById("score_text").textContent = `${achieved_score} / ${total_score}`;
+        }
     </script>
 {% endblock %}
