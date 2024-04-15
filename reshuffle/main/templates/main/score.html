@@ -136,14 +136,22 @@
             &nbsp;
             <b id="score_text">{{ score_result.variant.achieved_score }} / {{ score_result.variant.total_score }}</b>
         </div>
-        <div>
-            <a class="btn btn-light" style="min-width: 152px; margin-right: 12px;"
+        <div style="display: flex; flex-wrap: wrap; justify-content: flex-end;">
+            <a class="btn btn-light" style="min-width: 152px; margin: 0 6px;"
                href="{% url 'capture' prefix=prefix %}">
                 {% trans "Back to scanning" %}
             </a>
-            <button class="btn btn-primary" style="min-width: 152px;">
-                {% trans "Accept" %}
-            </button>
+            <!-- score form START -->
+            <form method="post" style="margin: 0 6px;">
+                {% csrf_token %}
+                {{ form.prefix }}
+                {{ form.unique_key }}
+                {{ form.score }}
+                <button class="btn btn-primary" style="min-width: 152px;" type="submit">
+                    {% trans "Accept" %}
+                </button>
+            </form>
+            <!-- score form END -->
         </div>
     </footer>
     <!--footer END -->
@@ -190,6 +198,11 @@
         let achieved_score = parseInt(s[0]);
         let total_score = parseInt(s[1]);
 
+        // set values for hidden inputs
+        document.getElementById("id_prefix").value = "{{ prefix }}";
+        document.getElementById("id_unique_key").value = "{{ unique_key }}";
+        document.getElementById("id_score").value = achieved_score;
+
         // init elements for check inputs & add change listeners
         let task_inputs = document.querySelectorAll(".task_0, .task_1");
         [...task_inputs].forEach((input) => {
@@ -230,7 +243,7 @@
                 [...ans_container.children].forEach((ans) => {
                     ans_correct.push(ans.innerText.trim().toUpperCase());
                 });
-                let ans_entered = input.value;
+                let ans_entered = input.value.trim();
                 if (ans_entered) {
                     if (ans_correct.includes(ans_entered.toUpperCase())) {
                         input.style.border = "var(--bs-border-width) solid var(--bs-success)";
@@ -241,8 +254,10 @@
                     input.style.border = "var(--bs-border-width) solid var(--bs-border-color)";
                 }
             }
-            // update score string
+            // TODO: update achieved_score value
+            // update score string & hidden input value
             document.getElementById("score_text").textContent = `${achieved_score} / ${total_score}`;
+            document.getElementById("id_score").value = achieved_score;
         }
     </script>
 {% endblock %}

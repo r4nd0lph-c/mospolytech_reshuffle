@@ -316,6 +316,12 @@ class VerifiedWorkEntryAdmin(AdministrationEntry):
 
     username.short_description = VerifiedWorkEntry._meta.get_field("user").verbose_name
 
+    def delete_queryset(self, request, qs):
+        mc = MinioClient()
+        for obj in qs:
+            mc.delete_object(obj.alias)
+        qs.delete()
+
     class Media:
         js = ("admin/js/model_verified_work_entry_modification.js",)
 

@@ -359,6 +359,11 @@ class VerifiedWorkEntry(AbstractDatestamp):
         verbose_name=_("Scan of the work")
     )
 
+    def delete(self, *args, **kwargs):
+        mc = MinioClient()
+        mc.delete_object(self.alias)
+        super().delete(*args, **kwargs)
+
     def __str__(self):
         return f"ID: {self.id}, {self.unique_key}, {self.archive.prefix}"
 

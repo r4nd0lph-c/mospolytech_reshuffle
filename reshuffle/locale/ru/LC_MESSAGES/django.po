@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-13 17:04+0300\n"
-"PO-Revision-Date: 2024-04-13 17:04+0300\n"
+"POT-Creation-Date: 2024-04-15 15:34+0300\n"
+"PO-Revision-Date: 2024-04-15 15:34+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -37,7 +37,7 @@ msgid "No"
 msgstr "Нет"
 
 #: .\main\admin.py:61 .\main\admin.py:95 .\main\models.py:62
-#: .\main\models.py:98 .\main\models.py:301 .\main\models.py:383
+#: .\main\models.py:98 .\main\models.py:301 .\main\models.py:388
 msgid "Subject"
 msgstr "Предмет"
 
@@ -71,8 +71,8 @@ msgid "The search is performed by prefix"
 msgstr "Поиск осуществляется по префиксу"
 
 #: .\main\admin.py:295 .\main\templates\main\download.html:19
-#: .\main\templates\main\download.html:28 .\main\views.py:50
-#: .\main\views.py:185 .\main\views.py:207
+#: .\main\templates\main\download.html:28 .\main\views.py:51
+#: .\main\views.py:186 .\main\views.py:208
 msgid "Download"
 msgstr "Скачать"
 
@@ -80,7 +80,7 @@ msgstr "Скачать"
 msgid "The search is performed by unique key"
 msgstr "Поиск осуществляется по уникальному ключу"
 
-#: .\main\apps.py:8 .\main\views.py:137
+#: .\main\apps.py:8 .\main\views.py:138
 msgid "Main"
 msgstr "Главная"
 
@@ -111,6 +111,20 @@ msgstr "дд.мм.гггг"
 #: .\main\forms.py:74
 msgid "Number of variants"
 msgstr "Количество вариантов"
+
+#: .\main\forms.py:84 .\main\models.py:314
+msgid "Prefix"
+msgstr "Префикс"
+
+#: .\main\forms.py:85 .\main\models.py:350
+#: .\main\templates\main\capture.html:45 .\main\templates\main\score.html:61
+msgid "Unique key"
+msgstr "Уникальный ключ"
+
+#: .\main\forms.py:86 .\main\models.py:354 .\main\templates\main\score.html:135
+#: .\main\views.py:278
+msgid "Score"
+msgstr "Оценка"
 
 #: .\main\models.py:16
 msgid "Easy"
@@ -389,10 +403,6 @@ msgstr "Дата экзамена, для которого был создан �
 msgid "Unique name of the archive"
 msgstr "Уникальное имя архива"
 
-#: .\main\models.py:314
-msgid "Prefix"
-msgstr "Префикс"
-
 #: .\main\models.py:327 .\main\models.py:345
 msgid "Object storage entry"
 msgstr "Запись объектного хранилища"
@@ -417,19 +427,9 @@ msgstr "Архив, к которому относится работа"
 msgid "Work variant number from the archive"
 msgstr "Номер варианта работы из архива"
 
-#: .\main\models.py:350 .\main\templates\main\capture.html:45
-#: .\main\templates\main\score.html:61
-msgid "Unique key"
-msgstr "Уникальный ключ"
-
 #: .\main\models.py:353
 msgid "Number of points scored (primary system)"
 msgstr "Количество набранных баллов ( первичная система)"
-
-#: .\main\models.py:354 .\main\templates\main\score.html:135
-#: .\main\views.py:274
-msgid "Score"
-msgstr "Оценка"
 
 #: .\main\models.py:358
 msgid "Image of scanned and verified work from object storage"
@@ -440,34 +440,34 @@ msgstr ""
 msgid "Scan of the work"
 msgstr "Скан работы"
 
-#: .\main\models.py:367
+#: .\main\models.py:372
 msgid "Verified work entry"
 msgstr "Запись проверенной работы"
 
-#: .\main\models.py:368
+#: .\main\models.py:373
 msgid "Verified work entries"
 msgstr "Записи проверенной работы"
 
-#: .\main\models.py:376
+#: .\main\models.py:381
 msgid "Group for which access to subjects is granted"
 msgstr "Группа, для которой предоставляется доступ к предметам"
 
-#: .\main\models.py:377
+#: .\main\models.py:382
 msgid "Group"
 msgstr "Группа"
 
-#: .\main\models.py:382
+#: .\main\models.py:387
 msgid ""
 "One of the subjects that will be available for interaction by the selected "
 "group"
 msgstr ""
 "Один из предметов, который будет доступен для взаимодействия выбранной группе"
 
-#: .\main\models.py:391
+#: .\main\models.py:396
 msgid "Access"
 msgstr "Право доступа"
 
-#: .\main\models.py:392
+#: .\main\models.py:397
 msgid "Accesses"
 msgstr "Права доступа"
 
@@ -531,7 +531,7 @@ msgstr "Содержание"
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:420
+#: .\main\templates\main\404.html:17 .\main\views.py:455
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -674,7 +674,7 @@ msgstr ""
 "попробуйте перезагрузить страницу. Если эти действия не помогли, вы можете "
 "воспользоваться опцией загрузки изображения с компьютера."
 
-#: .\main\templates\main\capture.html:145 .\main\views.py:229
+#: .\main\templates\main\capture.html:145 .\main\views.py:230
 msgid "Capture"
 msgstr "Сканирование"
 
@@ -694,7 +694,7 @@ msgstr "Материалы подготавливаются"
 msgid "Approximate waiting time: <b id=\"waiting_time\"></b> min."
 msgstr "Примерное время ожидания: <b id=\"waiting_time\"></b> мин."
 
-#: .\main\templates\main\creation.html:33 .\main\views.py:149
+#: .\main\templates\main\creation.html:33 .\main\views.py:150
 msgid "Creation"
 msgstr "Создание"
 
@@ -814,7 +814,7 @@ msgstr "Исправлено"
 msgid "Back to scanning"
 msgstr "К сканированию"
 
-#: .\main\templates\main\score.html:145
+#: .\main\templates\main\score.html:151
 msgid "Accept"
 msgstr "Подтвердить"
 
@@ -878,63 +878,67 @@ msgid ""
 msgstr ""
 "Здесь появится список проверенных работ из архива. На данный момент их нет."
 
-#: .\main\views.py:80 .\main\views.py:256
+#: .\main\views.py:81 .\main\views.py:258
 msgid "The specified archive prefix is invalid"
 msgstr "Указанный префикс архива неверен"
 
-#: .\main\views.py:95
+#: .\main\views.py:96
 msgid "Date verified"
 msgstr "Дата проверки"
 
-#: .\main\views.py:114
+#: .\main\views.py:115
 msgid "Auth"
 msgstr "Авторизация"
 
-#: .\main\views.py:115
+#: .\main\views.py:116
 msgid "Entrance exam processing system"
 msgstr "Система обработки экзаменов"
 
-#: .\main\views.py:138
+#: .\main\views.py:139
 msgid "Select an activity"
 msgstr "Выберите действие"
 
-#: .\main\views.py:150
+#: .\main\views.py:151
 msgid "Create a set of entrance exams"
 msgstr "Создайте набор экзаменов"
 
-#: .\main\views.py:186
+#: .\main\views.py:187
 msgid "Download a set of entrance exams"
 msgstr "Скачайте набор экзаменов"
 
-#: .\main\views.py:199
+#: .\main\views.py:200
 msgid "Verification"
 msgstr "Проверка"
 
-#: .\main\views.py:200
+#: .\main\views.py:201
 msgid "Verify works of applicants"
 msgstr "Проверьте работы абитуриентов"
 
-#: .\main\views.py:204
+#: .\main\views.py:205
 msgid "Verification progress"
 msgstr "Прогресс проверки"
 
-#: .\main\views.py:230
+#: .\main\views.py:231
 msgid "Select the work to be verified"
 msgstr "Выберите работу для проверки"
 
-#: .\main\views.py:247
+#: .\main\views.py:249
 msgid "The requested image was not found"
 msgstr "Запрашиваемое изображение не найдено"
 
-#: .\main\views.py:252
+#: .\main\views.py:254
 msgid "The specified unique key is invalid"
 msgstr "Указанный уникальный ключ неверен"
 
-#: .\main\views.py:275
+#: .\main\views.py:279
 msgid "Score the work of applicant"
 msgstr "Оцените работу абитуриента"
 
-#: .\main\views.py:408
+#: .\main\views.py:311
+msgid "The work is scored"
+msgstr "Работа оценена"
+
+#: .\main\views.py:443
 msgid "No image could be found as requested"
 msgstr "Запрашиваемое изображение не найдено"
 

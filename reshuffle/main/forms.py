@@ -78,3 +78,9 @@ class CreationForm(forms.Form):
             }
         )
     )
+
+
+class ScoreForm(forms.Form):
+    prefix = forms.CharField(label=_("Prefix"), widget=forms.TextInput(attrs={"type": "hidden"}))
+    unique_key = forms.CharField(label=_("Unique key"), widget=forms.TextInput(attrs={"type": "hidden"}))
+    score = forms.IntegerField(label=_("Score"), widget=forms.TextInput(attrs={"type": "hidden"}))

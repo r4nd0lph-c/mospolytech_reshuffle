@@ -13,6 +13,7 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView, FormView, ListView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.core.exceptions import ObjectDoesNotExist
 from reshuffle.settings import PROJECT_NAME, LANGUAGE_CODE
 from main.forms import *
 from main.models import *
@@ -231,8 +232,9 @@ class Capture(VerificationChildTemplateView):
         return context
 
 
-class Score(VerificationChildTemplateView):
+class Score(VerificationChildTemplateView, FormView):
     template_name = "main/score.html"
+    form_class = ScoreForm
 
     def get(self, request, *args, **kwargs):
         try:
@@ -269,6 +271,8 @@ class Score(VerificationChildTemplateView):
             f_answers, f_correction = analyzer.get_fields(img_threshold, stats, variant)
             score_result = analyzer.score(variant, f_answers, f_correction)
         except:
+            variant["total_score"] = sum([p["info"]["task_count"] for p in variant["parts"]])
+            variant["achieved_score"] = 0
             score_result = {"scored": False, "variant": variant}
         context = super().get_context_data(**kwargs)
         context["title"] = _("Score") + " | " + PROJECT_NAME
@@ -276,6 +280,37 @@ class Score(VerificationChildTemplateView):
         context["img_threshold_url"] = minio_client.get_object_url(alias=alias)
         context["score_result"] = score_result
         return context
+
+    def form_valid(self, form):
+        prefix = form.cleaned_data["prefix"]
+        unique_key = form.cleaned_data["unique_key"]
+        score = form.cleaned_data["score"]
+        try:
+            entry = VerifiedWorkEntry.objects.get(
+                archive=ObjectStorageEntry.objects.filter(prefix=prefix).first(),
+                unique_key=unique_key
+            )
+            entry.delete()
+        except ObjectDoesNotExist:
+            pass
+        finally:
+            entry = VerifiedWorkEntry(
+                user=self.request.user,
+                archive=ObjectStorageEntry.objects.filter(prefix=prefix).first(),
+                unique_key=unique_key,
+                score=score,
+                alias=f"{prefix}/{FOLDER_SCORED}/{unique_key}.{IMAGE_FORMAT}"
+            )
+            entry.save()
+        minio_client.rename_object(
+            alias_old=f"{prefix}/{FOLDER_CAPTURED}/{unique_key}.{IMAGE_FORMAT}",
+            alias_new=f"{prefix}/{FOLDER_SCORED}/{unique_key}.{IMAGE_FORMAT}"
+        )
+        messages.success(
+            self.request,
+            _("The work is scored") + f": <b class='uk'>{unique_key}</b> <b>({score})</b>"
+        )
+        return redirect(reverse_lazy("capture", kwargs={"prefix": form.cleaned_data['prefix']}))
 
 
 def download_archive(request, prefix: str = None):
