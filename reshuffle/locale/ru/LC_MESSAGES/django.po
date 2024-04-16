@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-15 15:34+0300\n"
-"PO-Revision-Date: 2024-04-15 15:34+0300\n"
+"POT-Creation-Date: 2024-04-16 18:23+0300\n"
+"PO-Revision-Date: 2024-04-16 18:23+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -117,11 +117,11 @@ msgid "Prefix"
 msgstr "Префикс"
 
 #: .\main\forms.py:85 .\main\models.py:350
-#: .\main\templates\main\capture.html:45 .\main\templates\main\score.html:61
+#: .\main\templates\main\capture.html:45 .\main\templates\main\score.html:82
 msgid "Unique key"
 msgstr "Уникальный ключ"
 
-#: .\main\forms.py:86 .\main\models.py:354 .\main\templates\main\score.html:135
+#: .\main\forms.py:86 .\main\models.py:354 .\main\templates\main\score.html:156
 #: .\main\views.py:278
 msgid "Score"
 msgstr "Оценка"
@@ -284,7 +284,7 @@ msgstr "Недопустимое значение"
 #: .\main\models.py:167 .\main\models.py:170 .\main\models.py:184
 #: .\main\templates\docs\template_answers.html:142
 #: .\main\templates\docs\template_tasks.html:102
-#: .\main\templates\main\score.html:83
+#: .\main\templates\main\score.html:104
 msgid "Part"
 msgstr "Часть"
 
@@ -322,7 +322,7 @@ msgid "Determines if this task is included in document generation"
 msgstr "Определяет, включено ли это задание в генерацию документов"
 
 #: .\main\models.py:224 .\main\models.py:233
-#: .\main\templates\main\score.html:17
+#: .\main\templates\main\score.html:38
 msgid "Task"
 msgstr "Задание"
 
@@ -429,7 +429,7 @@ msgstr "Номер варианта работы из архива"
 
 #: .\main\models.py:353
 msgid "Number of points scored (primary system)"
-msgstr "Количество набранных баллов ( первичная система)"
+msgstr "Количество набранных баллов (первичная система)"
 
 #: .\main\models.py:358
 msgid "Image of scanned and verified work from object storage"
@@ -631,7 +631,7 @@ msgid "there is nothing unnecessary in the image"
 msgstr "на изображении нет ничего лишнего"
 
 #: .\main\templates\main\capture.html:105 .\main\templates\main\download.html:9
-#: .\main\templates\main\score.html:59
+#: .\main\templates\main\score.html:80
 msgid "Archive"
 msgstr "Архив"
 
@@ -639,12 +639,12 @@ msgstr "Архив"
 msgid "Works verified"
 msgstr "Проверенных работ"
 
-#: .\main\templates\main\capture.html:109 .\main\templates\main\score.html:63
+#: .\main\templates\main\capture.html:109 .\main\templates\main\score.html:84
 #: .\main\templates\main\verification_child.html:14
 msgid "Stats"
 msgstr "Статистика"
 
-#: .\main\templates\main\capture.html:111 .\main\templates\main\score.html:65
+#: .\main\templates\main\capture.html:111 .\main\templates\main\score.html:86
 msgid "End session"
 msgstr "Завершить сессию"
 
@@ -806,15 +806,19 @@ msgstr ""
 "В будущем здесь появится информация об архивах, которые вам доступны для "
 "скачивания. В настоящий момент таких нет."
 
-#: .\main\templates\main\score.html:99
+#: .\main\templates\main\score.html:15
+msgid "The system failed to perform the initial scoring"
+msgstr "Не удалось выполнить начальную оценку"
+
+#: .\main\templates\main\score.html:120
 msgid "Edited"
 msgstr "Исправлено"
 
-#: .\main\templates\main\score.html:142
+#: .\main\templates\main\score.html:163
 msgid "Back to scanning"
 msgstr "К сканированию"
 
-#: .\main\templates\main\score.html:151
+#: .\main\templates\main\score.html:172
 msgid "Accept"
 msgstr "Подтвердить"
 
