@@ -326,6 +326,33 @@ class VerifiedWorkEntryAdmin(AdministrationEntry):
         js = ("admin/js/model_verified_work_entry_modification.js",)
 
 
+@admin.register(FeedbackInfo)
+class FeedbackInfoAdmin(admin.ModelAdmin):
+    list_display = ("id", "pretty_content", "is_active", "created", "updated",)
+    list_display_links = ("id",)
+    ordering = ("-is_active", "-updated",)
+
+    def pretty_content(self, obj: "FeedbackInfo"):
+        return mark_safe(f"<div class='td_content'> {obj.content} </div>")
+
+    pretty_content.short_description = FeedbackInfo._meta.get_field("content").verbose_name
+
+    def delete_queryset(self, request, qs):
+        if qs.filter(is_active=True):
+            qs_remaining = FeedbackInfo.objects.order_by("-updated").exclude(id__in=qs.values("id"))
+            if qs_remaining:
+                obj = qs_remaining[0]
+                obj.is_active = True
+                obj.save()
+        qs.delete()
+
+    class Media:
+        css = {
+            "all": ("admin/css/ckeditor_modification.css",)
+        }
+        js = ("admin/js/ckeditor_modification.js",)
+
+
 # AUTHENTICATION AND AUTHORIZATION ----------------------------------------------------------------------------------- #
 @admin.register(Access)
 class AccessAdmin(admin.ModelAdmin):

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-18 16:23+0300\n"
-"PO-Revision-Date: 2024-04-18 16:23+0300\n"
+"POT-Creation-Date: 2024-04-18 21:38+0300\n"
+"PO-Revision-Date: 2024-04-18 21:38+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -36,8 +36,8 @@ msgstr "Да"
 msgid "No"
 msgstr "Нет"
 
-#: .\main\admin.py:61 .\main\admin.py:95 .\main\models.py:62
-#: .\main\models.py:98 .\main\models.py:301 .\main\models.py:388
+#: .\main\admin.py:61 .\main\admin.py:95 .\main\models.py:89
+#: .\main\models.py:125 .\main\models.py:307 .\main\models.py:407
 msgid "Subject"
 msgstr "Предмет"
 
@@ -71,8 +71,8 @@ msgid "The search is performed by prefix"
 msgstr "Поиск осуществляется по префиксу"
 
 #: .\main\admin.py:295 .\main\templates\main\download.html:19
-#: .\main\templates\main\download.html:28 .\main\views.py:51
-#: .\main\views.py:186 .\main\views.py:208
+#: .\main\templates\main\download.html:28 .\main\views.py:52
+#: .\main\views.py:187 .\main\views.py:209
 msgid "Download"
 msgstr "Скачать"
 
@@ -80,7 +80,7 @@ msgstr "Скачать"
 msgid "The search is performed by unique key"
 msgstr "Поиск осуществляется по уникальному ключу"
 
-#: .\main\apps.py:8 .\main\views.py:138
+#: .\main\apps.py:8 .\main\views.py:139
 msgid "Main"
 msgstr "Главная"
 
@@ -100,7 +100,7 @@ msgstr "Запомнить меня"
 msgid "Choose a subject"
 msgstr "Выберите предмет"
 
-#: .\main\forms.py:62 .\main\models.py:309 .\main\services\docs\factory.py:161
+#: .\main\forms.py:62 .\main\models.py:315 .\main\services\docs\factory.py:161
 msgid "Exam date"
 msgstr "Дата экзамена"
 
@@ -112,17 +112,17 @@ msgstr "дд.мм.гггг"
 msgid "Number of variants"
 msgstr "Количество вариантов"
 
-#: .\main\forms.py:84 .\main\models.py:314
+#: .\main\forms.py:84 .\main\models.py:320
 msgid "Prefix"
 msgstr "Префикс"
 
-#: .\main\forms.py:85 .\main\models.py:350
+#: .\main\forms.py:85 .\main\models.py:356
 #: .\main\templates\main\capture.html:45 .\main\templates\main\score.html:82
 msgid "Unique key"
 msgstr "Уникальный ключ"
 
-#: .\main\forms.py:86 .\main\models.py:354 .\main\templates\main\score.html:156
-#: .\main\views.py:278
+#: .\main\forms.py:86 .\main\models.py:360 .\main\templates\main\score.html:156
+#: .\main\views.py:279
 msgid "Score"
 msgstr "Оценка"
 
@@ -146,100 +146,112 @@ msgstr "Дата создания"
 msgid "Date updated"
 msgstr "Дата обновления"
 
-#: .\main\models.py:38
-msgid "Title of the subject (nominative case)"
-msgstr "Название предмета (именительный падеж)"
+#: .\main\models.py:33
+msgid "Only one active entry can exist at a time"
+msgstr "Одновременно может существовать только одна активная запись"
 
-#: .\main\models.py:39 .\main\models.py:103
-msgid "Title"
-msgstr "Название"
-
-#: .\main\models.py:41
-msgid "Genitive case"
-msgstr "Родительный падеж"
-
-#: .\main\models.py:42
-msgid "Dative case"
-msgstr "Дательный падеж"
-
-#: .\main\models.py:43
-msgid "Accusative case"
-msgstr "Винительный падеж"
-
-#: .\main\models.py:44
-msgid "Instrumental case"
-msgstr "Творительный падеж"
-
-#: .\main\models.py:45
-msgid "Prepositional case"
-msgstr "Предложный падеж"
-
-#: .\main\models.py:49
-msgid "List of general rules for work performance (without specific parts)"
-msgstr "Список общих правил выполнения работы (без специфики частей)"
-
-#: .\main\models.py:50 .\main\models.py:123 .\main\models.py:194
-#: .\main\models.py:238 .\main\models.py:258
-msgid "Content"
-msgstr "Содержание"
-
-#: .\main\models.py:54
-msgid "Determines if this subject is available in the test generation list"
-msgstr "Определяет, виден ли этот предмет в списке генерации тестов"
-
-#: .\main\models.py:55 .\main\models.py:204 .\main\models.py:263
+#: .\main\models.py:34 .\main\models.py:82 .\main\models.py:231
 msgid "Activity"
 msgstr "Активность"
 
-#: .\main\models.py:63
+#: .\main\models.py:50
+msgid "Active"
+msgstr "Активен"
+
+#: .\main\models.py:50
+msgid "Inactive"
+msgstr "Неактивен"
+
+#: .\main\models.py:65
+msgid "Title of the subject (nominative case)"
+msgstr "Название предмета (именительный падеж)"
+
+#: .\main\models.py:66 .\main\models.py:130
+msgid "Title"
+msgstr "Название"
+
+#: .\main\models.py:68
+msgid "Genitive case"
+msgstr "Родительный падеж"
+
+#: .\main\models.py:69
+msgid "Dative case"
+msgstr "Дательный падеж"
+
+#: .\main\models.py:70
+msgid "Accusative case"
+msgstr "Винительный падеж"
+
+#: .\main\models.py:71
+msgid "Instrumental case"
+msgstr "Творительный падеж"
+
+#: .\main\models.py:72
+msgid "Prepositional case"
+msgstr "Предложный падеж"
+
+#: .\main\models.py:76
+msgid "List of general rules for work performance (without specific parts)"
+msgstr "Список общих правил выполнения работы (без специфики частей)"
+
+#: .\main\models.py:77 .\main\models.py:150 .\main\models.py:221
+#: .\main\models.py:265 .\main\models.py:285 .\main\models.py:386
+msgid "Content"
+msgstr "Содержание"
+
+#: .\main\models.py:81
+msgid "Determines if this subject is available in the test generation list"
+msgstr "Определяет, виден ли этот предмет в списке генерации тестов"
+
+#: .\main\models.py:90
 msgid "Subjects"
 msgstr "Предметы"
 
-#: .\main\models.py:69
+#: .\main\models.py:96
 msgid "A"
 msgstr "А"
 
-#: .\main\models.py:70
+#: .\main\models.py:97
 msgid "B"
 msgstr "Б"
 
-#: .\main\models.py:71
+#: .\main\models.py:98
 msgid "C"
 msgstr "В"
 
-#: .\main\models.py:72
+#: .\main\models.py:99
 msgid "D"
 msgstr "Г"
 
-#: .\main\models.py:75
+#: .\main\models.py:102
 msgid "Tasks with answer choice"
 msgstr "Задания с вариантом ответа"
 
-#: .\main\models.py:76
+#: .\main\models.py:103
 msgid "Tasks with short answer writing"
 msgstr "Задания с кратким ответом"
 
-#: .\main\models.py:81 .\main\models.py:82
+#: .\main\models.py:108 .\main\models.py:109
 msgid "Select a subject to enable this field"
 msgstr "Сначала выберите предмет, чтобы разблокировать это поле"
 
-#: .\main\models.py:83
+#: .\main\models.py:110
 msgid "Select a type of tasks to enable this field"
 msgstr "Сначала выберите тип заданий, чтобы разблокировать это поле"
 
-#: .\main\models.py:84
+#: .\main\models.py:111
 msgid "Select a count of tasks to enable this field"
 msgstr "Сначала выберите количество заданий, чтобы разблокировать это поле"
 
-#: .\main\models.py:87
+#: .\main\models.py:114
 msgid "Reserved title(s)"
 msgstr "Зарезервированные названия"
 
-#: .\main\models.py:88
+#: .\main\models.py:115
 msgid "Select a type of tasks in the part"
 msgstr "Выберите тип заданий для части"
 
-#: .\main\models.py:89
+#: .\main\models.py:116
 msgid ""
 "Available count of tasks taking into account the previous parts and the "
 "selected task type"
@@ -247,227 +259,222 @@ msgstr ""
 "Доступное количество заданий с учётом предыдущих частей и выбранного типа "
 "заданий"
 
-#: .\main\models.py:90
+#: .\main\models.py:117
 msgid "The recommended difficulty is set, difficulty range"
 msgstr "Установлена рекомендуемая сложность, диапазон сложности"
 
-#: .\main\models.py:97
+#: .\main\models.py:124
 msgid "Subject to which the part belongs"
 msgstr "Предмет, к которому относится часть"
 
-#: .\main\models.py:108
+#: .\main\models.py:135
 msgid "Type of tasks"
 msgstr "Тип заданий"
 
-#: .\main\models.py:113 .\main\models.py:225
+#: .\main\models.py:140 .\main\models.py:252
 #: .\main\templates\docs\template_tasks.html:12
 #: .\main\templates\docs\template_tasks.html:86
 msgid "Tasks"
 msgstr "Задания"
 
-#: .\main\models.py:117 .\main\models.py:199
+#: .\main\models.py:144 .\main\models.py:226
 msgid "Difficulty"
 msgstr "Сложность"
 
-#: .\main\models.py:122
+#: .\main\models.py:149
 msgid "List of rules for performing the tasks of this part"
 msgstr "Список правил для выполнения заданий данной части"
 
-#: .\main\models.py:137
+#: .\main\models.py:164
 msgid "Available title(s)"
 msgstr "Доступные названия"
 
-#: .\main\models.py:149 .\main\models.py:159 .\main\models.py:213
+#: .\main\models.py:176 .\main\models.py:186 .\main\models.py:240
 msgid "Invalid value"
 msgstr "Недопустимое значение"
 
-#: .\main\models.py:167 .\main\models.py:170 .\main\models.py:184
+#: .\main\models.py:194 .\main\models.py:197 .\main\models.py:211
 #: .\main\templates\docs\template_answers.html:142
 #: .\main\templates\docs\template_tasks.html:102
 #: .\main\templates\main\score.html:104
 msgid "Part"
 msgstr "Часть"
 
-#: .\main\models.py:171
+#: .\main\models.py:198
 msgid "Parts"
 msgstr "Части"
 
-#: .\main\models.py:176
+#: .\main\models.py:203
 msgid "Select a part to enable this field"
 msgstr "Сначала выберите часть, чтобы разблокировать это поле"
 
-#: .\main\models.py:177
+#: .\main\models.py:204
 msgid "Order number of the task in the part, range of valid positions"
 msgstr "Порядковый номер задания в части, диапазон допустимых позиций"
 
-#: .\main\models.py:183
+#: .\main\models.py:210
 msgid "Subject and part to which the task relates"
 msgstr "Предмет и часть, к которым относится задание"
 
-#: .\main\models.py:189
+#: .\main\models.py:216
 msgid "Position"
 msgstr "Порядковый номер"
 
-#: .\main\models.py:193
+#: .\main\models.py:220
 msgid "The essence of the task"
 msgstr "Суть задания"
 
-#: .\main\models.py:198
+#: .\main\models.py:225
 msgid "Difficulty of the task relative to other tasks of the same order number"
 msgstr ""
 "Сложность задания относительно других заданий того же порядкового номера"
 
-#: .\main\models.py:203
+#: .\main\models.py:230
 msgid "Determines if this task is included in document generation"
 msgstr "Определяет, включено ли это задание в генерацию документов"
 
-#: .\main\models.py:224 .\main\models.py:233
+#: .\main\models.py:251 .\main\models.py:260
 #: .\main\templates\main\score.html:38
 msgid "Task"
 msgstr "Задание"
 
-#: .\main\models.py:232
+#: .\main\models.py:259
 msgid "Task to which the option relates"
 msgstr "Задание, к которому относится вариант ответа"
 
-#: .\main\models.py:237
+#: .\main\models.py:264
 msgid "The essence of the option"
 msgstr "Суть варианта ответа"
 
-#: .\main\models.py:242
+#: .\main\models.py:269
 msgid "Determines if this option is the correct answer"
 msgstr "Определяет, является ли данный вариант ответа правильным"
 
-#: .\main\models.py:243
+#: .\main\models.py:270
 msgid "Correct answer"
 msgstr "Правильный ответ"
 
-#: .\main\models.py:250
+#: .\main\models.py:277
 msgid "Option"
 msgstr "Вариант ответа"
 
-#: .\main\models.py:251
+#: .\main\models.py:278
 msgid "Options"
 msgstr "Варианты ответа"
 
-#: .\main\models.py:257
+#: .\main\models.py:284
 msgid "Information about the institution organizing the testing"
 msgstr "Информация об учреждении, организующем тестирование"
 
-#: .\main\models.py:262
-msgid "Only one active document header can exist at a time"
-msgstr ""
-"Одновременно может существовать только один активный заголовок документа"
-
-#: .\main\models.py:279
-msgid "Active"
-msgstr "Активен"
-
-#: .\main\models.py:279
-msgid "Inactive"
-msgstr "Неактивен"
-
-#: .\main\models.py:283
+#: .\main\models.py:289
 msgid "Document header"
 msgstr "Заголовок документа"
 
-#: .\main\models.py:284
+#: .\main\models.py:290
 msgid "Document headers"
 msgstr "Заголовки документа"
 
-#: .\main\models.py:294
+#: .\main\models.py:300
 msgid "User who created the archive"
 msgstr "Пользователь, который создал архив"
 
-#: .\main\models.py:295
+#: .\main\models.py:301
 msgid "Creator"
 msgstr "Создатель"
 
-#: .\main\models.py:300
+#: .\main\models.py:306
 msgid "Subject for which the archive was created"
 msgstr "Предмет, для которого был создан архив"
 
-#: .\main\models.py:304
+#: .\main\models.py:310
 msgid "Amount of unique variants in the archive"
 msgstr "Количество уникальных вариантов в архиве"
 
-#: .\main\models.py:305
+#: .\main\models.py:311
 msgid "Amount"
 msgstr "Количество"
 
-#: .\main\models.py:308
+#: .\main\models.py:314
 msgid "Date of the exam for which the archive was created"
 msgstr "Дата экзамена, для которого был создан архив"
 
-#: .\main\models.py:313
+#: .\main\models.py:319
 msgid "Unique name of the archive"
 msgstr "Уникальное имя архива"
 
-#: .\main\models.py:327 .\main\models.py:345
+#: .\main\models.py:333 .\main\models.py:351
 msgid "Object storage entry"
 msgstr "Запись объектного хранилища"
 
-#: .\main\models.py:328
+#: .\main\models.py:334
 msgid "Object storage entries"
 msgstr "Записи объектного хранилища"
 
-#: .\main\models.py:338
+#: .\main\models.py:344
 msgid "User who verified the work"
 msgstr "Пользователь, который проверил работу"
 
-#: .\main\models.py:339
+#: .\main\models.py:345
 msgid "Verifying"
 msgstr "Проверяющий"
 
-#: .\main\models.py:344
+#: .\main\models.py:350
 msgid "Archive to which the work relates"
 msgstr "Архив, к которому относится работа"
 
-#: .\main\models.py:349
+#: .\main\models.py:355
 msgid "Work variant number from the archive"
 msgstr "Номер варианта работы из архива"
 
-#: .\main\models.py:353
+#: .\main\models.py:359
 msgid "Number of points scored (primary system)"
 msgstr "Количество набранных баллов (первичная система)"
 
-#: .\main\models.py:358
+#: .\main\models.py:364
 msgid "Image of scanned and verified work from object storage"
 msgstr ""
 "Изображение отсканированной и проверенной работы из объектного хранилища"
 
-#: .\main\models.py:359
+#: .\main\models.py:365
 msgid "Scan of the work"
 msgstr "Скан работы"
 
-#: .\main\models.py:372
+#: .\main\models.py:378
 msgid "Verified work entry"
 msgstr "Запись проверенной работы"
 
-#: .\main\models.py:373
+#: .\main\models.py:379
 msgid "Verified work entries"
 msgstr "Записи проверенной работы"
 
-#: .\main\models.py:381
+#: .\main\models.py:385
+msgid "Information on who to contact for feedback"
+msgstr "Информация о том, с кем можно связаться для получения обратной связи"
+
+#: .\main\models.py:391 .\main\models.py:392
+msgid "Feedback info"
+msgstr "Обратная связь"
+
+#: .\main\models.py:400
 msgid "Group for which access to subjects is granted"
 msgstr "Группа, для которой предоставляется доступ к предметам"
 
-#: .\main\models.py:382
+#: .\main\models.py:401
 msgid "Group"
 msgstr "Группа"
 
-#: .\main\models.py:387
+#: .\main\models.py:406
 msgid ""
 "One of the subjects that will be available for interaction by the selected "
 "group"
 msgstr ""
 "Один из предметов, который будет доступен для взаимодействия выбранной группе"
 
-#: .\main\models.py:396
+#: .\main\models.py:415
 msgid "Access"
 msgstr "Право доступа"
 
-#: .\main\models.py:397
+#: .\main\models.py:416
 msgid "Accesses"
 msgstr "Права доступа"
 
@@ -528,7 +535,7 @@ msgid "Table of contents"
 msgstr "Содержание"
 
 #: .\main\templates\docs\template_scoring_report.html:12
-#: .\main\templates\docs\template_scoring_report.html:69
+#: .\main\templates\docs\template_scoring_report.html:67
 msgid "Scoring report"
 msgstr "Отчёт о результатах проверки"
 
@@ -536,7 +543,7 @@ msgstr "Отчёт о результатах проверки"
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:477
+#: .\main\templates\main\404.html:17 .\main\views.py:483
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -679,7 +686,7 @@ msgstr ""
 "попробуйте перезагрузить страницу. Если эти действия не помогли, вы можете "
 "воспользоваться опцией загрузки изображения с компьютера."
 
-#: .\main\templates\main\capture.html:145 .\main\views.py:230
+#: .\main\templates\main\capture.html:145 .\main\views.py:231
 msgid "Capture"
 msgstr "Сканирование"
 
@@ -699,7 +706,7 @@ msgstr "Материалы подготавливаются"
 msgid "Approximate waiting time: <b id=\"waiting_time\"></b> min."
 msgstr "Примерное время ожидания: <b id=\"waiting_time\"></b> мин."
 
-#: .\main\templates\main\creation.html:33 .\main\views.py:150
+#: .\main\templates\main\creation.html:33 .\main\views.py:151
 msgid "Creation"
 msgstr "Создание"
 
@@ -887,67 +894,67 @@ msgid ""
 msgstr ""
 "Здесь появится список проверенных работ из архива. На данный момент их нет."
 
-#: .\main\views.py:81 .\main\views.py:258
+#: .\main\views.py:82 .\main\views.py:259
 msgid "The specified archive prefix is invalid"
 msgstr "Указанный префикс архива неверен"
 
-#: .\main\views.py:96 .\main\views.py:394
+#: .\main\views.py:97 .\main\views.py:395
 msgid "Date verified"
 msgstr "Дата проверки"
 
-#: .\main\views.py:115
+#: .\main\views.py:116
 msgid "Auth"
 msgstr "Авторизация"
 
-#: .\main\views.py:116
+#: .\main\views.py:117
 msgid "Entrance exam processing system"
 msgstr "Система обработки экзаменов"
 
-#: .\main\views.py:139
+#: .\main\views.py:140
 msgid "Select an activity"
 msgstr "Выберите действие"
 
-#: .\main\views.py:151
+#: .\main\views.py:152
 msgid "Create a set of entrance exams"
 msgstr "Создайте набор экзаменов"
 
-#: .\main\views.py:187
+#: .\main\views.py:188
 msgid "Download a set of entrance exams"
 msgstr "Скачайте набор экзаменов"
 
-#: .\main\views.py:200
+#: .\main\views.py:201
 msgid "Verification"
 msgstr "Проверка"
 
-#: .\main\views.py:201
+#: .\main\views.py:202
 msgid "Verify works of applicants"
 msgstr "Проверьте работы абитуриентов"
 
-#: .\main\views.py:205
+#: .\main\views.py:206
 msgid "Verification progress"
 msgstr "Прогресс проверки"
 
-#: .\main\views.py:231
+#: .\main\views.py:232
 msgid "Select the work to be verified"
 msgstr "Выберите работу для проверки"
 
-#: .\main\views.py:249
+#: .\main\views.py:250
 msgid "The requested image was not found"
 msgstr "Запрашиваемое изображение не найдено"
 
-#: .\main\views.py:254
+#: .\main\views.py:255
 msgid "The specified unique key is invalid"
 msgstr "Указанный уникальный ключ неверен"
 
-#: .\main\views.py:279
+#: .\main\views.py:280
 msgid "Score the work of applicant"
 msgstr "Оцените работу абитуриента"
 
-#: .\main\views.py:311
+#: .\main\views.py:312
 msgid "The work is scored"
 msgstr "Работа оценена"
 
-#: .\main\views.py:465
+#: .\main\views.py:471
 msgid "No image could be found as requested"
 msgstr "Запрашиваемое изображение не найдено"
 

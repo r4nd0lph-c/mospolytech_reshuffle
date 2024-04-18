@@ -111,10 +111,12 @@ class Auth(LoginView):
     form_class = AuthForm
 
     def get_context_data(self, **kwargs):
+        fbi = FeedbackInfo.objects.filter(is_active=True).first()
         context = super().get_context_data(**kwargs)
         context["project_name"] = PROJECT_NAME.upper()
         context["title"] = _("Auth") + " | " + PROJECT_NAME
         context["subtitle"] = _("Entrance exam processing system")
+        context["feedback_info"] = fbi.content if fbi else None
         return context
 
     def form_valid(self, form):

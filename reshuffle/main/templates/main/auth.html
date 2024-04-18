@@ -62,9 +62,9 @@
 
     <!--footer START -->
     <footer>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#auth_hlp_modal">
-            {% trans "Having problems?" %}
-        </a>
+        {% if feedback_info %}
+            <a href="#" data-bs-toggle="modal" data-bs-target="#auth_hlp_modal">{% trans "Having problems?" %}</a>
+        {% endif %}
     </footer>
     <!--footer END -->
 
@@ -77,7 +77,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-start">
-                    {# TODO: add dynamic help info #}
+                    {{ feedback_info|safe }}
                 </div>
             </div>
         </div>

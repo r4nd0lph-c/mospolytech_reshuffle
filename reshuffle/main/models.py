@@ -27,6 +27,33 @@ class AbstractDatestamp(models.Model):
         abstract = True
 
 
+class OnlyOneActive(AbstractDatestamp):
+    is_active = models.BooleanField(
+        default=True,
+        help_text=_("Only one active entry can exist at a time"),
+        verbose_name=_("Activity")
+    )
+
+    def save(self, *args, **kwargs):
+        if self.is_active:
+            type(self).objects.all().update(is_active=False)
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        qs = type(self).objects.order_by("-updated")
+        qs = qs.exclude(id=self.id)
+        if qs:
+            qs.filter(id=qs[0].id).update(is_active=True)
+        super().delete(*args, **kwargs)
+
+    def __str__(self):
+        state = _("Active") if self.is_active else _("Inactive")
+        return f"ID: {self.id}, {state}"
+
+    class Meta:
+        abstract = True
+
+
 # MAIN --------------------------------------------------------------------------------------------------------------- #
 class Subject(AbstractDatestamp):
     STR_LENGTH = 64
@@ -251,33 +278,12 @@ class Option(AbstractDatestamp):
         verbose_name_plural = " " * 1 + _("Options")
 
 
-class DocHeader(AbstractDatestamp):
+class DocHeader(OnlyOneActive):
     content = RichTextField(
         config_name="config_1",
         help_text=_("Information about the institution organizing the testing"),
         verbose_name=_("Content")
     )
-    is_active = models.BooleanField(
-        default=True,
-        help_text=_("Only one active document header can exist at a time"),
-        verbose_name=_("Activity")
-    )
-
-    def save(self, *args, **kwargs):
-        if self.is_active:
-            type(self).objects.all().update(is_active=False)
-        super().save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        qs = type(self).objects.order_by("-updated")
-        qs = qs.exclude(id=self.id)
-        if qs:
-            qs.filter(id=qs[0].id).update(is_active=True)
-        super().delete(*args, **kwargs)
-
-    def __str__(self):
-        state = _("Active") if self.is_active else _("Inactive")
-        return f"ID: {self.id}, {state}"
 
     class Meta:
         verbose_name = _("Document header")
@@ -371,6 +377,19 @@ class VerifiedWorkEntry(AbstractDatestamp):
         app_label = "admin"
         verbose_name = _("Verified work entry")
         verbose_name_plural = _("Verified work entries")
+
+
+class FeedbackInfo(OnlyOneActive):
+    content = RichTextField(
+        config_name="config_1",
+        help_text=_("Information on who to contact for feedback"),
+        verbose_name=_("Content")
+    )
+
+    class Meta:
+        app_label = "admin"
+        verbose_name = _("Feedback info")
+        verbose_name_plural = _("Feedback info")
 
 
 # AUTHENTICATION AND AUTHORIZATION ----------------------------------------------------------------------------------- #
