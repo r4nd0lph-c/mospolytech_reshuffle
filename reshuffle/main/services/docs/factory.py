@@ -38,6 +38,7 @@ class GeneratorJSON:
     OUTPUT_JSON = "data.json"
 
     def __init__(self, sbj_id: int, date: str) -> None:
+        dh = DocHeader.objects.filter(is_active=True).first()
         self.__data = {
             "subject": {
                 "id": sbj_id,
@@ -45,7 +46,7 @@ class GeneratorJSON:
                 "inst_content": Subject.objects.get(id=sbj_id).inst_content
             },
             "date": date,
-            "doc_header": DocHeader.objects.filter(is_active=True)[0].content,
+            "doc_header": dh.content if dh else "",
             "variants": []
         }
 

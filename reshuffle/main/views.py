@@ -386,8 +386,9 @@ def create_scoring_report(request, prefix: str):
         if request.user.is_authenticated:
             if prefix:
                 # create & return scoring report
+                dh = DocHeader.objects.filter(is_active=True).first()
                 data = {
-                    "doc_header": DocHeader.objects.filter(is_active=True)[0].content,
+                    "doc_header": dh.content if dh else "",
                     "subject_title": prefix.split("]")[1][1:],
                     "date": prefix.split("[")[-1][:-1],
                     "table_head": [
