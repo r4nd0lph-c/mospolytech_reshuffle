@@ -15,6 +15,7 @@ urlpatterns = [
     path("download_archive/<str:prefix>", download_archive, name="download_archive"),
     path("verification/recognize", recognize, name="recognize"),
     path("verification/rename_alias", rename_alias, name="rename_alias"),
+    path("create_scoring_report/<str:prefix>", create_scoring_report, name="create_scoring_report"),
     path("logout/", logout_user, name="logout"),
     path("validation_part/", validation_part, name="validation_part"),
     path("validation_task/", validation_task, name="validation_task"),

@@ -5,12 +5,13 @@ from io import BytesIO
 from uuid import uuid4
 from decouple import config
 from django.utils.translation import gettext_lazy as _
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView, FormView, ListView
+from django.template.loader import render_to_string
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist
@@ -374,6 +375,33 @@ def rename_alias(request):
             except:
                 # generate JSON response (error)
                 return JsonResponse({"error": "something went wrong"})
+    # generate JSON response (error)
+    return JsonResponse({"error": "you don't have enough permissions"})
+
+
+def create_scoring_report(request, prefix: str):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            if prefix:
+                # create & return scoring report
+                data = {
+                    "doc_header": DocHeader.objects.filter(is_active=True)[0].content,
+                    "subject_title": prefix.split("]")[1][1:],
+                    "date": prefix.split("[")[-1][:-1],
+                    "table_head": [
+                        VerifiedWorkEntry._meta.get_field("unique_key").verbose_name,
+                        VerifiedWorkEntry._meta.get_field("score").verbose_name,
+                        VerifiedWorkEntry._meta.get_field("user").verbose_name,
+                        _("Date verified")
+                    ],
+                    "qs": VerifiedWorkEntry.objects.filter(archive__prefix=prefix).order_by("-score")
+                }
+                # return render(request, template_name="docs/template_scoring_report.html", context=data)
+                report = render_to_string(template_name="docs/template_scoring_report.html", context=data)
+                response = HttpResponse(report, content_type="application/text charset=utf-8")
+                response["Content-Disposition"] = 'attachment; filename="scoring_report.html"'
+                return response
+
     # generate JSON response (error)
     return JsonResponse({"error": "you don't have enough permissions"})
 

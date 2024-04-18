@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-16 18:23+0300\n"
-"PO-Revision-Date: 2024-04-16 18:23+0300\n"
+"POT-Creation-Date: 2024-04-18 16:23+0300\n"
+"PO-Revision-Date: 2024-04-18 16:23+0300\n"
 "Last-Translator: r4nd0lph-c https://github.com/r4nd0lph-c\n"
 "Language-Team: Russian\n"
 "Language: Russian\n"
@@ -527,11 +527,16 @@ msgstr "Ответы"
 msgid "Table of contents"
 msgstr "Содержание"
 
+#: .\main\templates\docs\template_scoring_report.html:12
+#: .\main\templates\docs\template_scoring_report.html:69
+msgid "Scoring report"
+msgstr "Отчёт о результатах проверки"
+
 #: .\main\templates\docs\template_tasks.html:93
 msgid "General instructions on how to do tasks"
 msgstr "Общая инструкция по выполнению заданий"
 
-#: .\main\templates\main\404.html:17 .\main\views.py:455
+#: .\main\templates\main\404.html:17 .\main\views.py:477
 msgid "Page not Found"
 msgstr "Страница не найдена"
 
@@ -546,7 +551,7 @@ msgstr ""
 
 #: .\main\templates\main\404.html:23
 #: .\main\templates\main\object_storage.html:88
-#: .\main\templates\main\verification.html:124
+#: .\main\templates\main\verification.html:125
 msgid "To main page"
 msgstr "На главную"
 
@@ -786,15 +791,15 @@ msgstr "Таблица архивов"
 
 #: .\main\templates\main\object_storage.html:57
 #: .\main\templates\main\object_storage.html:60
-#: .\main\templates\main\verification.html:93
-#: .\main\templates\main\verification.html:96
+#: .\main\templates\main\verification.html:94
+#: .\main\templates\main\verification.html:97
 msgid "First"
 msgstr "Начало"
 
 #: .\main\templates\main\object_storage.html:67
 #: .\main\templates\main\object_storage.html:70
-#: .\main\templates\main\verification.html:103
-#: .\main\templates\main\verification.html:106
+#: .\main\templates\main\verification.html:104
+#: .\main\templates\main\verification.html:107
 msgid "Last"
 msgstr "Конец"
 
@@ -844,11 +849,11 @@ msgstr ""
 msgid "Table of verification"
 msgstr "Таблица проверки"
 
-#: .\main\templates\main\verification.html:81
+#: .\main\templates\main\verification.html:82
 msgid "To download the report, the archive must be fully verified."
 msgstr "Чтобы скачать отчёт, архив должен быть полностью проверен."
 
-#: .\main\templates\main\verification.html:114
+#: .\main\templates\main\verification.html:115
 msgid ""
 "In the future there will be information here about archives you can verify. "
 "At the moment they are not available."
@@ -886,7 +891,7 @@ msgstr ""
 msgid "The specified archive prefix is invalid"
 msgstr "Указанный префикс архива неверен"
 
-#: .\main\views.py:96
+#: .\main\views.py:96 .\main\views.py:394
 msgid "Date verified"
 msgstr "Дата проверки"
 
@@ -942,7 +947,7 @@ msgstr "Оцените работу абитуриента"
 msgid "The work is scored"
 msgstr "Работа оценена"
 
-#: .\main\views.py:443
+#: .\main\views.py:465
 msgid "No image could be found as requested"
 msgstr "Запрашиваемое изображение не найдено"
 

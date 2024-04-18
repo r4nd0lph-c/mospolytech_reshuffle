@@ -73,7 +73,8 @@
                                 <td>{{ obj.created }}</td>
                                 {% if obj.verified_count == obj.amount %}
                                     <td>
-                                        <a class="bi bi-download" href="#"></a>
+                                        <a class="bi bi-download"
+                                           href="{% url 'create_scoring_report' prefix=obj.prefix %}"></a>
                                     </td>
                                 {% else %}
                                     <td>
