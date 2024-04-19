@@ -214,15 +214,15 @@ class Verification(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         qs = ObjectStorageEntry.objects.all().order_by("-created")
+        groups = self.request.user.groups.all()
+        if not (self.request.user.is_superuser or not groups.exists()):
+            accesses = []
+            for g in groups:
+                accesses += [a.subject.id for a in Access.objects.filter(group=g)]
+            qs = qs.filter(subject__id__in=accesses)
         for obj in qs:
             obj.verified_count = VerifiedWorkEntry.objects.filter(archive=obj).count()
-        groups = self.request.user.groups.all()
-        if self.request.user.is_superuser or not groups.exists():
-            return qs
-        accesses = []
-        for g in groups:
-            accesses += [a.subject.id for a in Access.objects.filter(group=g)]
-        return qs.filter(subject__id__in=accesses)
+        return qs
 
 
 class Capture(VerificationChildTemplateView):
